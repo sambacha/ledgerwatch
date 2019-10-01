@@ -126,8 +126,8 @@
 <li>Balancing between updating the rules of Ethereum and improving client implementations and</li>
 <li>Difficulty of writing new implementations</li>
 <li>Limited transaction throughput</li>
-<li>Difficulty of assessing safety of some transactions (to smart contracts)</li>
-<li>Difficulty in estimating cost of a transaction</li>
+<li>Assessing safety of transactions</li>
+<li>Estimating cost of a transaction</li>
 </ol><h2 id="Description-of-challenges"><a class="anchor hidden-xs" href="#Description-of-challenges" title="Description-of-challenges"><span class="octicon octicon-link"></span></a>Description of challenges</h2><h3 id="Long-time-to-sync-a-new-node"><a class="anchor hidden-xs" href="#Long-time-to-sync-a-new-node" title="Long-time-to-sync-a-new-node"><span class="octicon octicon-link"></span></a>Long time to sync a new node</h3><p>When a new computer joins the Ethereum network, it needs to obtain the current state before it can start processing arbitrary transactions. The current state can be obtained in two main ways.<br>
 Firstly, the current state can be computed from the Genesis block, by applying (executing all transactions within) all the blocks in sequence. This method is now computationally hard due to the number of blocks (and transactions in them) to apply, and due to the size of the state.<br>
 Secondly, the current state can be downloaded from the peers that already computed (or downloaded) it. This method is not as hard computationally, but it requires a lot of communication with the peers, due to the size and the structure of the state.</p><h3 id="Cost-of-storage-devices"><a class="anchor hidden-xs" href="#Cost-of-storage-devices" title="Cost-of-storage-devices"><span class="octicon octicon-link"></span></a>Cost of storage devices</h3><p>One can divide the persistent data managed by an Ethereum client into two main categories. First category is the data that rarely changes after being written. This category includes the content of downloaded block headers, block bodies, transaction receipts. Since chain reorganisations are relatively rare and “shallow” (meaning that not many blocks are getting reverted), one can store these data in an append-only form. This makes it feasible to store such data in a lower-cost devices such as HDD (Hard Disk Drives), or even tape (which is the cheapest storage device at the moment of writing). In fact, the “Freezer” implementation in go-ethereum 1.9 is based on these observations.<br>
@@ -142,7 +142,9 @@ Second category is the data that is expected to change constantly. This includes
 <li>Implement a missing but very useful feature</li>
 <li>Fix a flaw in the original design</li>
 <li>Adjust to a change in the technological landscape</li>
-</ul><p>Smart contracts that have been deployed using old rules, may come to rely on those rules, explicitly or implicitly. When such contracts are still in frequent use, the challenge is to balance their need to exist in their original form (often, code improvements and redeployments solve the issue), and the need to update the rules.</p><h3 id="Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations"><a class="anchor hidden-xs" href="#Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations" title="Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations"><span class="octicon octicon-link"></span></a>Balancing between  updating rules of Ethereum and improving client implementations</h3><p>For reasons mentioned earlier, it is often necessary to update rules of Ethereum. When this happens, there is mandatory work for every Ethereum client implementation team who want their implementation to include the support for the update and stay relevant in the ecosystem. This work naturally detracts from other, equally important work on constantly improving and optimising the implementations to keep up with the growing demands of the system. The balance between these two types of work can be difficult to strike.</p><h3 id="Difficulty-of-writing-new-implementations"><a class="anchor hidden-xs" href="#Difficulty-of-writing-new-implementations" title="Difficulty-of-writing-new-implementations"><span class="octicon octicon-link"></span></a>Difficulty of writing new implementations</h3><p>Sice Ethereum’s launch in August 2015, many teams have attempted to produce working implementation of Ethereum. Initially, there was a great variety of such projects. However, as the system’s usage grew, most implementations became non-viable or too difficult to maintain, although the number of rule changes is still relatively modest.</p><h3 id="Limited-transaction-throughput"><a class="anchor hidden-xs" href="#Limited-transaction-throughput" title="Limited-transaction-throughput"><span class="octicon octicon-link"></span></a>Limited transaction throughput</h3><p>For Dapp developers, it is important to understand limitations of the Ethereum as a platform. One of the main limitation is the transaction throughput.</p><h2 id="Prioritising-of-challenges"><a class="anchor hidden-xs" href="#Prioritising-of-challenges" title="Prioritising-of-challenges"><span class="octicon octicon-link"></span></a>Prioritising of challenges</h2><p>Although any prioritisation of challenges would appear subjective, the approach is to compare the impact of challenges becomes overwhelming. For example, if the challenge <strong>Long time to sync a new node</strong> becomes overwhelming, and the sync time keeps growing, we can predict that in the future, the network will become difficult or impossible to join for the new operators. Although this will not immediately cause the system to fall, it will make it less resilient with some node operators disappearing.</p><h2 id="Summary-of-causes"><a class="anchor hidden-xs" href="#Summary-of-causes" title="Summary-of-causes"><span class="octicon octicon-link"></span></a>Summary of causes</h2><p>Here we summarise the causes for the challenges. Most of them are technological, though some could be viewed as organisational.</p><ol>
+</ul><p>Smart contracts that have been deployed using old rules, may come to rely on those rules, explicitly or implicitly. When such contracts are still in frequent use, the challenge is to balance their need to exist in their original form (often, code improvements and redeployments solve the issue), and the need to update the rules.</p><h3 id="Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations"><a class="anchor hidden-xs" href="#Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations" title="Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations"><span class="octicon octicon-link"></span></a>Balancing between  updating rules of Ethereum and improving client implementations</h3><p>For reasons mentioned earlier, it is often necessary to update rules of Ethereum. When this happens, there is mandatory work for every Ethereum client implementation team who want their implementation to include the support for the update and stay relevant in the ecosystem. This work naturally detracts from other, equally important work on constantly improving and optimising the implementations to keep up with the growing demands of the system. The balance between these two types of work can be difficult to strike.</p><h3 id="Difficulty-of-writing-new-implementations"><a class="anchor hidden-xs" href="#Difficulty-of-writing-new-implementations" title="Difficulty-of-writing-new-implementations"><span class="octicon octicon-link"></span></a>Difficulty of writing new implementations</h3><p>Sice Ethereum’s launch in August 2015, many teams have attempted to produce working implementation of Ethereum. Initially, there was a great variety of such projects. However, as the system’s usage grew, most implementations became non-viable or too difficult to maintain, although the number of rule changes is still relatively modest.</p><h3 id="Limited-transaction-throughput"><a class="anchor hidden-xs" href="#Limited-transaction-throughput" title="Limited-transaction-throughput"><span class="octicon octicon-link"></span></a>Limited transaction throughput</h3><p>For Dapp developers, it is important to understand limitations of the Ethereum as a platform. One of the main limitation is the transaction throughput. Not only it puts limits on how many users may interact with an application, but it also puts popular application in competition with each other, since this limitation is global, and not per-application. It is currently believed that the maximum theorerical throughput of Ethereum is around 50 transactions per second (assuming simple Ether transferring transaction, 10M block gas limit, and 15 seconds block time). Applications that require more throughput, usually try to utilise so-called “Layer 2” solutions, however, these ase still not very mature at present, and may require lifting other limits (for example, maximum allowed transaction size, or maximum allowed size of contract byte code).</p><h3 id="Assessing-safety-of-transactions"><a class="anchor hidden-xs" href="#Assessing-safety-of-transactions" title="Assessing-safety-of-transactions"><span class="octicon octicon-link"></span></a>Assessing safety of transactions</h3><p>For simple Ether transferring transaction, safety usually comes down to how well the private key is protected, and how secure is the generation of the digital signature (i.e. that it does not leak information about the private key by generating bad random numbers).<br>
+For transactions sent to smart contracts, safety assessment is harder, because the code of the smart contract may trigger undesirable actions if it is flawed or misused, intentionally or not. Often, Dapp developers attempt to assure the users of the safety of their contracts by conduction or commissioning security audits, offering bug bounties, or attempting to formally prove some safety properties.<br>
+It is believed that design of the execution engine (EVM in case of Ethereum) can be done in a way to make security analysis and formal verfication of smart contracts significantly easier and cheaper.</p><h3 id="Estimating-cost-of-a-transaction"><a class="anchor hidden-xs" href="#Estimating-cost-of-a-transaction" title="Estimating-cost-of-a-transaction"><span class="octicon octicon-link"></span></a>Estimating cost of a transaction</h3><p>Gas price is a means of auctioning the limited space within the Ethereum blocks to the transaction senders. Such auctons work well when the space in the blocks is not fully utilised. However, when the blocks are becoming consistently full, higher gas price volatility is observed, and the transaction senders tend to overpay for gas, realising that they are competing with other senders. High volatility of gas prices makes the estimation of correct price to pay more complex.</p><h2 id="Prioritising-of-challenges"><a class="anchor hidden-xs" href="#Prioritising-of-challenges" title="Prioritising-of-challenges"><span class="octicon octicon-link"></span></a>Prioritising of challenges</h2><p>Although any prioritisation of challenges would appear subjective, the approach is to compare the impact of challenges becomes overwhelming. For example, if the challenge <strong>Long time to sync a new node</strong> becomes overwhelming, and the sync time keeps growing, we can predict that in the future, the network will become difficult or impossible to join for the new operators. Although this will not immediately cause the system to fall, it will make it less resilient with some node operators disappearing.</p><h2 id="Summary-of-causes"><a class="anchor hidden-xs" href="#Summary-of-causes" title="Summary-of-causes"><span class="octicon octicon-link"></span></a>Summary of causes</h2><p>Here we summarise the causes for the challenges. Most of them are technological, though some could be viewed as organisational.</p><ol>
 <li>Large (and growing) state</li>
 <li>Snapshot sync algorithm implementation deficiencies</li>
 <li>Increasingly intricate data management that an Ethereum node needs to perform</li>
@@ -185,25 +187,27 @@ Both ways of development have their pros and cons. It seems that in the current 
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#Ethereum-1x-Definition-part-2" title="Ethereum 1x Definition (part 2)">Ethereum 1x Definition (part 2)</a><ul class="nav">
-<li><a href="#Method-continuation-from-part-1" title="Method (continuation from part 1)">Method (continuation from part 1)</a><ul class="nav">
-<li><a href="#Causes" title="Causes">Causes</a></li>
-<li><a href="#Solutions" title="Solutions">Solutions</a></li>
+<li class=""><a href="#Method-continuation-from-part-1" title="Method (continuation from part 1)">Method (continuation from part 1)</a><ul class="nav">
+<li class=""><a href="#Causes" title="Causes">Causes</a></li>
+<li class=""><a href="#Solutions" title="Solutions">Solutions</a></li>
 </ul>
 </li>
-<li><a href="#Summary-of-challenges" title="Summary of challenges">Summary of challenges</a></li>
+<li class=""><a href="#Summary-of-challenges" title="Summary of challenges">Summary of challenges</a></li>
 <li class=""><a href="#Description-of-challenges" title="Description of challenges">Description of challenges</a><ul class="nav">
-<li><a href="#Long-time-to-sync-a-new-node" title="Long time to sync a new node">Long time to sync a new node</a></li>
-<li><a href="#Cost-of-storage-devices" title="Cost of storage devices">Cost of storage devices</a></li>
-<li><a href="#High-internet-traffic" title="High internet traffic">High internet traffic</a></li>
-<li><a href="#Complex-DevOps-to-run-a-node" title="Complex DevOps to run a node">Complex DevOps to run a node</a></li>
+<li class=""><a href="#Long-time-to-sync-a-new-node" title="Long time to sync a new node">Long time to sync a new node</a></li>
+<li class=""><a href="#Cost-of-storage-devices" title="Cost of storage devices">Cost of storage devices</a></li>
+<li class=""><a href="#High-internet-traffic" title="High internet traffic">High internet traffic</a></li>
+<li class=""><a href="#Complex-DevOps-to-run-a-node" title="Complex DevOps to run a node">Complex DevOps to run a node</a></li>
 <li class=""><a href="#Balancing-between-updating-rules-of-Ethereum-and-maintaining-backwards-compatibility" title="Balancing between updating rules of Ethereum and maintaining backwards compatibility">Balancing between updating rules of Ethereum and maintaining backwards compatibility</a></li>
-<li><a href="#Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations" title="Balancing between  updating rules of Ethereum and improving client implementations">Balancing between  updating rules of Ethereum and improving client implementations</a></li>
-<li><a href="#Difficulty-of-writing-new-implementations" title="Difficulty of writing new implementations">Difficulty of writing new implementations</a></li>
-<li><a href="#Limited-transaction-throughput" title="Limited transaction throughput">Limited transaction throughput</a></li>
+<li class=""><a href="#Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations" title="Balancing between  updating rules of Ethereum and improving client implementations">Balancing between  updating rules of Ethereum and improving client implementations</a></li>
+<li class=""><a href="#Difficulty-of-writing-new-implementations" title="Difficulty of writing new implementations">Difficulty of writing new implementations</a></li>
+<li class=""><a href="#Limited-transaction-throughput" title="Limited transaction throughput">Limited transaction throughput</a></li>
+<li class=""><a href="#Assessing-safety-of-transactions" title="Assessing safety of transactions">Assessing safety of transactions</a></li>
+<li class=""><a href="#Estimating-cost-of-a-transaction" title="Estimating cost of a transaction">Estimating cost of a transaction</a></li>
 </ul>
 </li>
 <li><a href="#Prioritising-of-challenges" title="Prioritising of challenges">Prioritising of challenges</a></li>
-<li class=""><a href="#Summary-of-causes" title="Summary of causes">Summary of causes</a></li>
+<li><a href="#Summary-of-causes" title="Summary of causes">Summary of causes</a></li>
 <li><a href="#Description-of-causes" title="Description of causes">Description of causes</a><ul class="nav">
 <li><a href="#Large-and-growing-state" title="Large (and growing) state">Large (and growing) state</a></li>
 <li><a href="#Snapshot-sync-algorithm-implementation-deficiencies" title="Snapshot sync algorithm implementation deficiencies">Snapshot sync algorithm implementation deficiencies</a></li>
@@ -215,9 +219,9 @@ Both ways of development have their pros and cons. It seems that in the current 
 </ul>
 </li>
 <li><a href="#Summary-of-solutions" title="Summary of solutions">Summary of solutions</a></li>
-<li><a href="#Description-of-solutions" title="Description of solutions">Description of solutions</a><ul class="nav">
+<li class=""><a href="#Description-of-solutions" title="Description of solutions">Description of solutions</a><ul class="nav">
 <li><a href="#State-rent" title="State rent">State rent</a></li>
-<li><a href="#Stateless-clients" title="Stateless clients">Stateless clients</a></li>
+<li class=""><a href="#Stateless-clients" title="Stateless clients">Stateless clients</a></li>
 </ul>
 </li>
 </ul>
@@ -230,25 +234,27 @@ Both ways of development have their pros and cons. It seems that in the current 
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
         <div class="toc"><ul class="nav">
 <li class=""><a href="#Ethereum-1x-Definition-part-2" title="Ethereum 1x Definition (part 2)">Ethereum 1x Definition (part 2)</a><ul class="nav">
-<li><a href="#Method-continuation-from-part-1" title="Method (continuation from part 1)">Method (continuation from part 1)</a><ul class="nav">
-<li><a href="#Causes" title="Causes">Causes</a></li>
-<li><a href="#Solutions" title="Solutions">Solutions</a></li>
+<li class=""><a href="#Method-continuation-from-part-1" title="Method (continuation from part 1)">Method (continuation from part 1)</a><ul class="nav">
+<li class=""><a href="#Causes" title="Causes">Causes</a></li>
+<li class=""><a href="#Solutions" title="Solutions">Solutions</a></li>
 </ul>
 </li>
-<li><a href="#Summary-of-challenges" title="Summary of challenges">Summary of challenges</a></li>
+<li class=""><a href="#Summary-of-challenges" title="Summary of challenges">Summary of challenges</a></li>
 <li class=""><a href="#Description-of-challenges" title="Description of challenges">Description of challenges</a><ul class="nav">
-<li><a href="#Long-time-to-sync-a-new-node" title="Long time to sync a new node">Long time to sync a new node</a></li>
-<li><a href="#Cost-of-storage-devices" title="Cost of storage devices">Cost of storage devices</a></li>
-<li><a href="#High-internet-traffic" title="High internet traffic">High internet traffic</a></li>
-<li><a href="#Complex-DevOps-to-run-a-node" title="Complex DevOps to run a node">Complex DevOps to run a node</a></li>
+<li class=""><a href="#Long-time-to-sync-a-new-node" title="Long time to sync a new node">Long time to sync a new node</a></li>
+<li class=""><a href="#Cost-of-storage-devices" title="Cost of storage devices">Cost of storage devices</a></li>
+<li class=""><a href="#High-internet-traffic" title="High internet traffic">High internet traffic</a></li>
+<li class=""><a href="#Complex-DevOps-to-run-a-node" title="Complex DevOps to run a node">Complex DevOps to run a node</a></li>
 <li class=""><a href="#Balancing-between-updating-rules-of-Ethereum-and-maintaining-backwards-compatibility" title="Balancing between updating rules of Ethereum and maintaining backwards compatibility">Balancing between updating rules of Ethereum and maintaining backwards compatibility</a></li>
-<li><a href="#Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations" title="Balancing between  updating rules of Ethereum and improving client implementations">Balancing between  updating rules of Ethereum and improving client implementations</a></li>
-<li><a href="#Difficulty-of-writing-new-implementations" title="Difficulty of writing new implementations">Difficulty of writing new implementations</a></li>
-<li><a href="#Limited-transaction-throughput" title="Limited transaction throughput">Limited transaction throughput</a></li>
+<li class=""><a href="#Balancing-between-updating-rules-of-Ethereum-and-improving-client-implementations" title="Balancing between  updating rules of Ethereum and improving client implementations">Balancing between  updating rules of Ethereum and improving client implementations</a></li>
+<li class=""><a href="#Difficulty-of-writing-new-implementations" title="Difficulty of writing new implementations">Difficulty of writing new implementations</a></li>
+<li class=""><a href="#Limited-transaction-throughput" title="Limited transaction throughput">Limited transaction throughput</a></li>
+<li class=""><a href="#Assessing-safety-of-transactions" title="Assessing safety of transactions">Assessing safety of transactions</a></li>
+<li class=""><a href="#Estimating-cost-of-a-transaction" title="Estimating cost of a transaction">Estimating cost of a transaction</a></li>
 </ul>
 </li>
 <li><a href="#Prioritising-of-challenges" title="Prioritising of challenges">Prioritising of challenges</a></li>
-<li class=""><a href="#Summary-of-causes" title="Summary of causes">Summary of causes</a></li>
+<li><a href="#Summary-of-causes" title="Summary of causes">Summary of causes</a></li>
 <li><a href="#Description-of-causes" title="Description of causes">Description of causes</a><ul class="nav">
 <li><a href="#Large-and-growing-state" title="Large (and growing) state">Large (and growing) state</a></li>
 <li><a href="#Snapshot-sync-algorithm-implementation-deficiencies" title="Snapshot sync algorithm implementation deficiencies">Snapshot sync algorithm implementation deficiencies</a></li>
@@ -260,9 +266,9 @@ Both ways of development have their pros and cons. It seems that in the current 
 </ul>
 </li>
 <li><a href="#Summary-of-solutions" title="Summary of solutions">Summary of solutions</a></li>
-<li><a href="#Description-of-solutions" title="Description of solutions">Description of solutions</a><ul class="nav">
+<li class=""><a href="#Description-of-solutions" title="Description of solutions">Description of solutions</a><ul class="nav">
 <li><a href="#State-rent" title="State rent">State rent</a></li>
-<li><a href="#Stateless-clients" title="Stateless clients">Stateless clients</a></li>
+<li class=""><a href="#Stateless-clients" title="Stateless clients">Stateless clients</a></li>
 </ul>
 </li>
 </ul>
