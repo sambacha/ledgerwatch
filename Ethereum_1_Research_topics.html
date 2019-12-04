@@ -44,7 +44,17 @@
 The beginning of this documentation is here: <a href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/db_walkthrough.MD" target="_blank" rel="noopener">https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/db_walkthrough.MD</a></p><h2 id="The-State-Analytics"><a class="anchor hidden-xs" href="#The-State-Analytics" title="The-State-Analytics"><span class="octicon octicon-link"></span></a>The State Analytics</h2><p>This project aims at making charts and tables that has appeared in various blog posts, such as:<br>
 <a href="https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179" target="_blank" rel="noopener">https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179</a></p><p><a href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc" target="_blank" rel="noopener">https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc</a></p><p><a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309" target="_blank" rel="noopener">https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309</a></p><p><a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10" target="_blank" rel="noopener">https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10</a></p><p>more accessible on regular basis (aim 1), and then reproducible by anyone in the possesion of a turbo-geth archive node (aim 2).<br>
 For aim 1, there would be a remote access to the turbo-geth database, whicn will allow extracting data without stopping the turbo-geth node. That way, stats can be gathered, and charts and tables produced and published automatically at regular intervals.<br>
-For aim 2, the tools used for extracting data from a working turbo-geth node would be extracted into a separate command line interface, with some user documentation on how to use and extend it.</p><h2 id="Stateless-Ethereum"><a class="anchor hidden-xs" href="#Stateless-Ethereum" title="Stateless-Ethereum"><span class="octicon octicon-link"></span></a>Stateless Ethereum</h2><p>For letting most nodes in the network to use less resources to process blocks. The results of this research are prototypes, benchmarks, documentation and specification describing how to implement stateless processing. Implementation would include three main parts:</p><ol>
+For aim 2, the tools used for extracting data from a working turbo-geth node would be extracted into a separate command line interface, with some user documentation on how to use and extend it.</p><h3 id="Rough-plan"><a class="anchor hidden-xs" href="#Rough-plan" title="Rough-plan"><span class="octicon octicon-link"></span></a>Rough plan</h3><ol>
+<li>Server side of the remote read-only interface to BoltDB while running turbo-geth node. Almost done.</li>
+<li>Client side of the remote interface to BoltDB. Partically done.</li>
+<li>Implement “state growth vs block gas limit” charts from <a href="https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179" target="_blank" rel="noopener">https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179</a></li>
+<li>Compare performance of remote extraction (with on-line node) with local extraction (with off-line node).</li>
+<li>Create a static web-site and regularly publish fresh charts for “state growth vs block gas limit”.</li>
+<li>Implement the generation of “state trie depth” table from <a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10" target="_blank" rel="noopener">https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10</a></li>
+<li>Add “state trie depth” table to the Web-site.</li>
+<li>Create a better abstraction of server side to accomodate both BoltDB and BadgerDB on the server side.</li>
+<li>Extract and document the tool for gathering data and extending the analytics (so that people can come up with their own charts and tables).</li>
+</ol><h2 id="Stateless-Ethereum"><a class="anchor hidden-xs" href="#Stateless-Ethereum" title="Stateless-Ethereum"><span class="octicon octicon-link"></span></a>Stateless Ethereum</h2><p>For letting most nodes in the network to use less resources to process blocks. The results of this research are prototypes, benchmarks, documentation and specification describing how to implement stateless processing. Implementation would include three main parts:</p><ol>
 <li>Block witness producer</li>
 <li>Block witness relayer</li>
 <li>Block witness consumer</li>
@@ -120,8 +130,11 @@ The capacity of the sketch, C is the maximum number of differences that the sket
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#Ethereum-1-Research-topics" title="Ethereum 1 Research topics">Ethereum 1 Research topics</a><ul class="nav">
-<li class=""><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
-<li class=""><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a></li>
+<li><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
+<li><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
+<li><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
+</ul>
+</li>
 <li><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
 <li><a href="#Current-vision-of-the-project" title="Current vision of the project">Current vision of the project</a></li>
 </ul>
@@ -133,7 +146,7 @@ The capacity of the sketch, C is the maximum number of differences that the sket
 <li><a href="#Storing-state-outside-of-Ethereum-network" title="Storing state outside of Ethereum network">Storing state outside of Ethereum network</a></li>
 <li><a href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles" title="WASM for implementing Generalised Elliptic Curve precompiles">WASM for implementing Generalised Elliptic Curve precompiles</a></li>
 <li><a href="#WASM-for-implementing-Stateless-Ethereum" title="WASM for implementing Stateless Ethereum">WASM for implementing Stateless Ethereum</a></li>
-<li class=""><a href="#STARK-proofs-for-Stateless-Ethereum" title="STARK proofs for Stateless Ethereum">STARK proofs for Stateless Ethereum</a></li>
+<li><a href="#STARK-proofs-for-Stateless-Ethereum" title="STARK proofs for Stateless Ethereum">STARK proofs for Stateless Ethereum</a></li>
 <li><a href="#Transaction-pool-improvements-to-accomodate-larger-transactions" title="Transaction pool improvements to accomodate larger transactions">Transaction pool improvements to accomodate larger transactions</a></li>
 <li><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
 <li><a href="#Conformance-testing-to-use-Ethereum-more-natively" title="Conformance testing to use Ethereum more natively">Conformance testing to use Ethereum more natively</a></li>
@@ -148,24 +161,27 @@ The capacity of the sketch, C is the maximum number of differences that the sket
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
         <div class="toc"><ul class="nav">
 <li class=""><a href="#Ethereum-1-Research-topics" title="Ethereum 1 Research topics">Ethereum 1 Research topics</a><ul class="nav">
-<li class=""><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
-<li class=""><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a></li>
-<li class=""><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
-<li class=""><a href="#Current-vision-of-the-project" title="Current vision of the project">Current vision of the project</a></li>
+<li><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
+<li class=""><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
+<li class=""><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
 </ul>
 </li>
-<li class=""><a href="#Decoupling-two-functions-of-gas" title="Decoupling two functions of gas">Decoupling two functions of gas</a></li>
-<li class=""><a href="#UNGAS-Versionless-EVM-and-Particle-gas-cost" title="UNGAS, Versionless EVM, and Particle gas cost">UNGAS, Versionless EVM, and Particle gas cost</a></li>
-<li class=""><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a></li>
-<li class=""><a href="#State-syncronisation-snapshot-moving-snapshot" title="State syncronisation (snapshot, moving snapshot)">State syncronisation (snapshot, moving snapshot)</a></li>
-<li class=""><a href="#Storing-state-outside-of-Ethereum-network" title="Storing state outside of Ethereum network">Storing state outside of Ethereum network</a></li>
-<li class=""><a href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles" title="WASM for implementing Generalised Elliptic Curve precompiles">WASM for implementing Generalised Elliptic Curve precompiles</a></li>
-<li class=""><a href="#WASM-for-implementing-Stateless-Ethereum" title="WASM for implementing Stateless Ethereum">WASM for implementing Stateless Ethereum</a></li>
-<li class=""><a href="#STARK-proofs-for-Stateless-Ethereum" title="STARK proofs for Stateless Ethereum">STARK proofs for Stateless Ethereum</a></li>
-<li class=""><a href="#Transaction-pool-improvements-to-accomodate-larger-transactions" title="Transaction pool improvements to accomodate larger transactions">Transaction pool improvements to accomodate larger transactions</a></li>
-<li class=""><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
-<li class=""><a href="#Conformance-testing-to-use-Ethereum-more-natively" title="Conformance testing to use Ethereum more natively">Conformance testing to use Ethereum more natively</a></li>
-<li class=""><a href="#ReadSet-and-WriteSet-pre-declarations-in-transactions" title="ReadSet and WriteSet pre-declarations in transactions">ReadSet and WriteSet pre-declarations in transactions</a></li>
+<li><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
+<li><a href="#Current-vision-of-the-project" title="Current vision of the project">Current vision of the project</a></li>
+</ul>
+</li>
+<li><a href="#Decoupling-two-functions-of-gas" title="Decoupling two functions of gas">Decoupling two functions of gas</a></li>
+<li><a href="#UNGAS-Versionless-EVM-and-Particle-gas-cost" title="UNGAS, Versionless EVM, and Particle gas cost">UNGAS, Versionless EVM, and Particle gas cost</a></li>
+<li><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a></li>
+<li><a href="#State-syncronisation-snapshot-moving-snapshot" title="State syncronisation (snapshot, moving snapshot)">State syncronisation (snapshot, moving snapshot)</a></li>
+<li><a href="#Storing-state-outside-of-Ethereum-network" title="Storing state outside of Ethereum network">Storing state outside of Ethereum network</a></li>
+<li><a href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles" title="WASM for implementing Generalised Elliptic Curve precompiles">WASM for implementing Generalised Elliptic Curve precompiles</a></li>
+<li><a href="#WASM-for-implementing-Stateless-Ethereum" title="WASM for implementing Stateless Ethereum">WASM for implementing Stateless Ethereum</a></li>
+<li><a href="#STARK-proofs-for-Stateless-Ethereum" title="STARK proofs for Stateless Ethereum">STARK proofs for Stateless Ethereum</a></li>
+<li><a href="#Transaction-pool-improvements-to-accomodate-larger-transactions" title="Transaction pool improvements to accomodate larger transactions">Transaction pool improvements to accomodate larger transactions</a></li>
+<li><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
+<li><a href="#Conformance-testing-to-use-Ethereum-more-natively" title="Conformance testing to use Ethereum more natively">Conformance testing to use Ethereum more natively</a></li>
+<li><a href="#ReadSet-and-WriteSet-pre-declarations-in-transactions" title="ReadSet and WriteSet pre-declarations in transactions">ReadSet and WriteSet pre-declarations in transactions</a></li>
 </ul>
 </li>
 </ul>
