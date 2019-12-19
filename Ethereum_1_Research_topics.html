@@ -85,9 +85,23 @@ it is a bit circular but this is my current thinking. Block witnesses can actual
 </ol><h2 id="Gas-repricing-vs-backwards-compatibility"><a class="anchor hidden-xs" href="#Gas-repricing-vs-backwards-compatibility" title="Gas-repricing-vs-backwards-compatibility"><span class="octicon octicon-link"></span></a>Gas repricing vs backwards compatibility</h2><p>The aim of this project is to achieve less painful (or ideally painless) repricing of opcodes. We expect these repricings to be necessary to keep the gas costs balanced, as well as for the implementation of the State Ethereum project. This project only has a research roadmap at the moment, and the dates are very uncertain. It also has a few branches (alternative proposals), covering either the main mechanism with which backwards-compatible repricing is achieved, or some secondary issues. Currently, there are 2 alternative proposals for the main mechanism:</p><h3 id="Legacy-repricing"><a class="anchor hidden-xs" href="#Legacy-repricing" title="Legacy-repricing"><span class="octicon octicon-link"></span></a>Legacy repricing</h3><p><a href="https://ep.corepaper.org/compatibility/legacy-repricing/" target="_blank" rel="noopener">https://ep.corepaper.org/compatibility/legacy-repricing/</a>. The main idea is to introduce account versioning, but with the goal of only ever having two versions, “legacy” and “forward compatible”. Legacy version experiences no repricing, but its usage gets disentivised economically, but making it progressively more expensive than the forward compatible version. In the forwards compatible version, the main innovation is making the gas unobservable from the smart contracts (codename UNGAS). It is currently believed that this can be achieved by making 3 changes to the semantics of opcodes. Since the gas is now unobservable, any repricing does not affect the logic of the contracts’ execution, only the total required gas (which can be easily changed when creating a transaction). In order to economically disentivise the usage of the legacy version, repricings are performed not by increasing the gas expenditure of select operations, but rather by proportionally decreasing the gas expenditure for all the rest of the operations. It is believed that it will be difficult for miners to distinguish between transactions only containing legacy code, forward compatible code, or the mixture, so they won’t be able to apply different gas prices accordingly, and the legacy code will become largely more expensive to execute. When decreasing the gas expenditure of some operations, we will face the fact that some of them are already quite small (3 gas, for example). There are currently two proposed ways of dealing with this:</p><ol>
 <li>Changing the semantics of entering a call frame, CALL, CREATE (and similar) instructions to scale the remaining gas up and down by a certain factor</li>
 <li>Particle gas cost, introducing the units of “milligas”, or even perhaps “microgas”: <a href="https://eips.ethereum.org/EIPS/eip-2045" target="_blank" rel="noopener">https://eips.ethereum.org/EIPS/eip-2045</a></li>
-</ol><h3 id="Decoupling-the-two-functions-of-gas"><a class="anchor hidden-xs" href="#Decoupling-the-two-functions-of-gas" title="Decoupling-the-two-functions-of-gas"><span class="octicon octicon-link"></span></a>Decoupling the two functions of gas</h3><p>Gas is split into two components - one for metering, another for restricting recursion and callbacks.</p><h2 id="Formal-system-to-specify-semantics-of-Ethereum-state-transition"><a class="anchor hidden-xs" href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal-system-to-specify-semantics-of-Ethereum-state-transition"><span class="octicon octicon-link"></span></a>Formal system to specify semantics of Ethereum state transition</h2><p>To agree on the most suitable way to specify semantics and use it to propose changes in Ethereum more formally.<br>
-Another important usage of such formal system is symbolic execution. A good formal system makes such symbolic execution easy.<br>
-Specification of the state handling, for example, is separate from the EVM spec and the definitions of transactions and blocks. It abstracts them away by the means of read sets and change sets, for example.</p><p>Current idea (proposed by Martin Lundfall) is to use the notation similar to what<br>
+</ol><h3 id="Decoupling-the-two-functions-of-gas"><a class="anchor hidden-xs" href="#Decoupling-the-two-functions-of-gas" title="Decoupling-the-two-functions-of-gas"><span class="octicon octicon-link"></span></a>Decoupling the two functions of gas</h3><p>Gas is split into two components - one for metering, another for restricting recursion and callbacks.</p><h2 id="Formal-system-to-specify-semantics-of-Ethereum-state-transition"><a class="anchor hidden-xs" href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal-system-to-specify-semantics-of-Ethereum-state-transition"><span class="octicon octicon-link"></span></a>Formal system to specify semantics of Ethereum state transition</h2><p>The aim of this project is to agree on the most suitable way to specify semantics and use it to propose changes in Ethereum more formally. It can also mean that such suitable semantics has to be created. Some of the very ambitious projects (like Project “Gas repricing vs backwards compatibility”) that involve very significant changes to the EVM, would be hard to deliver successfully without the ability to specify the changes in an unambiguous way. From our previous experience, the real scrutiny of such proposals usually starts relatively late in the process, once the code is written. This is because the specification given in prose within the EIPs is not rigorous and formal enough for the proper analysis to start (and, more importantly, for using automated analysis tools like model checkers, symbolic execution engines, etc.). There exist at least one known formal semantics for EVM already, called KEVM. It is also part of the jello paper: <a href="https://jellopaper.org/" target="_blank" rel="noopener">https://jellopaper.org/</a>. This semantics is complete and executable. However, its major drawback that the language it uses (K) is quite complex and inaccessible even for most core developers. Also, the process of installation of all required software to execute semantics makes the barrier to entry higher still. So far, KEVM has not been used to formalise EVM change proposals ahead of the implementation. Our assumption is that this is a usability issue. If there were an alternative semantics that uses simpler languages (like the one used in Web Assembly), there are much better chances for it to be adopted as a de-facto specification language for EVM changes.<br>
+In this project, we will attempt to construct a new formal semantics for EVM, based on a single type of substitution rules. Every rule will have 3 elements:</p><ul>
+<li>Pattern</li>
+<li>Result of the substitution</li>
+<li>Guard expression<br>
+The matching that the pattern performs is done against the sequence of objects that represents the current state of EVM (also known as “configuration”). Like in Web Assembly specification, we treat items on the EVM stack and EVM instructions as the same type of objects, so that for most operations, opcode and operands can be matched by a simple mattern without the use of extraction functions.<br>
+This project has both research and implementation roadmaps, but they are closely intertwined and are likely to proceed in a lock-step fashion. That is why we combine them in one list for the time being. At any point of the roadmap we may encounter unsolvable problems, and the project may need to be abandoned or rescoped. That is why the roadmap attempts to probe more difficult areas of EVM functionality first, because they are more likely to be unsolvable.</li>
+</ul><h3 id="Researchimplementation-roadmap"><a class="anchor hidden-xs" href="#Researchimplementation-roadmap" title="Researchimplementation-roadmap"><span class="octicon octicon-link"></span></a>Research/implementation roadmap:</h3><ol>
+<li>Skeleton of reference implementation for pattern matching (and variable bindings). Will start with the C programming language, which gives a good balance of being understandable for a lot of developers, as well as having a lot of code analysis tools developed for it.</li>
+<li>Skeleton of reference implementation for evaluation of the guards. Guards will also be written in C, with some conventions about what is permissible and what not.</li>
+<li>Skeleton of reference implementation for generating the substitutions.</li>
+<li>Rules for jump instructions, unconditional and conditional.</li>
+<li>Rules for call, revert, and return instructions (dealing with spawning and destroying execution frames).</li>
+<li>Rules for contract storage access (SLOAD, STORE). Potential introduction of non-determinism into the semantics, and therefore the need to also create the contract storage oracle.</li>
+<li>Rules for memory operations.</li>
+<li>Rules for all other opcodes.</li>
+</ol><h3 id="Previous-write-up-of-ideas"><a class="anchor hidden-xs" href="#Previous-write-up-of-ideas" title="Previous-write-up-of-ideas"><span class="octicon octicon-link"></span></a>Previous write up of ideas</h3><p>Current idea is to use the notation similar to what<br>
 is used in Web Assembly, which is very clever system, and is as follows:</p><ol>
 <li>State of the system, of configuration, is described as a tuple of functions (for accounts, storage etc.), and an instruction sequence.</li>
 <li>Interestingly, the stack does not have a separate representation and is instead represented as a part of the instruction sequence. To achieve that, a special <code>const</code> instruction carrying a value is used.</li>
@@ -156,12 +170,12 @@ There are currently two main proposals on how to move ahead:</p><ol>
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#Ethereum-1-Research-topics" title="Ethereum 1 Research topics">Ethereum 1 Research topics</a><ul class="nav">
-<li><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
-<li><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
-<li><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
+<li class=""><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
+<li class=""><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
+<li class=""><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
 </ul>
 </li>
-<li><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
+<li class=""><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
 <li><a href="#Research-roadmap" title="Research roadmap">Research roadmap</a></li>
 <li><a href="#Implementation-roadmap" title="Implementation roadmap">Implementation roadmap</a></li>
 </ul>
@@ -171,13 +185,17 @@ There are currently two main proposals on how to move ahead:</p><ol>
 <li><a href="#Decoupling-the-two-functions-of-gas" title="Decoupling the two functions of gas">Decoupling the two functions of gas</a></li>
 </ul>
 </li>
-<li><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a></li>
+<li class=""><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a><ul class="nav">
+<li class=""><a href="#Researchimplementation-roadmap" title="Research/implementation roadmap:">Research/implementation roadmap:</a></li>
+<li><a href="#Previous-write-up-of-ideas" title="Previous write up of ideas">Previous write up of ideas</a></li>
+</ul>
+</li>
 <li><a href="#State-syncronisation-snapshot-moving-snapshot" title="State syncronisation (snapshot, moving snapshot)">State syncronisation (snapshot, moving snapshot)</a></li>
 <li><a href="#Storing-state-outside-of-Ethereum-network" title="Storing state outside of Ethereum network">Storing state outside of Ethereum network</a></li>
 <li><a href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles" title="WASM for implementing Generalised Elliptic Curve precompiles">WASM for implementing Generalised Elliptic Curve precompiles</a></li>
 <li><a href="#STARK-proofs-for-Stateless-Ethereum" title="STARK proofs for Stateless Ethereum">STARK proofs for Stateless Ethereum</a></li>
 <li><a href="#Transaction-pool-improvements-to-accomodate-larger-transactions" title="Transaction pool improvements to accomodate larger transactions">Transaction pool improvements to accomodate larger transactions</a></li>
-<li class=""><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
+<li><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
 <li><a href="#Lowering-Ethereum-client-implementations-requirements-for-black-box-testing" title="Lowering Ethereum client implementations requirements for black-box testing">Lowering Ethereum client implementations requirements for black-box testing</a></li>
 <li><a href="#ReadSet-and-WriteSet-pre-declarations-in-transactions" title="ReadSet and WriteSet pre-declarations in transactions">ReadSet and WriteSet pre-declarations in transactions</a></li>
 </ul>
@@ -190,12 +208,12 @@ There are currently two main proposals on how to move ahead:</p><ol>
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
         <div class="toc"><ul class="nav">
 <li class=""><a href="#Ethereum-1-Research-topics" title="Ethereum 1 Research topics">Ethereum 1 Research topics</a><ul class="nav">
-<li><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
-<li><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
-<li><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
+<li class=""><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
+<li class=""><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
+<li class=""><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
 </ul>
 </li>
-<li><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
+<li class=""><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
 <li><a href="#Research-roadmap" title="Research roadmap">Research roadmap</a></li>
 <li><a href="#Implementation-roadmap" title="Implementation roadmap">Implementation roadmap</a></li>
 </ul>
@@ -205,13 +223,17 @@ There are currently two main proposals on how to move ahead:</p><ol>
 <li><a href="#Decoupling-the-two-functions-of-gas" title="Decoupling the two functions of gas">Decoupling the two functions of gas</a></li>
 </ul>
 </li>
-<li><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a></li>
+<li class=""><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a><ul class="nav">
+<li class=""><a href="#Researchimplementation-roadmap" title="Research/implementation roadmap:">Research/implementation roadmap:</a></li>
+<li><a href="#Previous-write-up-of-ideas" title="Previous write up of ideas">Previous write up of ideas</a></li>
+</ul>
+</li>
 <li><a href="#State-syncronisation-snapshot-moving-snapshot" title="State syncronisation (snapshot, moving snapshot)">State syncronisation (snapshot, moving snapshot)</a></li>
 <li><a href="#Storing-state-outside-of-Ethereum-network" title="Storing state outside of Ethereum network">Storing state outside of Ethereum network</a></li>
 <li><a href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles" title="WASM for implementing Generalised Elliptic Curve precompiles">WASM for implementing Generalised Elliptic Curve precompiles</a></li>
 <li><a href="#STARK-proofs-for-Stateless-Ethereum" title="STARK proofs for Stateless Ethereum">STARK proofs for Stateless Ethereum</a></li>
 <li><a href="#Transaction-pool-improvements-to-accomodate-larger-transactions" title="Transaction pool improvements to accomodate larger transactions">Transaction pool improvements to accomodate larger transactions</a></li>
-<li class=""><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
+<li><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
 <li><a href="#Lowering-Ethereum-client-implementations-requirements-for-black-box-testing" title="Lowering Ethereum client implementations requirements for black-box testing">Lowering Ethereum client implementations requirements for black-box testing</a></li>
 <li><a href="#ReadSet-and-WriteSet-pre-declarations-in-transactions" title="ReadSet and WriteSet pre-declarations in transactions">ReadSet and WriteSet pre-declarations in transactions</a></li>
 </ul>
