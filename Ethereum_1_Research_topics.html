@@ -35,7 +35,9 @@
 </head>
 
 <body>
-    <div id="doc" class="markdown-body container-fluid comment-enabled" data-hard-breaks="true" style="position: relative;"><h1 id="Ethereum-1-Research-topics"><a class="anchor hidden-xs" href="#Ethereum-1-Research-topics" title="Ethereum-1-Research-topics"><span class="octicon octicon-link"></span></a>Ethereum 1 Research topics</h1><h2 id="Flat-data-layout-for-storing-the-state"><a class="anchor hidden-xs" href="#Flat-data-layout-for-storing-the-state" title="Flat-data-layout-for-storing-the-state"><span class="octicon octicon-link"></span></a>Flat data layout for storing the state</h2><p>For decoupling merkle tree from the data storage. The result of this research is benchmarks and documentation on how to deal with various issues when changing from trie-based storage model to flat storage model. Examples of such issues:</p><ul>
+    <div id="doc" class="markdown-body container-fluid comment-enabled" data-hard-breaks="true" style="position: relative;"><h1 id="Ethereum-1-Research-topics"><a class="anchor hidden-xs" href="#Ethereum-1-Research-topics" title="Ethereum-1-Research-topics"><span class="octicon octicon-link"></span></a>Ethereum 1 Research topics</h1><h2 id="Migration-from-hexary-to-binary-tries"><a class="anchor hidden-xs" href="#Migration-from-hexary-to-binary-tries" title="Migration-from-hexary-to-binary-tries"><span class="octicon octicon-link"></span></a>Migration from hexary to binary tries</h2><p>If it is found that binary merkle tries are more beneficial than hexary merkle tries (and perhaps that it is also beneficial to change the hash function used to hash the trie), we need to think about potential migration path for existing implementations. Currently proposal is described here: <a href="https://ethresear.ch/t/optimizing-sparse-merkle-trees/3751" target="_blank" rel="noopener">https://ethresear.ch/t/optimizing-sparse-merkle-trees/3751</a></p><p>Theoretically, we can do a minimally disruptive migration by nominally keeping the patricia hex tree structure, but changing the hash function from</p><pre><code>sha(rlp(x1 .... x16))
+</code></pre><p>to</p><pre><code>merkle_tree(x1 ... x16)
+</code></pre><p>So then we would get most of the witness size reduction benefits. But at DB level nothing would change. Even for incremental update, we could make the root deterministic if we put information about whether or not an account was updated into the leaf.</p><h2 id="Flat-data-layout-for-storing-the-state"><a class="anchor hidden-xs" href="#Flat-data-layout-for-storing-the-state" title="Flat-data-layout-for-storing-the-state"><span class="octicon octicon-link"></span></a>Flat data layout for storing the state</h2><p>For decoupling merkle tree from the data storage. The result of this research is benchmarks and documentation on how to deal with various issues when changing from trie-based storage model to flat storage model. Examples of such issues:</p><ul>
 <li>Reconstruction of trie on the fly</li>
 <li>Handling of reorgs</li>
 <li>Fetching the parts of the state from disk and adding them to the trie in memory</li>
@@ -169,7 +171,8 @@ There are currently two main proposals on how to move ahead:</p><ol>
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#Ethereum-1-Research-topics" title="Ethereum 1 Research topics">Ethereum 1 Research topics</a><ul class="nav">
-<li class=""><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
+<li class=""><a href="#Migration-from-hexary-to-binary-tries" title="Migration from hexary to binary tries">Migration from hexary to binary tries</a></li>
+<li><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
 <li><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
 <li><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
 </ul>
@@ -184,7 +187,7 @@ There are currently two main proposals on how to move ahead:</p><ol>
 <li><a href="#Decoupling-the-two-functions-of-gas" title="Decoupling the two functions of gas">Decoupling the two functions of gas</a></li>
 </ul>
 </li>
-<li class=""><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a><ul class="nav">
+<li><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a><ul class="nav">
 <li><a href="#Researchimplementation-roadmap" title="Research/implementation roadmap:">Research/implementation roadmap:</a></li>
 <li><a href="#Previous-write-up-of-ideas" title="Previous write up of ideas">Previous write up of ideas</a></li>
 </ul>
@@ -207,7 +210,8 @@ There are currently two main proposals on how to move ahead:</p><ol>
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
         <div class="toc"><ul class="nav">
 <li class=""><a href="#Ethereum-1-Research-topics" title="Ethereum 1 Research topics">Ethereum 1 Research topics</a><ul class="nav">
-<li class=""><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
+<li class=""><a href="#Migration-from-hexary-to-binary-tries" title="Migration from hexary to binary tries">Migration from hexary to binary tries</a></li>
+<li><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
 <li><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
 <li><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
 </ul>
@@ -222,7 +226,7 @@ There are currently two main proposals on how to move ahead:</p><ol>
 <li><a href="#Decoupling-the-two-functions-of-gas" title="Decoupling the two functions of gas">Decoupling the two functions of gas</a></li>
 </ul>
 </li>
-<li class=""><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a><ul class="nav">
+<li><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a><ul class="nav">
 <li><a href="#Researchimplementation-roadmap" title="Research/implementation roadmap:">Research/implementation roadmap:</a></li>
 <li><a href="#Previous-write-up-of-ideas" title="Previous write up of ideas">Previous write up of ideas</a></li>
 </ul>
