@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -101,18 +102,13 @@ Another interesting insight became apparent when we engineered the decomposed st
 </tr>
 <tr>
 <td>7. Generate account history index</td>
-<td>IN PROGRESS</td>
-<td>Was previously done for hashed state, need to do for plain state</td>
+<td>WORKS</td>
+<td></td>
 </tr>
 <tr>
 <td>8. Generate contract storage history index</td>
-<td>IN PROGRESS</td>
-<td>Was previously done for hashed state, need to do for plain state</td>
-</tr>
-<tr>
-<td>9. Generate transaction receipts</td>
-<td>NOT PRIORITY</td>
-<td>Implementation likely trivial</td>
+<td>WORKS</td>
+<td></td>
 </tr>
 <tr>
 <td>10. Generate transaction lookup index</td>
@@ -146,15 +142,15 @@ Recently we have also started experimenting with LMDB. Initial experiments showe
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#Towards-the-first-release-of-Turbo-geth" title="Towards the first release of Turbo-geth">Towards the first release of Turbo-geth</a><ul class="nav">
 <li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
-<li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
-<li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
-<li class=""><a href="#Disk-space" title="Disk space">Disk space</a></li>
-<li class=""><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
-<li class=""><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li><a href="#Distribution" title="Distribution">Distribution</a></li>
+<li><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
+<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li><a href="#Disk-space" title="Disk space">Disk space</a></li>
+<li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
+<li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
+<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#Choice-of-database-backend" title="Choice of database backend">Choice of database backend</a></li>
 <li><a href="#Remote-DB-access-and-REST-API-daemon" title="Remote DB access and REST API daemon">Remote DB access and REST API daemon</a></li>
@@ -169,15 +165,15 @@ Recently we have also started experimenting with LMDB. Initial experiments showe
         <div class="toc"><ul class="nav">
 <li class=""><a href="#Towards-the-first-release-of-Turbo-geth" title="Towards the first release of Turbo-geth">Towards the first release of Turbo-geth</a><ul class="nav">
 <li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
-<li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
-<li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
-<li class=""><a href="#Disk-space" title="Disk space">Disk space</a></li>
-<li class=""><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
-<li class=""><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li><a href="#Distribution" title="Distribution">Distribution</a></li>
+<li><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
+<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li><a href="#Disk-space" title="Disk space">Disk space</a></li>
+<li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
+<li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
+<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#Choice-of-database-backend" title="Choice of database backend">Choice of database backend</a></li>
 <li><a href="#Remote-DB-access-and-REST-API-daemon" title="Remote DB access and REST API daemon">Remote DB access and REST API daemon</a></li>
