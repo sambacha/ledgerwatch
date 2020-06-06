@@ -36,7 +36,16 @@
 
 <body>
     <div id="doc" class="markdown-body container-fluid comment-enabled" data-hard-breaks="true" style="position: relative;"><h1 id="Towards-the-first-release-of-Turbo-geth"><a class="anchor hidden-xs" href="#Towards-the-first-release-of-Turbo-geth" title="Towards-the-first-release-of-Turbo-geth"><span class="octicon octicon-link"></span></a>Towards the first release of Turbo-geth</h1><p>It has been more than two years since turbo-geth project started. Now we are almost there. This post will explain the criteria we will use for determining when the release is ready, and what to expect from turbo-geth in its first release. First, we will describe the current limitations (compared to other Ethereum implementations), and then go over things that are the reason for turbo-geth to exist - performance and architecture.</p><h2 id="When-is-it-going-to-be-ready"><a class="anchor hidden-xs" href="#When-is-it-going-to-be-ready" title="When-is-it-going-to-be-ready"><span class="octicon octicon-link"></span></a>When is it going to be ready?</h2><p>The main criteria we are using for the readiness is the stability of the database format. We do not mind to deliver some of the optimisations and missing features in the minor add-on releases. But we do not want for the first users to recreate their databases unless it is absolutely necessary. Though the sync (and with it, the creation of the initial database) with the Ethereum main net has been massively improved due to the new architecture, it still takes non-trivial amount of time (several days).<br>
-We call this new architecture “staged sync”, and it will be explained in more detals further down.</p><h2 id="Distribution"><a class="anchor hidden-xs" href="#Distribution" title="Distribution"><span class="octicon octicon-link"></span></a>Distribution</h2><p>We would like to keep concentrating on developing and optimising the code, therefore we will not be publishing any binaries. Our first users would need to build from source. This may change in the future, if we find it being crucial.</p><h2 id="No-fast-sync-warp-sync-or-any-other-snapshot-sync"><a class="anchor hidden-xs" href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No-fast-sync-warp-sync-or-any-other-snapshot-sync"><span class="octicon octicon-link"></span></a>No fast sync, warp sync or any other snapshot sync</h2><p>In the first release, the only way to synchronise with the Ethereum network will be to download block headers, download block bodies, and execute all the blocks from genesis to the current head of the chain. Although this may sound like a non-starter, we have managed to make this process very efficient. More data will be published later. We are planning to add (in future releases, not in the first one) an ability to perform snapshot sync, in the form of so-called Merry-Go-Round sync, which currently is also on the Stateless Ethereum roadmap.</p><h2 id="GPL-license"><a class="anchor hidden-xs" href="#GPL-license" title="GPL-license"><span class="octicon octicon-link"></span></a>GPL license</h2><p>Since turbo-geth is a derivative of go-ethereum, it inherits General Public License 3.0. We will not be able to relicense the code at any point, but we may, in the future, shift some or all parts of the functionality into external libraries that would be released under more permissive licenses than GPL3.</p><h2 id="JSON-RPC-API"><a class="anchor hidden-xs" href="#JSON-RPC-API" title="JSON-RPC-API"><span class="octicon octicon-link"></span></a>JSON RPC API</h2><p>It is mostly derived from go-ethereum, with some changes. Some methods will not be supported in the first release, for example, <code>eth_getProof</code>. It is possible to implement <code>eth_getProof</code>, and we have the implementation that works correctly, but very slowly. We do not currently consider it a big enough feature to delay the first release for. In the method <code>debug_accountRange</code>, turbo-geth will not return storage root hashes for each account, but it will return storage items if requested. We have not been able to test all the RPC API methods, but these are the ones we did (and we are very please with the performance):</p><ul>
+We call this new architecture “staged sync”, and it will be explained in more detals further down.</p><h2 id="Distribution"><a class="anchor hidden-xs" href="#Distribution" title="Distribution"><span class="octicon octicon-link"></span></a>Distribution</h2><p>We would like to keep concentrating on developing and optimising the code, therefore we will not be publishing any binaries. Our first users would need to build from source. This may change in the future, if we find it being crucial.</p><h2 id="No-fast-sync-warp-sync-or-any-other-snapshot-sync"><a class="anchor hidden-xs" href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No-fast-sync-warp-sync-or-any-other-snapshot-sync"><span class="octicon octicon-link"></span></a>No fast sync, warp sync or any other snapshot sync</h2><p>In the first release, the only way to synchronise with the Ethereum network will be to download block headers, download block bodies, and execute all the blocks from genesis to the current head of the chain. Although this may sound like a non-starter, we have managed to make this process very efficient. More data will be published later. We are planning to add (in future releases, not in the first one) an ability to perform snapshot sync, in the form of so-called Merry-Go-Round sync, which currently is also on the Stateless Ethereum roadmap.</p><h2 id="GPL-license"><a class="anchor hidden-xs" href="#GPL-license" title="GPL-license"><span class="octicon octicon-link"></span></a>GPL license</h2><p>Since turbo-geth is a derivative of go-ethereum, it inherits General Public License 3.0. We will not be able to relicense the code at any point, but we may, in the future, shift some or all parts of the functionality into external libraries that would be released under more permissive licenses than GPL3.</p><h2 id="Licence-and-language-migration-plan"><a class="anchor hidden-xs" href="#Licence-and-language-migration-plan" title="Licence-and-language-migration-plan"><span class="octicon octicon-link"></span></a>Licence and language migration plan</h2><p>This section contains mostly my personal beliefs at this point of time.<br>
+This would be an experiment which goes beyond technical, but it is rather trying to find out whether it is possible to build a financially sustainable operation around a product like Ethereum implementation. So far very few had tried and we do not see a lot of success. Lots of people believe that this luck of success has to do with the limitations of the GPL licence:</p><ul>
+<li>It limits the engagement of big tech corporation</li>
+<li>Makes it difficult for specialists to monetalise customisation work, therefore depriving the product ecosystem from motivated participants</li>
+</ul><p>I would like to try to get to Apache 2.0 licence. But that means basically re-writing the product. And I do not see a good way of re-writing turbo-geth in Go without a lot of “rewriting for rewriting sake”, which is likely to be counterproductive. Also, going “into a cave” again and re-writing it from scratch is not something I would like to do. I would prefer gradual migration of the product that always works - in my experience this approach has much fewer risks. C++ seems to be a good first target for migration, for a few reasons:</p><ul>
+<li>The original eth C++ client is de-facto dead, so we might get some help from people who used to work on it</li>
+<li>Interfacing between Go and C/C++ is probably easier than to any other languages</li>
+<li>We already found some great components to start with - evm1, lmdb</li>
+<li>If we want to migrate to other languages, like Rust, in the future, it will be easier to do that from C++, again because of the language interfacing. Migration <code>Go =&gt; (Go;Rust) =&gt; Rust</code> is likely to be more troublesome than the migration <code>Go =&gt; (Go;C++) =&gt; C++ =&gt; (C++;Rust) =&gt; Rust</code>, though this is not currently a goal.</li>
+</ul><h2 id="JSON-RPC-API"><a class="anchor hidden-xs" href="#JSON-RPC-API" title="JSON-RPC-API"><span class="octicon octicon-link"></span></a>JSON RPC API</h2><p>It is mostly derived from go-ethereum, with some changes. Some methods will not be supported in the first release, for example, <code>eth_getProof</code>. It is possible to implement <code>eth_getProof</code>, and we have the implementation that works correctly, but very slowly. We do not currently consider it a big enough feature to delay the first release for. In the method <code>debug_accountRange</code>, turbo-geth will not return storage root hashes for each account, but it will return storage items if requested. We have not been able to test all the RPC API methods, but these are the ones we did (and we are very please with the performance):</p><ul>
 <li><code>eth_blockNumber</code></li>
 <li><code>eth_getBlockByNumber</code></li>
 <li><code>debug_getStorageRangeAt</code></li>
@@ -47,7 +56,7 @@ We call this new architecture “staged sync”, and it will be explained in mor
 <li><code>eth_getLogs</code></li>
 <li><code>debug_accountRange</code></li>
 </ul><p>Since these tests were done, the state and the history database format have changed again, therefore the RPC methods will need to be modified/fixed and re-tested again.</p><h2 id="Testnet-support"><a class="anchor hidden-xs" href="#Testnet-support" title="Testnet-support"><span class="octicon octicon-link"></span></a>Testnet support</h2><p>We did not routinely test on Ropsten, Görli, or Rinkeby, but we did some spot checks and they appear to be working with turbo-geth</p><h2 id="Disk-space"><a class="anchor hidden-xs" href="#Disk-space" title="Disk-space"><span class="octicon octicon-link"></span></a>Disk space</h2><p>TODO: insert disk space chart here. Currently the entire disk space consumption for mainnet would be roughly 600-700Gb.</p><h2 id="Staged-sync"><a class="anchor hidden-xs" href="#Staged-sync" title="Staged-sync"><span class="octicon octicon-link"></span></a>Staged sync</h2><p>So-called full-sync, or its variant archive-sync is performed by downloading all historical block bodies and replaying all transactions contained in them. Traditionally, in go-ethereum, downloading the bodies and replaying transactions happens concurrently with other activities, like verification of Proof-Of-Work in the block headers, recovery of transaction senders from their signatures etc. In turbo-geth, we have recently taken a different approach. We tried to maximally decompose the sync process into stages, and perform them sequentially. From the first sight, it might sound like a bad idea - why not use concurrency? However, we noticed that running many things concurrently obscured our ability to profile and optimise code - there is simply too much going on. Decomposition allowed us to optimise each stage in separation, which is much more tractable. We also noticed the benefit of improved code structure.<br>
-Another interesting insight became apparent when we engineered the decomposed staged sync. We could decouple the execution of transactions from computing and verifying state root hashes. Before staged sync, the computation of state root hash and its verification would happen for every single block, and this is where we saw the biggest performance drag. At the same time, we knew that nodes that fast-sync or wrap-sync, only perform such verification on the state snapshot they are downloading, and subsequent blocks after that. We took similar approach in our staged sync - in one stage, we replayed all historical transactions, advancing the current state, and only verifying receipt hashes for each block. When the state is advanced to the head of the chain, we compute state trie, verify its root hash, and take it from there. This approach allowed for the drastic reduction of the sync time.</p><h2 id="Currently-envisaged-stages"><a class="anchor hidden-xs" href="#Currently-envisaged-stages" title="Currently-envisaged-stages"><span class="octicon octicon-link"></span></a>Currently envisaged stages</h2><p>At the moment we envisage about 13 stages in the “staged sync”, but more stages are likely to be added as a way of plugging more functionality. The first stage completes before the second one is started. After the last stage is complete, the control comes back to the first stage, and so on.</p><ol>
+Another interesting insight became apparent when we engineered the decomposed staged sync. We could decouple the execution of transactions from computing and verifying state root hashes. Before staged sync, the computation of state root hash and its verification would happen for every single block, and this is where we saw the biggest performance drag. At the same time, we knew that nodes that fast-sync or wrap-sync, only perform such verification on the state snapshot they are downloading, and subsequent blocks after that. We took similar approach in our staged sync - in one stage, we replayed all historical transactions, advancing the current state, and only verifying receipt hashes for each block. When the state is advanced to the head of the chain, we compute state trie, verify its root hash, and take it from there. This approach allowed for the drastic reduction of the sync time.</p><h2 id="Currently-envisaged-stages"><a class="anchor hidden-xs" href="#Currently-envisaged-stages" title="Currently-envisaged-stages"><span class="octicon octicon-link"></span></a>Currently envisaged stages</h2><p>At the moment we envisage about 14 stages in the “staged sync”, but more stages are likely to be added as a way of plugging more functionality. The first stage completes before the second one is started. After the last stage is complete, the control comes back to the first stage, and so on.</p><ol>
 <li>Download block headers. The parent-child relationship between block headers, as well as their Proof Of Work is verified before they are written into the database. This stage is also a source of potential reorgs, when a heavier chain is detected compared to the one which is currently deemed canonical. In such situations, unwinding happens in the reverse order of the stages, from the 10th to the 1st.</li>
 <li>Download block bodies. Block bodies contain list of transactions and list of ommers (uncles). The correspondence between transactions and the <code>TxHash</code> in the header, as well as the correspondence between ommers and the <code>UncleHash</code> in the header, is verified at this stage.</li>
 <li>Recover transaction senders. Sender of each transaction is not explicitely contained inside the transaction’s data, but rather it is contained inside the ECDSA digital signature that comes with every transaction. The sender’s public key needs to be recovered from the signature, and then the address of the sender derived from the public key. This is what happens at this stage, and the bodies of the blocks are updated in the database to include the sender’s information, so that the recovery need not be repeated later.</li>
@@ -61,12 +70,14 @@ Another interesting insight became apparent when we engineered the decomposed st
 <li>Activate transaction pool. Before the state is synced and is accessible, there is no use of running the transaction pool logic, because for the security of the network, transactions should not be relayed unless the node can verify that there are no nonce gaps created by those transactions, and that the sender can afford to pay for gas. Activation of the transaction pool means downloading the currently active transactions from peers and initiating verification and relay.</li>
 <li>Activate JSON RPC.</li>
 <li>Activate mining. This stage will only be activated when needed.</li>
-</ol><p>There might be more staged added in the future.</p><h2 id="Readiness-of-the-stages-and-an-alternative-plan"><a class="anchor hidden-xs" href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness-of-the-stages-and-an-alternative-plan"><span class="octicon octicon-link"></span></a>Readiness of the stages, and an alternative plan</h2><table>
+<li>History pruning (likely to be split into multiple stages too)</li>
+</ol><p>There might be more stages added in the future.</p><h2 id="Readiness-of-the-stages-and-an-alternative-plan"><a class="anchor hidden-xs" href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness-of-the-stages-and-an-alternative-plan"><span class="octicon octicon-link"></span></a>Readiness of the stages, and an alternative plan</h2><table>
 <thead>
 <tr>
 <th>Stage</th>
 <th>Readiness</th>
 <th>What is left to do</th>
+<th>Duration on Intel NUC8i7HNK</th>
 </tr>
 </thead>
 <tbody>
@@ -74,65 +85,89 @@ Another interesting insight became apparent when we engineered the decomposed st
 <td>1. Download block headers</td>
 <td>WORKS</td>
 <td>Support for bad blocks detected on the later stages</td>
+<td>1h 41m</td>
 </tr>
 <tr>
 <td>2. Download block bodies</td>
 <td>WORKS</td>
-<td>Off-by-one errors when downloding is interruped, currently mitigated by a “kludge”</td>
+<td>Off-by-one errors when downloding is interrupted, currently mitigated by a “kludge”</td>
+<td>5h 18m</td>
 </tr>
 <tr>
 <td>3. Recover transaction senders</td>
 <td>WORKS</td>
-<td></td>
+<td>When using BadgerDb, compaction seems to be interfering with recovery’s performance</td>
+<td>4h 46m</td>
 </tr>
 <tr>
 <td>4. Replay transactions</td>
 <td>WORKS</td>
 <td>Tests on high-latency devices: SSD, HDD</td>
+<td>31h 48m</td>
 </tr>
 <tr>
 <td>5. Transform plain state to hashed state</td>
-<td>PARTIAL</td>
-<td>Only initial transformation is implemented (still not verified correctness), also need incremental, and unwinding</td>
+<td>ALMOST WORKS</td>
+<td>There is still a bug after block 9.2m, likely due to <code>CREATE2</code> revival</td>
+<td>1h 46m</td>
 </tr>
 <tr>
 <td>6. Create or update intermediate state hashes</td>
 <td>EXPERIMENTAL</td>
 <td>Only initial transformation is implemented (not integrated), also need incremental, and unwinding. Not integrated</td>
+<td>N/A, likely 1-2 hours</td>
 </tr>
 <tr>
 <td>7. Generate account history index</td>
 <td>WORKS</td>
 <td></td>
+<td>N/A, likely 1-2 hours</td>
 </tr>
 <tr>
 <td>8. Generate contract storage history index</td>
 <td>WORKS</td>
 <td></td>
+<td>N/A, likely 2-3 hours</td>
+</tr>
+<tr>
+<td>9. Generate transaction receipts</td>
+<td>NOT DONE</td>
+<td>Implementation likely trivial, and can be made in the stage 4 as well</td>
+<td>N/A</td>
 </tr>
 <tr>
 <td>10. Generate transaction lookup index</td>
 <td>EXPERIMENTAL</td>
 <td>Implementation done, but not integrated</td>
+<td>N/A, likely 2-3 hours</td>
 </tr>
 <tr>
 <td>11. Activate transaction pool</td>
 <td>NOT INTEGRATED</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
 <td>12. Activate JSON RPC</td>
 <td>NOT INTEGRATED</td>
 <td></td>
+<td></td>
 </tr>
 <tr>
-<td>12. Activate mining</td>
-<td>NOT INTEGRATED</td>
+<td>13. Activate mining</td>
+<td>NOT IN SCOPE for Release 1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>14. Pruning (likely multiple stages)</td>
+<td>NOT IN SCOPE for Release 1</td>
+<td></td>
 <td></td>
 </tr>
 </tbody>
 </table><p>We have an alternative plan for making the first release happen sooner by not implementing incremental and unwind functionality in the stages 5 and 6, but instead switching to the “traditional” full sync mode after the initial run through the stages 1-10. This option is still on the cards. If we choose to do that, we will leave it to the later updates to completely switch to the staged sync and make a lot of existing full sync code unnecessary.</p><h2 id="Integration-with-evmone-via-EVMC"><a class="anchor hidden-xs" href="#Integration-with-evmone-via-EVMC" title="Integration-with-evmone-via-EVMC"><span class="octicon octicon-link"></span></a>Integration with evmone via EVMC</h2><p>When experimenting with the staged sync (as described in the previous section), and decomposing the transaction execution into a separate stage, we finally saw something really “promising” in the CPU profile - EVM execution became the main bottleneck, followed by the golang garbage collector. In order to quickly reduce the allocations happening inside the built-in go-EVM, we decided to integrate evmone (<a href="https://github.com/ethereum/evmone" target="_blank" rel="noopener">https://github.com/ethereum/evmone</a>), C++ implementation of EVM, and re-profile. This allowed us to see more clearly the allocation spots outside of EVM, and also get some experience with EVMC (C-interface to EMVs, <a href="https://github.com/ethereum/evmc" target="_blank" rel="noopener">https://github.com/ethereum/evmc</a>) and evmone. At the moment, support for EVMC is experimental, because it still have serious performance limitation.</p><h2 id="Choice-of-database-backend"><a class="anchor hidden-xs" href="#Choice-of-database-backend" title="Choice-of-database-backend"><span class="octicon octicon-link"></span></a>Choice of database backend</h2><p>For most of the history of turbo-geth, we used a modified version of boltDb as the primary database backend. However, we recognised that on storage devices with higher latency of access (HDD, SDD), badger Db seems to perform better due to its architecture (Log Structured Merge, or LSM, vs B+Tree in bolt Db). Why Badger and not LevelDB, for example? Because, to the best of our knowledge at the time, Badger, unlike LevelDB, supported ACID (Atomicity, Conistency, Isolation, Durability) transactions, as well as MVCC (Multi Version Concurrency Control), both of which are necessary for turbo-geth.<br>
-Recently we have also started experimenting with LMDB. Initial experiments showed that our integration with LMDB over-performs our integration with boltDb (our version) when the database size is relatively small, but under-performs severely when the database size become large. The API of LMDB is very flexible and versatile, therefore the chances are that we do not fully utilise its potential. We have some ideas on why this could be the case and keep experimenting.</p><h2 id="Remote-DB-access-and-REST-API-daemon"><a class="anchor hidden-xs" href="#Remote-DB-access-and-REST-API-daemon" title="Remote-DB-access-and-REST-API-daemon"><span class="octicon octicon-link"></span></a>Remote DB access and REST API daemon</h2><p>Although JSON RPC API seems to be the prevalent way of accessing data stored in Ethereum nodes, often more flexibility is required. To allow more rapid experimentation, we have introduced REST API daemon that can be run on the same or a different computer from the turbo-geth node. REST API daemon accesses the live database of turbo-geth remotely, via read-only interface. There can also be multiple daemons connected to the same turbo-geth node, which can help creating more cost effective infrastructure for some users.</p></div>
+Recently we have also started experimenting with LMDB. Initial experiments showed that our integration with LMDB performs on par with boltDb (our version). We have a preference for LMDB, because it is actively maintained unlike BoltDB, and it might be a good starting point for gradually migrating functionality from Go to C++.</p><h2 id="Remote-DB-access-and-REST-API-daemon"><a class="anchor hidden-xs" href="#Remote-DB-access-and-REST-API-daemon" title="Remote-DB-access-and-REST-API-daemon"><span class="octicon octicon-link"></span></a>Remote DB access and REST API daemon</h2><p>Although JSON RPC API seems to be the prevalent way of accessing data stored in Ethereum nodes, often more flexibility is required. To allow more rapid experimentation, we have introduced REST API daemon that can be run on the same or a different computer from the turbo-geth node. REST API daemon accesses the live database of turbo-geth remotely, via read-only interface. There can also be multiple daemons connected to the same turbo-geth node, which can help creating more cost effective infrastructure for some users.</p></div>
     <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
         <div class="pull-right dropdown">
             <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
@@ -144,13 +179,14 @@ Recently we have also started experimenting with LMDB. Initial experiments showe
 <li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
 <li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
 <li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
-<li class=""><a href="#Disk-space" title="Disk space">Disk space</a></li>
-<li class=""><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
-<li class=""><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
+<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li><a href="#Disk-space" title="Disk space">Disk space</a></li>
+<li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
+<li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
+<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#Choice-of-database-backend" title="Choice of database backend">Choice of database backend</a></li>
 <li><a href="#Remote-DB-access-and-REST-API-daemon" title="Remote DB access and REST API daemon">Remote DB access and REST API daemon</a></li>
@@ -167,13 +203,14 @@ Recently we have also started experimenting with LMDB. Initial experiments showe
 <li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
 <li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
 <li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
-<li class=""><a href="#Disk-space" title="Disk space">Disk space</a></li>
-<li class=""><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
-<li class=""><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
+<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li><a href="#Disk-space" title="Disk space">Disk space</a></li>
+<li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
+<li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
+<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#Choice-of-database-backend" title="Choice of database backend">Choice of database backend</a></li>
 <li><a href="#Remote-DB-access-and-REST-API-daemon" title="Remote DB access and REST API daemon">Remote DB access and REST API daemon</a></li>
