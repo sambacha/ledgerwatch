@@ -55,7 +55,57 @@ This would be an experiment which goes beyond technical, but it is rather trying
 <li><code>debug_getModifiedAccountsByNumber</code></li>
 <li><code>eth_getLogs</code></li>
 <li><code>debug_accountRange</code></li>
-</ul><p>Since these tests were done, the state and the history database format have changed again, therefore the RPC methods will need to be modified/fixed and re-tested again.</p><h2 id="Testnet-support"><a class="anchor hidden-xs" href="#Testnet-support" title="Testnet-support"><span class="octicon octicon-link"></span></a>Testnet support</h2><p>We did not routinely test on Ropsten, Görli, or Rinkeby, but we did some spot checks and they appear to be working with turbo-geth</p><h2 id="Disk-space"><a class="anchor hidden-xs" href="#Disk-space" title="Disk-space"><span class="octicon octicon-link"></span></a>Disk space</h2><p>TODO: insert disk space chart here. Currently the entire disk space consumption for mainnet would be roughly 600-700Gb.</p><h2 id="Staged-sync"><a class="anchor hidden-xs" href="#Staged-sync" title="Staged-sync"><span class="octicon octicon-link"></span></a>Staged sync</h2><p>So-called full-sync, or its variant archive-sync is performed by downloading all historical block bodies and replaying all transactions contained in them. Traditionally, in go-ethereum, downloading the bodies and replaying transactions happens concurrently with other activities, like verification of Proof-Of-Work in the block headers, recovery of transaction senders from their signatures etc. In turbo-geth, we have recently taken a different approach. We tried to maximally decompose the sync process into stages, and perform them sequentially. From the first sight, it might sound like a bad idea - why not use concurrency? However, we noticed that running many things concurrently obscured our ability to profile and optimise code - there is simply too much going on. Decomposition allowed us to optimise each stage in separation, which is much more tractable. We also noticed the benefit of improved code structure.<br>
+</ul><p>Since these tests were done, the state and the history database format have changed again, therefore the RPC methods will need to be modified/fixed and re-tested again. The following section will be used to track the fixes and retests for these API methods.</p><h2 id="Readiness-of-the-JSON-RPC-API-methods"><a class="anchor hidden-xs" href="#Readiness-of-the-JSON-RPC-API-methods" title="Readiness-of-the-JSON-RPC-API-methods"><span class="octicon octicon-link"></span></a>Readiness of the JSON RPC API methods</h2><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Modified</th>
+<th>Re-tested</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eth_blockNumber</code></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><code>eth_getBlockByNumber</code></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><code>debug_getStorageRangeAt</code></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><code>eth_getTransactionReceipt</code></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><code>debug_traceTransaction</code></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><code>debug_getModifiedAccountsByNumber</code></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><code>eth_getLogs</code></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+<tr>
+<td><code>debug_accountRange</code></td>
+<td>NO</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table><h2 id="Testnet-support"><a class="anchor hidden-xs" href="#Testnet-support" title="Testnet-support"><span class="octicon octicon-link"></span></a>Testnet support</h2><p>We did not routinely test on Ropsten, Görli, or Rinkeby, but we did some spot checks and they appear to be working with turbo-geth</p><h2 id="Disk-space"><a class="anchor hidden-xs" href="#Disk-space" title="Disk-space"><span class="octicon octicon-link"></span></a>Disk space</h2><p>TODO: insert disk space chart here. Currently the entire disk space consumption for mainnet would be roughly 600-700Gb.</p><p>You may see that there are two buckets containing the state, one with original keys (account addresses and contract storage locations), another - with “hashed” keys. Although it might seem like a waste of space, you may also notice that there is no “Preimage” bucket that we had before. The size of preimage bucket would be roughly the same as the size of the state bucket. Why there is no preimage bucket? Because now all queries (JSON RPC, or Rest API) about accounts and contract storage can be answered from the un-hashed state bucket, without any need of precompiles. Not only it is more efficient, but also allows some functionality not easily available with the “hashed” stage + preimage combination. One example is autocompletion search for addresses that you might have seen on etherscan:</p><p><img src="https://ledgerwatch.github.io/auto-completion.png" alt=""></p><p>You might imagine that etherscan has to maintain the list of currently active addresses to suport this, and in turbo-geth it will be built-in.</p><h2 id="Staged-sync"><a class="anchor hidden-xs" href="#Staged-sync" title="Staged-sync"><span class="octicon octicon-link"></span></a>Staged sync</h2><p>So-called full-sync, or its variant archive-sync is performed by downloading all historical block bodies and replaying all transactions contained in them. Traditionally, in go-ethereum, downloading the bodies and replaying transactions happens concurrently with other activities, like verification of Proof-Of-Work in the block headers, recovery of transaction senders from their signatures etc. In turbo-geth, we have recently taken a different approach. We tried to maximally decompose the sync process into stages, and perform them sequentially. From the first sight, it might sound like a bad idea - why not use concurrency? However, we noticed that running many things concurrently obscured our ability to profile and optimise code - there is simply too much going on. Decomposition allowed us to optimise each stage in separation, which is much more tractable. We also noticed the benefit of improved code structure.<br>
 Another interesting insight became apparent when we engineered the decomposed staged sync. We could decouple the execution of transactions from computing and verifying state root hashes. Before staged sync, the computation of state root hash and its verification would happen for every single block, and this is where we saw the biggest performance drag. At the same time, we knew that nodes that fast-sync or wrap-sync, only perform such verification on the state snapshot they are downloading, and subsequent blocks after that. We took similar approach in our staged sync - in one stage, we replayed all historical transactions, advancing the current state, and only verifying receipt hashes for each block. When the state is advanced to the head of the chain, we compute state trie, verify its root hash, and take it from there. This approach allowed for the drastic reduction of the sync time.</p><h2 id="Currently-envisaged-stages"><a class="anchor hidden-xs" href="#Currently-envisaged-stages" title="Currently-envisaged-stages"><span class="octicon octicon-link"></span></a>Currently envisaged stages</h2><p>At the moment we envisage about 14 stages in the “staged sync”, but more stages are likely to be added as a way of plugging more functionality. The first stage completes before the second one is started. After the last stage is complete, the control comes back to the first stage, and so on.</p><ol>
 <li>Download block headers. The parent-child relationship between block headers, as well as their Proof Of Work is verified before they are written into the database. This stage is also a source of potential reorgs, when a heavier chain is detected compared to the one which is currently deemed canonical. In such situations, unwinding happens in the reverse order of the stages, from the 10th to the 1st.</li>
 <li>Download block bodies. Block bodies contain list of transactions and list of ommers (uncles). The correspondence between transactions and the <code>TxHash</code> in the header, as well as the correspondence between ommers and the <code>UncleHash</code> in the header, is verified at this stage.</li>
@@ -179,14 +229,15 @@ Recently we have also started experimenting with LMDB. Initial experiments showe
 <li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
 <li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
 <li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
-<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
-<li><a href="#Disk-space" title="Disk space">Disk space</a></li>
-<li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
-<li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li class=""><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
+<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li class=""><a href="#Readiness-of-the-JSON-RPC-API-methods" title="Readiness of the JSON RPC API methods">Readiness of the JSON RPC API methods</a></li>
+<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li class=""><a href="#Disk-space" title="Disk space">Disk space</a></li>
+<li class=""><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
+<li class=""><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
+<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#Choice-of-database-backend" title="Choice of database backend">Choice of database backend</a></li>
 <li class=""><a href="#Remote-DB-access-and-REST-API-daemon" title="Remote DB access and REST API daemon">Remote DB access and REST API daemon</a></li>
@@ -203,14 +254,15 @@ Recently we have also started experimenting with LMDB. Initial experiments showe
 <li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
 <li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
 <li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
-<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
-<li><a href="#Disk-space" title="Disk space">Disk space</a></li>
-<li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
-<li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li class=""><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
+<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li class=""><a href="#Readiness-of-the-JSON-RPC-API-methods" title="Readiness of the JSON RPC API methods">Readiness of the JSON RPC API methods</a></li>
+<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li class=""><a href="#Disk-space" title="Disk space">Disk space</a></li>
+<li class=""><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
+<li class=""><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
+<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#Choice-of-database-backend" title="Choice of database backend">Choice of database backend</a></li>
 <li class=""><a href="#Remote-DB-access-and-REST-API-daemon" title="Remote DB access and REST API daemon">Remote DB access and REST API daemon</a></li>
