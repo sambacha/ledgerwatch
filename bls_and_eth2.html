@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -47,7 +48,7 @@ It will also make a temporary trust of initial Eth2 validators into the launchin
 This would be a more sensible approach than fixing BLS precompile before phase 0 launch, effectively either:</p><ul>
 <li>locking phase 0 on the chosen curve, or</li>
 <li>taking the risk of phase 0 launching with a different curve anyway, making the activated precompile a bit less useful</li>
-</ul><h2 id="Conclusion"><a class="anchor hidden-xs" href="#Conclusion" title="Conclusion"><span class="octicon octicon-link"></span></a>Conclusion</h2><p>This is just my proposal, I have no vested interest in any outcome - therefore I will not be “pushing” or “champion” it, I have lots of other things to do. But hopefully, this can get some people thinking and help start an important discussion</p></div>
+</ul><p><em>EDIT</em>: Now, after some discussion I see that it is very unlikely that the BLS curve chosen for eth2 is going to change, in fact it did not change yet. It is they that the exit address is derived that may still change. Therefore, the concerns about locking eth2 phase 0 into a wrong curve are probably unfounded.</p><h2 id="Conclusion"><a class="anchor hidden-xs" href="#Conclusion" title="Conclusion"><span class="octicon octicon-link"></span></a>Conclusion</h2><p>This is just my proposal, I have no vested interest in any outcome - therefore I will not be “pushing” or “champion” it, I have lots of other things to do. But hopefully, this can get some people thinking and help start an important discussion</p></div>
     <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
         <div class="pull-right dropdown">
             <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
@@ -56,13 +57,13 @@ This would be a more sensible approach than fixing BLS precompile before phase 0
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#On-BLS-precompile-for-ETH1-and-its-relation-to-ETH2-launch" title="On BLS precompile for ETH1, and its relation to ETH2 launch">On BLS precompile for ETH1, and its relation to ETH2 launch</a><ul class="nav">
-<li class=""><a href="#BLS-precompile-for-phase-00" title="BLS-precompile for phase 0?">BLS-precompile for phase 0?</a></li>
+<li><a href="#BLS-precompile-for-phase-00" title="BLS-precompile for phase 0?">BLS-precompile for phase 0?</a></li>
 <li><a href="#BLS-precompile-for-phase-1" title="BLS-precompile for phase 1?">BLS-precompile for phase 1?</a></li>
 <li><a href="#Deposit-contract-and-possible-failure-of-phase-0-launch" title="Deposit contract and possible failure of phase 0 launch">Deposit contract and possible failure of phase 0 launch</a></li>
 <li><a href="#Kill-switch-for-deposits" title="Kill switch for deposits">Kill switch for deposits</a></li>
 <li><a href="#Who-would-activate-or-remove-the-kill-switch" title="Who would activate (or remove) the kill-switch?">Who would activate (or remove) the kill-switch?</a></li>
 <li><a href="#What-about-additional-complexity" title="What about additional complexity?">What about additional complexity?</a></li>
-<li><a href="#How-would-it-all-play-together" title="How would it all play together?">How would it all play together?</a></li>
+<li class=""><a href="#How-would-it-all-play-together" title="How would it all play together?">How would it all play together?</a></li>
 <li><a href="#Conclusion" title="Conclusion">Conclusion</a></li>
 </ul>
 </li>
@@ -74,13 +75,13 @@ This would be a more sensible approach than fixing BLS precompile before phase 0
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
         <div class="toc"><ul class="nav">
 <li class=""><a href="#On-BLS-precompile-for-ETH1-and-its-relation-to-ETH2-launch" title="On BLS precompile for ETH1, and its relation to ETH2 launch">On BLS precompile for ETH1, and its relation to ETH2 launch</a><ul class="nav">
-<li class=""><a href="#BLS-precompile-for-phase-00" title="BLS-precompile for phase 0?">BLS-precompile for phase 0?</a></li>
+<li><a href="#BLS-precompile-for-phase-00" title="BLS-precompile for phase 0?">BLS-precompile for phase 0?</a></li>
 <li><a href="#BLS-precompile-for-phase-1" title="BLS-precompile for phase 1?">BLS-precompile for phase 1?</a></li>
 <li><a href="#Deposit-contract-and-possible-failure-of-phase-0-launch" title="Deposit contract and possible failure of phase 0 launch">Deposit contract and possible failure of phase 0 launch</a></li>
 <li><a href="#Kill-switch-for-deposits" title="Kill switch for deposits">Kill switch for deposits</a></li>
 <li><a href="#Who-would-activate-or-remove-the-kill-switch" title="Who would activate (or remove) the kill-switch?">Who would activate (or remove) the kill-switch?</a></li>
 <li><a href="#What-about-additional-complexity" title="What about additional complexity?">What about additional complexity?</a></li>
-<li><a href="#How-would-it-all-play-together" title="How would it all play together?">How would it all play together?</a></li>
+<li class=""><a href="#How-would-it-all-play-together" title="How would it all play together?">How would it all play together?</a></li>
 <li><a href="#Conclusion" title="Conclusion">Conclusion</a></li>
 </ul>
 </li>
