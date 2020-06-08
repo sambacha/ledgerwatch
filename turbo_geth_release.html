@@ -105,8 +105,103 @@ This would be an experiment which goes beyond technical, but it is rather trying
 <td>NO</td>
 </tr>
 </tbody>
-</table><h2 id="Testnet-support"><a class="anchor hidden-xs" href="#Testnet-support" title="Testnet-support"><span class="octicon octicon-link"></span></a>Testnet support</h2><p>We did not routinely test on Ropsten, Görli, or Rinkeby, but we did some spot checks and they appear to be working with turbo-geth</p><h2 id="Disk-space"><a class="anchor hidden-xs" href="#Disk-space" title="Disk-space"><span class="octicon octicon-link"></span></a>Disk space</h2><p>TODO: insert disk space chart here. Currently the entire disk space consumption for mainnet would be roughly 600-700Gb.</p><h3 id="Two-state-buckets-and-no-preimages"><a class="anchor hidden-xs" href="#Two-state-buckets-and-no-preimages" title="Two-state-buckets-and-no-preimages"><span class="octicon octicon-link"></span></a>Two state buckets and no preimages</h3><p>You may see that there are two buckets containing the state, one with original keys (account addresses and contract storage locations), another - with “hashed” keys. Although it might seem like a waste of space, you may also notice that there is no “Preimage” bucket that we had before. The size of preimage bucket would be roughly the same as the size of the state bucket. Why there is no preimage bucket? Because now all queries (JSON RPC, or Rest API) about accounts and contract storage can be answered from the un-hashed state bucket, without any need of precompiles. Not only it is more efficient, but also allows some functionality not easily available with the “hashed” stage + preimage combination. One example is autocompletion search for addresses that you might have seen on etherscan:</p><p><img src="https://ledgerwatch.github.io/auto-completion.png" alt=""></p><p>You might imagine that etherscan has to maintain the list of currently active addresses to suport this, and in turbo-geth it will be built-in.</p><p>There is another way in which the un-hashed state will prove to be useful. When the snapshot sync is implemented, it is most likely be transmitting the state keys in an unhashed form, so that the receiving node can have the same advantages as the sending node, without having preimages (snapshot sync protocols do not transmit preimages).</p><h3 id="Transaction-receipts-bucket"><a class="anchor hidden-xs" href="#Transaction-receipts-bucket" title="Transaction-receipts-bucket"><span class="octicon octicon-link"></span></a>Transaction receipts bucket</h3><p>The chart above does not yet include transaction receipts, but the current estimation is about 120 Gb. As mentioned below, in the description of the syncing staged, persisting the receipts is optional, because they can be recomputed from the history and history index (though at the performance penalty, so it is good trade off for casual use of receipts).<br>
-TODO: Include receipts into the doughnut chart.</p><h2 id="Staged-sync"><a class="anchor hidden-xs" href="#Staged-sync" title="Staged-sync"><span class="octicon octicon-link"></span></a>Staged sync</h2><p>So-called full-sync, or its variant archive-sync is performed by downloading all historical block bodies and replaying all transactions contained in them. Traditionally, in go-ethereum, downloading the bodies and replaying transactions happens concurrently with other activities, like verification of Proof-Of-Work in the block headers, recovery of transaction senders from their signatures etc. In turbo-geth, we have recently taken a different approach. We tried to maximally decompose the sync process into stages, and perform them sequentially. From the first sight, it might sound like a bad idea - why not use concurrency? However, we noticed that running many things concurrently obscured our ability to profile and optimise code - there is simply too much going on. Decomposition allowed us to optimise each stage in separation, which is much more tractable. We also noticed the benefit of improved code structure.<br>
+</table><h2 id="Testnet-support"><a class="anchor hidden-xs" href="#Testnet-support" title="Testnet-support"><span class="octicon octicon-link"></span></a>Testnet support</h2><p>We did not routinely test on Ropsten, Görli, or Rinkeby, but we did some spot checks and they appear to be working with turbo-geth</p><h2 id="Disk-space"><a class="anchor hidden-xs" href="#Disk-space" title="Disk-space"><span class="octicon octicon-link"></span></a>Disk space</h2><p>Some of the data shown in the chart and in the table below are preliminary, because we have not yet done full testing on the data after it has been generated.</p><p><img src="https://ledgerwatch.github.io/space_chart.png" alt=""></p><p>The data is for the mainnet block <code>10200345</code>, which was produced on 4 Jun 2020.</p><h3 id="Two-state-buckets-and-no-preimages"><a class="anchor hidden-xs" href="#Two-state-buckets-and-no-preimages" title="Two-state-buckets-and-no-preimages"><span class="octicon octicon-link"></span></a>Two state buckets and no preimages</h3><p>You may see that there are two buckets containing the state, one with original keys (account addresses and contract storage locations), another - with “hashed” keys. Although it might seem like a waste of space, you may also notice that there is no “Preimage” bucket that we had before. The size of preimage bucket would be roughly the same as the size of the state bucket. Why there is no preimage bucket? Because now all queries (JSON RPC, or Rest API) about accounts and contract storage can be answered from the un-hashed state bucket, without any need of precompiles. Not only it is more efficient, but also allows some functionality not easily available with the “hashed” stage + preimage combination. One example is autocompletion search for addresses that you might have seen on etherscan:</p><p><img src="https://ledgerwatch.github.io/auto-completion.png" alt=""></p><p>You might imagine that etherscan has to maintain the list of currently active addresses to suport this, and in turbo-geth it will be built-in.</p><p>There is another way in which the un-hashed state will prove to be useful. When the snapshot sync is implemented, it is most likely be transmitting the state keys in an unhashed form, so that the receiving node can have the same advantages as the sending node, without having preimages (snapshot sync protocols do not transmit preimages).</p><h3 id="Transaction-receipts-bucket"><a class="anchor hidden-xs" href="#Transaction-receipts-bucket" title="Transaction-receipts-bucket"><span class="octicon octicon-link"></span></a>Transaction receipts bucket</h3><p>The chart above does not yet include transaction receipts, but the current estimation is about 150 Gb, which would bring the total size of the database in this configuration to about 700 Gb. As mentioned below, in the description of the syncing stages, persisting the receipts is optional, because they can be recomputed from the history and history index (though at the performance penalty, so it is good trade off for casual use of receipts).<br>
+TODO: Include receipts into the doughnut chart.</p><h3 id="Allocated-space-vs-used-space"><a class="anchor hidden-xs" href="#Allocated-space-vs-used-space" title="Allocated-space-vs-used-space"><span class="octicon octicon-link"></span></a>Allocated space vs used space</h3><p>The chart above shows the space in the database, which is allocated for the bucket. By design of the B-tree, all pages inside the buckets, except the root pages, are at least half-full, and on average probably 75% full. Therefore, depending on specifics of data, some of the space in the database is allocated, but not used. This extra space lets B-tree maintain predictable performance of inserts. For completeness, below is the table comparing allocated space vs used space. Known used space could be useful when estimating how much data needs to be sent over the network. For example, downloaded block bodies, though taking 151 Gb (allocated) in the database, would not require more than 142 Gb transmission (used).</p><table>
+<thead>
+<tr>
+<th>Bucket</th>
+<th>Allocated space, Gb</th>
+<th>Used Space, Gb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CodeHash =&gt; Code</td>
+<td>1.416</td>
+<td>1.223</td>
+</tr>
+<tr>
+<td>Current State (hashed)</td>
+<td>66.483</td>
+<td>36.479</td>
+</tr>
+<tr>
+<td>BlockHash =&gt; BlockNumber</td>
+<td>0.791</td>
+<td>0.548</td>
+</tr>
+<tr>
+<td>BlockNumber =&gt; Account Changes</td>
+<td>43.533</td>
+<td>35.857</td>
+</tr>
+<tr>
+<td>Current State (plain)</td>
+<td>48.070</td>
+<td>30.766</td>
+</tr>
+<tr>
+<td>BlockNumber =&gt; Storage Changes</td>
+<td>54.360</td>
+<td>47.881</td>
+</tr>
+<tr>
+<td>Address =&gt; CodeHash</td>
+<td>2.309</td>
+<td>1.600</td>
+</tr>
+<tr>
+<td>Block Bodies</td>
+<td>151.101</td>
+<td>142.171</td>
+</tr>
+<tr>
+<td>AddressHash =&gt; CodeHash</td>
+<td>2.636</td>
+<td>1.859</td>
+</tr>
+<tr>
+<td>Block Headers</td>
+<td>16.999</td>
+<td>7.142</td>
+</tr>
+<tr>
+<td>Account History Index</td>
+<td>18.278</td>
+<td>9.277</td>
+</tr>
+<tr>
+<td>Storage History Index</td>
+<td>72.763</td>
+<td>35.935</td>
+</tr>
+<tr>
+<td>Address =&gt; Incarnation</td>
+<td>0.444</td>
+<td>0.308</td>
+</tr>
+<tr>
+<td>TxHash =&gt; BlockNumber</td>
+<td>72.886</td>
+<td>35.974</td>
+</tr>
+<tr>
+<td>Intermediate Hashes</td>
+<td>11.436</td>
+<td>5.656</td>
+</tr>
+<tr>
+<td>Receipts</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Total</td>
+<td>564</td>
+<td>393</td>
+</tr>
+</tbody>
+</table><h2 id="Staged-sync"><a class="anchor hidden-xs" href="#Staged-sync" title="Staged-sync"><span class="octicon octicon-link"></span></a>Staged sync</h2><p>So-called full-sync, or its variant archive-sync is performed by downloading all historical block bodies and replaying all transactions contained in them. Traditionally, in go-ethereum, downloading the bodies and replaying transactions happens concurrently with other activities, like verification of Proof-Of-Work in the block headers, recovery of transaction senders from their signatures etc. In turbo-geth, we have recently taken a different approach. We tried to maximally decompose the sync process into stages, and perform them sequentially. From the first sight, it might sound like a bad idea - why not use concurrency? However, we noticed that running many things concurrently obscured our ability to profile and optimise code - there is simply too much going on. Decomposition allowed us to optimise each stage in separation, which is much more tractable. We also noticed the benefit of improved code structure.<br>
 Another interesting insight became apparent when we engineered the decomposed staged sync. We could decouple the execution of transactions from computing and verifying state root hashes. Before staged sync, the computation of state root hash and its verification would happen for every single block, and this is where we saw the biggest performance drag. At the same time, we knew that nodes that fast-sync or wrap-sync, only perform such verification on the state snapshot they are downloading, and subsequent blocks after that. We took similar approach in our staged sync - in one stage, we replayed all historical transactions, advancing the current state, and only verifying receipt hashes for each block. When the state is advanced to the head of the chain, we compute state trie, verify its root hash, and take it from there. This approach allowed for the drastic reduction of the sync time.</p><h2 id="Currently-envisaged-stages"><a class="anchor hidden-xs" href="#Currently-envisaged-stages" title="Currently-envisaged-stages"><span class="octicon octicon-link"></span></a>Currently envisaged stages</h2><p>At the moment we envisage about 14 stages in the “staged sync”, but more stages are likely to be added as a way of plugging more functionality. The first stage completes before the second one is started. After the last stage is complete, the control comes back to the first stage, and so on.</p><ol>
 <li>Download block headers. The parent-child relationship between block headers, as well as their Proof Of Work is verified before they are written into the database. This stage is also a source of potential reorgs, when a heavier chain is detected compared to the one which is currently deemed canonical. In such situations, unwinding happens in the reverse order of the stages, from the 10th to the 1st.</li>
 <li>Download block bodies. Block bodies contain list of transactions and list of ommers (uncles). The correspondence between transactions and the <code>TxHash</code> in the header, as well as the correspondence between ommers and the <code>UncleHash</code> in the header, is verified at this stage.</li>
@@ -166,7 +261,7 @@ Another interesting insight became apparent when we engineered the decomposed st
 <td>6. Create or update intermediate state hashes</td>
 <td>EXPERIMENTAL</td>
 <td>Only initial transformation is implemented (not integrated), also need incremental, and unwinding. Not integrated</td>
-<td>N/A, likely 1-2 hours</td>
+<td>58m</td>
 </tr>
 <tr>
 <td>7. Generate account history index</td>
@@ -228,21 +323,22 @@ Recently we have also started experimenting with LMDB. Initial experiments showe
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#Towards-the-first-release-of-Turbo-geth" title="Towards the first release of Turbo-geth">Towards the first release of Turbo-geth</a><ul class="nav">
 <li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
-<li><a href="#Distribution" title="Distribution">Distribution</a></li>
-<li><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
+<li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
+<li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
 <li><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
-<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li><a href="#Readiness-of-the-JSON-RPC-API-methods" title="Readiness of the JSON RPC API methods">Readiness of the JSON RPC API methods</a></li>
-<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
-<li><a href="#Disk-space" title="Disk space">Disk space</a><ul class="nav">
-<li><a href="#Two-state-buckets-and-no-preimages" title="Two state buckets and no preimages">Two state buckets and no preimages</a></li>
+<li class=""><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
+<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li class=""><a href="#Readiness-of-the-JSON-RPC-API-methods" title="Readiness of the JSON RPC API methods">Readiness of the JSON RPC API methods</a></li>
+<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li class=""><a href="#Disk-space" title="Disk space">Disk space</a><ul class="nav">
+<li class=""><a href="#Two-state-buckets-and-no-preimages" title="Two state buckets and no preimages">Two state buckets and no preimages</a></li>
 <li><a href="#Transaction-receipts-bucket" title="Transaction receipts bucket">Transaction receipts bucket</a></li>
+<li><a href="#Allocated-space-vs-used-space" title="Allocated space vs used space">Allocated space vs used space</a></li>
 </ul>
 </li>
 <li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
 <li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#Choice-of-database-backend" title="Choice of database backend">Choice of database backend</a></li>
 <li><a href="#Remote-DB-access-and-REST-API-daemon" title="Remote DB access and REST API daemon">Remote DB access and REST API daemon</a></li>
@@ -257,21 +353,22 @@ Recently we have also started experimenting with LMDB. Initial experiments showe
         <div class="toc"><ul class="nav">
 <li class=""><a href="#Towards-the-first-release-of-Turbo-geth" title="Towards the first release of Turbo-geth">Towards the first release of Turbo-geth</a><ul class="nav">
 <li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
-<li><a href="#Distribution" title="Distribution">Distribution</a></li>
-<li><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
+<li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
+<li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
 <li><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
-<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li><a href="#Readiness-of-the-JSON-RPC-API-methods" title="Readiness of the JSON RPC API methods">Readiness of the JSON RPC API methods</a></li>
-<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
-<li><a href="#Disk-space" title="Disk space">Disk space</a><ul class="nav">
-<li><a href="#Two-state-buckets-and-no-preimages" title="Two state buckets and no preimages">Two state buckets and no preimages</a></li>
+<li class=""><a href="#Licence-and-language-migration-plan" title="Licence and language migration plan">Licence and language migration plan</a></li>
+<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li class=""><a href="#Readiness-of-the-JSON-RPC-API-methods" title="Readiness of the JSON RPC API methods">Readiness of the JSON RPC API methods</a></li>
+<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li class=""><a href="#Disk-space" title="Disk space">Disk space</a><ul class="nav">
+<li class=""><a href="#Two-state-buckets-and-no-preimages" title="Two state buckets and no preimages">Two state buckets and no preimages</a></li>
 <li><a href="#Transaction-receipts-bucket" title="Transaction receipts bucket">Transaction receipts bucket</a></li>
+<li><a href="#Allocated-space-vs-used-space" title="Allocated space vs used space">Allocated space vs used space</a></li>
 </ul>
 </li>
 <li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
 <li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#Choice-of-database-backend" title="Choice of database backend">Choice of database backend</a></li>
 <li><a href="#Remote-DB-access-and-REST-API-daemon" title="Remote DB access and REST API daemon">Remote DB access and REST API daemon</a></li>
