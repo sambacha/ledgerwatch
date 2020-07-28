@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Preliminary Turbo Geth numbers</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Preliminary Turbo Geth numbers</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+I finally managed to get some numbers from running very raw and experimental versions of Turbo Geth. I must say that I have not tested its…
+</section>
+<section data-field="body" class="e-content">
+<section name="d757" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="c715" id="c715" class="graf graf--h3 graf--leading graf--title">Preliminary Turbo Geth numbers</h3><p name="1c99" id="1c99" class="graf graf--p graf-after--h3">I finally managed to get some numbers from running very raw and experimental versions of Turbo Geth. I must say that I have not tested its fitness for its purpose yet (namely sync in full mode, stay in sync, and respond to API requests) — so take these results with a grain of salt.</p><p name="5150" id="5150" class="graf graf--p graf-after--p">The first version I will show has finished syncing to block 4952813 last night, and started to hit a bug, so I decided to finish with it and parse its logs.</p><figure name="3a96" id="3a96" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*LsJv90MOvLLvOJs_ptYpkg.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*LsJv90MOvLLvOJs_ptYpkg.png"></div><figcaption class="imageCaption">Version finished last night</figcaption></figure><p name="219b" id="219b" class="graf graf--p graf-after--figure">As you can see, the full state (including history of all accounts and storage) fits in a 200Gb file. The side-effect of that is that it takes a few minutes for the node to start up, because it reconstitutes the state trie from the “raw” mappings of account keys to values and storage keys to values. It is interesting to note that around the spam blocks (2.4m–2.7m) sync slowdown is still closely following the database file growth, possibly indicating that the bottleneck is still writing to the database.</p><figure name="484a" id="484a" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*Kw3tREvtK2W1bneo8W4Ndw.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*Kw3tREvtK2W1bneo8W4Ndw.png"></div><figcaption class="imageCaption">State trie and heap growth, version finished last night</figcaption></figure><p name="92c7" id="92c7" class="graf graf--p graf-after--figure">In this graph, I have allowed the node to have up to 50 million trie nodes in memory, which was a bit too little in the hindsight. Also, due to a bug, it crashed couple of times (you can see it around blocks 4.6m and 4.85m), so I had to restart and kind of spoil the experiment.</p><p name="eb55" id="eb55" class="graf graf--p graf-after--p">From this graph, you can see how much the state trie expanded during the spam attack of 2016, and how it then shrank after the state clearing performed by the Ethereum team. However, by now the state trie has surpassed that size, as we will see below.</p><p name="7dfc" id="7dfc" class="graf graf--p graf-after--p">I am currently running a newer version, which has not finished syncing yet, but I set the trie node limit higher, and it also uses less memory (or does it? :) ) due to the optimisation (8) from my original <a href="https://medium.com/@akhounov/roadmap-for-turbo-geth-31cbfb1e72b7" data-href="https://medium.com/@akhounov/roadmap-for-turbo-geth-31cbfb1e72b7" class="markup--anchor markup--p-anchor" target="_blank">roadmap</a>. So you can see a cleaner picture of the state trie growth:</p><figure name="8aaf" id="8aaf" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*GdlbMO1wmeSr_k3tQeS7gw.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*GdlbMO1wmeSr_k3tQeS7gw.png"></div><figcaption class="imageCaption">Version currently running</figcaption></figure><p name="4407" id="4407" class="graf graf--p graf-after--figure">Another thing that is seen from this graph is that trie node count allowance can be calibrated to the available heap.</p><p name="b397" id="b397" class="graf graf--p graf-after--p">And here is the sync time from the current version (it is ever so slightly faster than the previous one):</p><figure name="58a9" id="58a9" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*ZoQfZUqlAdr9jbhEF_uTeA.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*ZoQfZUqlAdr9jbhEF_uTeA.png"></div><figcaption class="imageCaption">Version currently running</figcaption></figure><h3 name="fed2" id="fed2" class="graf graf--h3 graf-after--figure">What is next?</h3><p name="527d" id="527d" class="graf graf--p graf-after--h3 graf--trailing">I am going to do another small disk-space optimisation, and then will start stabilising Turbo-Geth and preparing it for the first release. The biggest emphasis would be on automation of whatever I can automate. And the second biggest emphasis will be on data gathering and analysis — there are still some obscure bugs I have not fixed, and I am planning to find/build infrastructure for remote tracing and visualisation. And that will also hopefully enable opening this effort up for more help.</p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/ca535f89f50e"><time class="dt-published" datetime="2018-02-02T22:53:34.878Z">February 2, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/preliminary-turbo-geth-numbers-ca535f89f50e" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>

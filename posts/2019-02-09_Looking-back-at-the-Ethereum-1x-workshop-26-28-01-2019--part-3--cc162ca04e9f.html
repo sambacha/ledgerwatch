@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 3)</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 3)</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+This is continuation of the part 1 and part2
+</section>
+<section data-field="body" class="e-content">
+<section name="ecb1" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="10df" id="10df" class="graf graf--h3 graf--leading graf--title">Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 3)</h3><p name="f9cd" id="f9cd" class="graf graf--p graf-after--h3">This is continuation of the <a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-1-70c1ebd93266" data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-1-70c1ebd93266" class="markup--anchor markup--p-anchor" target="_blank">part 1</a> and <a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10" data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10" class="markup--anchor markup--p-anchor" target="_blank">part2</a></p><h3 name="79d3" id="79d3" class="graf graf--h3 graf-after--p">Problems with large (and growing) state</h3><h4 name="8a93" id="8a93" class="graf graf--h4 graf-after--h3">Failing snapshot sync</h4><p name="fe30" id="fe30" class="graf graf--p graf-after--h4">Described in part 1</p><h4 name="abe7" id="abe7" class="graf graf--h4 graf-after--p">Duration of snapshot sync</h4><p name="8c6c" id="8c6c" class="graf graf--p graf-after--h4">Described in part 1</p><h4 name="144e" id="144e" class="graf graf--h4 graf-after--p">Slower block sealing</h4><p name="0eb4" id="0eb4" class="graf graf--p graf-after--h4">Described in part 2</p><p name="56b4" id="56b4" class="graf graf--p graf-after--p">To add to this, I have prepared a chart that shows number of SSTORE operations in a block, and number of those SSTORE operations that are “naked”, i.e. writing storage items that were not read or written before within the same block:</p><figure name="d2d4" id="d2d4" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*qxqz82r9yuh8jmiPLBovSQ.png" data-width="1280" data-height="720" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*qxqz82r9yuh8jmiPLBovSQ.png"></div><figcaption class="imageCaption">Moving average of SSTORE per block (blue), and “naked” SSTORE per block (black)</figcaption></figure><p name="cd59" id="cd59" class="graf graf--p graf-after--figure">This should give an idea about the order of N2 in the formula shown in the part 2:</p><pre name="18a4" id="18a4" class="graf graf--pre graf-after--p">6*N2*log(Sdb) for storage item modifications</pre><p name="d64c" id="d64c" class="graf graf--p graf-after--pre">N2 is “naked” SSTOREs, which is currently on the order of 50 per block on average. That means we have 300 database accesses on average at the block sealing time, only due to SSTORE operations.</p><p name="bdc7" id="bdc7" class="graf graf--p graf-after--p">For non-storage state access, there are almost no naked writes, meaning that any update to the accounts is almost always preceded by the read.</p><p name="91be" id="91be" class="graf graf--p graf-after--p">For Turbo-Geth, there needs to be a different analysis, because unlike in other Ethereum implementations, reading from the state does get require warming up the trie cache. That means more work when sealing the block, in exchange for less work when reading the state. I might produce separate graphs for that case.</p><h4 name="dac7" id="dac7" class="graf graf--h4 graf-after--p">Slower processing of transactions reading from the state</h4><p name="6995" id="6995" class="graf graf--p graf-after--h4">Analysis of the reading of the state during the processing of transactions is similar to the analysis of the updates, and the formulae have the same form. The main difference is that updates can be cached during the block processing and executed at the end of the block, whereas reads have to be performed when requested, because further execution generally cannot proceed without the value being available. I tried to exemplify this crucial difference in these two diagrams (they only show “naked” reads and writes):</p><figure name="1783" id="1783" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 271px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 38.7%;"></div><img class="graf-image" data-image-id="1*yn1MNcTlC9jW6mJkfMFtzQ.png" data-width="1928" data-height="746" src="https://cdn-images-1.medium.com/max/800/1*yn1MNcTlC9jW6mJkfMFtzQ.png"></div><figcaption class="imageCaption">If we only do writes, all the interactions with the database can be delayed until the sealing</figcaption></figure><figure name="76b2" id="76b2" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 278px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 39.7%;"></div><img class="graf-image" data-image-id="1*X1hTLxPVYjakCKobZVc2Xw.png" data-width="1918" data-height="761" src="https://cdn-images-1.medium.com/max/800/1*X1hTLxPVYjakCKobZVc2Xw.png"></div><figcaption class="imageCaption">If we do reads (that miss the cache), the execution has to wait until the database interaction is done</figcaption></figure><p name="fd81" id="fd81" class="graf graf--p graf-after--figure">Hopefully this shows that although state writes seem to have bigger performance impact than reads, it is not always that simple. Lots of state reads in transactions make them execute slower, generally without the ability to delay it to the end and execute all database interactions in one batch (as we can do with writes). How many state reads are happening in Ethereum blocks? Here are couple of charts on that. First one shows account reads (yellow) and “naked” account reads (black). That huge tower in the middle is from 2016 DoS attack, when tens of thousands of dust accounts were created in each block.</p><figure name="2c4f" id="2c4f" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*AqakAtscqb5yUiTl5IFIhw.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*AqakAtscqb5yUiTl5IFIhw.png"></div></figure><p name="bc20" id="bc20" class="graf graf--p graf-after--figure">This chart shows the more recent period in more detail (tower removed):</p><figure name="85a2" id="85a2" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*FqmpjzLoI81iDs52caimVw.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*FqmpjzLoI81iDs52caimVw.png"></div></figure><p name="56bb" id="56bb" class="graf graf--p graf-after--figure">Next chart is for SLOADs:</p><figure name="37ca" id="37ca" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*TTcWpFKsvPqJn86nPDupqA.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*TTcWpFKsvPqJn86nPDupqA.png"></div></figure><p name="e8fd" id="e8fd" class="graf graf--p graf-after--figure">All in all, recent blocks do on average 200–300 “naked” account reads, and around 500 “naked” SLOADs. If we use the formulae from the part 2, we can say that, given the cold caches, it can translate to up to 4*300 + 6*500 = 4200 database reads per block on average.</p><p name="7ae5" id="7ae5" class="graf graf--p graf-after--p">With the current model of execution, all these reads need to happen sequentially. And that, combined with the sheer number of reads, makes the block processing times extremely sensitive to state read latencies. This could explain why HDDs are simply not performant enough to cope (all those reads are for random locations in the database). It also needs to be an important consideration when researching network attached storage for the state.</p><p name="d370" id="d370" class="graf graf--p graf-after--p">Again, Turbo-Geth requires a slightly different analysis, because it always generates 1 database read per state read, so in that case we would have 300+500 = 800 database reads per block on average. But it currently does not optimise database reads at the sealing stage, which is work in progress.</p><p name="3718" id="3718" class="graf graf--p graf-after--p">I will not list all the effects of slow transaction processing due to state reads, but there are more mitigations to explore.</p><p name="5271" id="5271" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Possible mitigations (in addition to the mitigations for the block sealing):</strong></p><ol class="postList"><li name="76b0" id="76b0" class="graf graf--li graf-after--p">Explore speculative concurrency of transaction execution. I have started another data analysis to see how much can be gained from that. To be published in one of the next parts.</li></ol><h3 name="d1bf" id="d1bf" class="graf graf--h3 graf-after--li">Block gas limit increase and the State fees (formerly known as State rent) share initial steps</h3><p name="b330" id="b330" class="graf graf--p graf-after--h3">To appear in the part 4 or later</p><h3 name="4448" id="4448" class="graf graf--h3 graf-after--p">Stateless contract pattern is discouraged by the current gas schedule</h3><p name="ee51" id="ee51" class="graf graf--p graf-after--h3">To appear in the part 4 or later</p><h3 name="e094" id="e094" class="graf graf--h3 graf-after--p">eWASM interpreters could be a sensible first change even though gas cost might not be practical in the beginning</h3><p name="508c" id="508c" class="graf graf--p graf-after--h3">To appear in the part 4 or later</p><h3 name="4404" id="4404" class="graf graf--h3 graf-after--p">Chain pruning will become more relevant as we start constraining the state growth</h3><p name="3cc6" id="3cc6" class="graf graf--p graf-after--h3">To appear in the part 4 or later</p><h3 name="da8a" id="da8a" class="graf graf--h3 graf-after--p">Ethereum protocol changes do not need to take a year to be prepared</h3><p name="f15d" id="f15d" class="graf graf--p graf-after--h3 graf--trailing">To appear in the part 4 or later</p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/cc162ca04e9f"><time class="dt-published" datetime="2019-02-09T16:59:25.628Z">February 9, 2019</time></a>.</p><p><a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-3-cc162ca04e9f" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>

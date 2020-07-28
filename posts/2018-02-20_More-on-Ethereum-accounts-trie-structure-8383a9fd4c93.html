@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>More on Ethereum accounts trie structure</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">More on Ethereum accounts trie structure</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+While at it (preparing data for EIP-168 assessment), I decided to get more stats on the structure of Ethereum accounts trie.
+</section>
+<section data-field="body" class="e-content">
+<section name="78dd" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="9d08" id="9d08" class="graf graf--h3 graf--leading graf--title">More on Ethereum accounts trie structure</h3><figure name="84c2" id="84c2" class="graf graf--figure graf-after--h3"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 412px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 58.9%;"></div><img class="graf-image" data-image-id="1*hH_IXEawHb0Lk9pWsU9hSg.png" data-width="1591" data-height="937" src="https://cdn-images-1.medium.com/max/800/1*hH_IXEawHb0Lk9pWsU9hSg.png"></div><figcaption class="imageCaption">Columns are levels in the trie, rows are number of children of a node, values — number of nodes</figcaption></figure><p name="8cd0" id="8cd0" class="graf graf--p graf-after--figure">While at it (preparing data for EIP-168 assessment), I decided to get more stats on the structure of Ethereum accounts trie.</p><p name="e470" id="e470" class="graf graf--p graf-after--p">Table above shows how around 36 million trie nodes that were present in the Ethereum state at the block 5032091 are distributed in terms of their levels (distance from the root of the trie), and number of children.</p><h4 name="f790" id="f790" class="graf graf--h4 graf-after--p">Why is this interesting (at least for me)?</h4><p name="58b6" id="58b6" class="graf graf--p graf-after--h4">One of the biggest issues in Turbo-Geth at the moment is the start-up time. Because it does not store trie nodes on the disk, it has to rebuild it from account and storage history, and it takes some time. Yesterday, when I did it on a “cold” (freshly booted up, so nothing in the OS cache) machine with SSD, it took around 1,5 hours to read data and reconstruct the trie. This is way too long.</p><p name="0973" id="0973" class="graf graf--p graf-after--p">The solution relies on the data in the 16-nodes row of the table above. You can see that first 5 numbers there are powers of 16: 16⁰, 16¹, 16², 16³, 16⁴. And the total of the 6th column is 16⁵. This simply means that first 6 levels of the trie are “saturated”.</p><p name="a29b" id="a29b" class="graf graf--p graf-after--p">Now recall how binary heaps are efficiently represented as arrays, where the index in the array is computed easily from the position in the tree. Similar representation can be used for hexary trees, and if they are saturated, there is no waste of space.</p><p name="e3a2" id="e3a2" class="graf graf--p graf-after--p graf--trailing">So my plan is to store hashes of the top 6 levels of the trie in an array (with just over 1 million entries, so just over 32Mb), and memory map it to a file. It is easy to read, save, and update, and it should greatly speed up the start up time. I will report on the results shortly.</p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/8383a9fd4c93"><time class="dt-published" datetime="2018-02-20T12:21:05.104Z">February 20, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/more-on-ethereum-accounts-trie-structure-8383a9fd4c93" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>

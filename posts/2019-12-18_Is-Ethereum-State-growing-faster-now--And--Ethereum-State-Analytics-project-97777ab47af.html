@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Is Ethereum State growing faster now? And… Ethereum State Analytics project</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Is Ethereum State growing faster now? And… Ethereum State Analytics project</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Last time I wrote about it end of October 2019: here. Recently we (turbo-geth team) decided to re-run the data collections. We hit some…
+</section>
+<section data-field="body" class="e-content">
+<section name="272b" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="2ccf" id="2ccf" class="graf graf--h3 graf--leading graf--title">Is Ethereum State growing faster now? And… Ethereum State Analytics project</h3><p name="f9c4" id="f9c4" class="graf graf--p graf-after--h3">Last time I wrote about it end of October 2019: <a href="https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179" data-href="https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179" class="markup--anchor markup--p-anchor" target="_blank">here</a>. Recently we (turbo-geth team) decided to re-run the data collections. We hit some road blocks, like not syncing past Istanbul, running out of memory, trying to do it over remote database connection, and finally it is completed.</p><p name="4da2" id="4da2" class="graf graf--p graf-after--p">As before, there are 2 charts, this time starting from the block 8m.</p><figure name="ba1e" id="ba1e" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*f_RXEfYjrlKU-na3LoOYIg.png" data-width="1280" data-height="720" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*f_RXEfYjrlKU-na3LoOYIg.png"></div><figcaption class="imageCaption">Accounts created per block (blue) vs block gas limit (red)</figcaption></figure><p name="c614" id="c614" class="graf graf--p graf-after--figure">We can also try try to see what that spike at the end looks like closer:</p><figure name="aa50" id="aa50" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*2MgMWaaVi0nNxebZSe191g.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*2MgMWaaVi0nNxebZSe191g.png"></div><figcaption class="imageCaption">Accounts created per block (blue) vs block gas limit (red)</figcaption></figure><p name="edf5" id="edf5" class="graf graf--p graf-after--figure">Fun fact — the block gas limit did drop back to 8 million for about 2 days around the Istanbul transition.</p><p name="6303" id="6303" class="graf graf--p graf-after--p">It is a bit early to say, but I do see higher rate of new account creation, we will see if it will be sustained.</p><p name="7496" id="7496" class="graf graf--p graf-after--p">And now to the contract storage:</p><figure name="a77d" id="a77d" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*4hW3GUgUjGGK9kHk78rO7g.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*4hW3GUgUjGGK9kHk78rO7g.png"></div><figcaption class="imageCaption">Contract storage items created (or zero-ed) per block (green) vs block gas limit (red)</figcaption></figure><p name="7f46" id="7f46" class="graf graf--p graf-after--figure">The drop to about -48 around the block 8.8m is explained by some consolidation of ERC-20 tokens that happened to occur around that time. It looks like the contract storage gets added quicker now. But let’s keep watching.</p><h3 name="13f5" id="13f5" class="graf graf--h3 graf-after--p">Ethereum State Analytics</h3><p name="1cf5" id="1cf5" class="graf graf--p graf-after--h3">We would like to stop making these charts and let them make themselves. Also, we would like other people to come up with their own charts. That is why we started work on the “Ethereum State Analytics” project. Currently described here: <a href="https://ledgerwatch.github.io/Ethereum_1_Research_topics.html#The-State-Analytics" data-href="https://ledgerwatch.github.io/Ethereum_1_Research_topics.html#The-State-Analytics" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">https://ledgerwatch.github.io/Ethereum_1_Research_topics.html#The-State-Analytics</a></p><p name="c04f" id="c04f" class="graf graf--p graf-after--p">The main feature we are adding to Turbo-Geth to make it possible is the “remote DB”, which is the ability to remotely pull data from the live node, in a very low-level format, so that the the live node does not need to do any pre-processing (implementing it via JSON RPC would just max out CPU and prevent the node from operating normally). We are utilising interesting features (like MVCC) of BoltDB (and now we also support BadgerDB, but there will be another post on that), to make it possible.</p><h3 name="5d93" id="5d93" class="graf graf--h3 graf-after--p">Moving average 10000 blocks</h3><p name="554a" id="554a" class="graf graf--p graf-after--h3">After some feedback, here are the same charts, but with a different moving average:</p><figure name="a6c4" id="a6c4" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*aL_asuX0DGgkmOcb8TPp9w.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*aL_asuX0DGgkmOcb8TPp9w.png"></div></figure><figure name="4f84" id="4f84" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*Rdqp6rnDKqt-f7yZbQJHPQ.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*Rdqp6rnDKqt-f7yZbQJHPQ.png"></div></figure><p name="dfc2" id="dfc2" class="graf graf--p graf-after--figure">The data files used to produce these charts have been uploaded <a href="https://github.com/ledgerwatch/eth_state" data-href="https://github.com/ledgerwatch/eth_state" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">here</a>.</p><p name="c4ec" id="c4ec" class="graf graf--p graf-after--p">File names accounts_growth.csv.gz, storage_growth.csv.gz, gas_limits.csv.gz</p><p name="61df" id="61df" class="graf graf--p graf-after--p">If you would like to build the charts yourself, here is what you need to do:</p><pre name="6a15" id="6a15" class="graf graf--pre graf-after--p">git clone <a href="https://github.com/ledgerwatch/turbo-geth.git" data-href="https://github.com/ledgerwatch/turbo-geth.git" class="markup--anchor markup--pre-anchor" rel="nofollow noopener" target="_blank">https://github.com/ledgerwatch/turbo-geth.git</a><br>cd turbo-geth</pre><pre name="e93f" id="e93f" class="graf graf--pre graf-after--pre">&lt;place downloaded and uncompressed files in the current directory&gt;</pre><pre name="b4f8" id="b4f8" class="graf graf--pre graf-after--pre graf--trailing">make state<br>./build/bin/state stateGrowthChart1 --start 8000000 --window 10000<br>./build/bin/state stateGrowthChart2 --start 8000000 --window 10000</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/97777ab47af"><time class="dt-published" datetime="2019-12-18T22:54:55.443Z">December 18, 2019</time></a>.</p><p><a href="https://medium.com/@akhounov/is-ethereum-state-growing-faster-now-and-ethereum-state-analytics-project-97777ab47af" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>

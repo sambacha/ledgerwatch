@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Turbo-Geth status</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Turbo-Geth status</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Since I wrote the previous post on the Turbo-Geth, listing optimisations that I would like to do, I have been working non-stop on coding…
+</section>
+<section data-field="body" class="e-content">
+<section name="6797" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="6e46" id="6e46" class="graf graf--h3 graf--leading graf--title">Turbo-Geth status</h3><p name="8a5f" id="8a5f" class="graf graf--p graf-after--h3">Since I wrote the previous post on the Turbo-Geth, listing optimisations that I would like to do, I have been working non-stop on coding, testing and benchmarking. Here is a quick update on how the previous optimisations worked out and what other new ideas I had since then. First, the items from the previous roadmap:</p><ol class="postList"><li name="6c31" id="6c31" class="graf graf--li graf-after--p">Reuse of stateDB object. This works really well so far. Currently it only works when the blocks are getting inserted in sequential order. When this is not the case, StateDB completely resets and trie has to be loaded again. I am planning to handle this with the idea of trie re-attachment. If you have a state trie for the current block, and you need to jump back (or forward), instead of throwing away the whole trie, we will start building the new trie, but also keep walking on the old trie simultaneously. When we reach suitable re-attachment points, the new trie nodes will simply be attached to the fragments of the old trie. This will make sure that chain reorgs would flush only small number of trie nodes.</li><li name="95c9" id="95c9" class="graf graf--li graf-after--li">Change the trie node caching from generation-based approach to node-count based approach. I have now fully implemented it and it works well. The trie nodes, apart from being in the trie, are also part of a double-linked list. They are getting added and removed to/from the list at the same time as they are created or discarded from the trie. Whenever a node gets “touched” during any trie modifications, it moves to the back of the list. When the list reaches set limit (currently I am experimenting with the limit of 4 million nodes), the excess of the list gets removed from the list, and subsequently, the removed nodes are removed form the trie too. Effectively, this is a LRU (least recently used) cache on top of the state trie. I am planning to produce graphs plotting the list size against the allocated memory to allow calibration of the node count limit according to the memory available on the machine.</li><li name="2061" id="2061" class="graf graf--li graf-after--li">Change the way the trie nodes are stored in the database, specifically what constitutes the key. This change works well, because the new layout of the state database means that any information about accounts and their storage can be accessed without the state trie. This leads to the insight that state trie is only really required to verify the correctness of the state root hashes on the newly imported blocks. This insight is going to be crucial for the optimisation that I am currently implementing, which I expect to be the most impactful of all.</li><li name="f699" id="f699" class="graf graf--li graf-after--li">Handling of chain re-orgs. This is not implemented yet, but in addition to handling chain reorgs in the database, I also figured out how to handle tries in memory during the chain re-orgs (described above in point 1).</li><li name="c263" id="c263" class="graf graf--li graf-after--li">State reads to require only 1 database lookup. This works well. I am planning to add batched reads. Currently, each read requires seek in the database, which is walking a sorted tree in some form. If the reads are batched, we can sort the keys and perform all reads in one single tree walk.</li><li name="10f8" id="10f8" class="graf graf--li graf-after--li">Pre-fetch trie expansion lookups for state modifications, in parallel. Parallel prefetches turned out to be not as beneficial as I though. First of all, according to my tests, the maximum benefit from concurrent reads on SSD (and similar results for HDD) is x2, when reading 4k blocks from 4–5 concurrent threads. Concurrency also creates unwanted challenges for transaction management. Mass read (described above at point 5) is likely to be more beneficial.</li><li name="fd73" id="fd73" class="graf graf--li graf-after--li">Pre-fetch based on transactions in the mempool. This is still planned, but will be implemented once the sync is working and is fast.</li><li name="2263" id="2263" class="graf graf--li graf-after--li">More efficient memory usage for storing the trie. I have performed the required analysis, and, as I suspected, about third of the hexary nodes in the trie only contain 2 non-empty nodes. I have not implemented this yet, it is currently not a bottleneck at all.</li><li name="1b69" id="1b69" class="graf graf--li graf-after--li">More efficient storage of trie nodes in the database. I have done required analysis, and there is indeed massive amount of repetition in the state trie database. When I analysed data from a fully synched geth node up to block 2.2m, most repeated hashes were recorded in the database 669 times. However, I will not try to optimise this, because there is something much better we could do about the disk storage space.</li></ol><h4 name="55c9" id="55c9" class="graf graf--h4 graf-after--li">What is new?</h4><p name="4f6a" id="4f6a" class="graf graf--p graf-after--h4">10. I have swapped the database from LevelDB to BoltDB, initially because I wanted to experiment with concurrent reads. Later on, this became not as important, but I like BoltDB now because it is a very small (I could review quite a large chunk of it already and I like it) and stable code base (authors of the project consider it “complete”). I also like the absence of background compaction (it has B-tree and has to insert writes into right places straight away). I started to use transactional feature (it has proper ACID transactions) to batch up database updates and only commit them once every 8 seconds or so. It worked quite well so far, but now I hit the next bottleneck which is kind of specific to BoltDB. Even if you batch up lots of writes inside a pending ACID transaction, it still performs seeks from scratch for every single write, which is massively wasteful (this has shown up as the next bottleneck in the profiler). The solution is to instead pre-sort the writes by keys and insert them all in one walk over the database. This is what I am implementing now, and that will include a small extension to BoltDB, to support mass-Put.</p><p name="6b29" id="6b29" class="graf graf--p graf-after--p">11. As described in point 3, due to changed database layout, state trie is no longer required for anything apart from checking the state root hashes for the newly imported blocks. That means 2 improvements can be made. Firstly, state trie does not have to be written into the database all that often, only as a checkpoint just in case we have to restart the node. Secondly, we do not need to keep the old state node trie around, because even for historical tracing we can still use direct prefix-based keys. So the old trie nodes can be pruned as soon as we created few checkpoints that will most likely survive any reasonably deep reorg. This will be the next to implement after the mass-Put described in point 10.</p><p name="c857" id="c857" class="graf graf--p graf-after--p">12. Going even further from point 11, I would like to test how slow is it actually to completely (or partially) rebuild the trie from map of accounts and their storages, and compute the state root hash. Imagine if we did not keep any state trie nodes in the database, only map of accounts and storage items. Then, on start-up the node would need to regenerate the current state of the trie and cache some of it in memory. I would like to know how long would this process take, if we use efficient range scans on the database.</p><h4 name="988d" id="988d" class="graf graf--h4 graf-after--p">Data</h4><p name="54b5" id="54b5" class="graf graf--p graf-after--h4">I am currently running 2 tests in the Cloud, one with SSD and another with HDD, on machines with 26Gb of memory and 4 million trie nodes allowed in the cache. If they successfully sync to the current tip of the blockchain, I will publish some graphs, even though they might not be very impresssive :)</p><p name="60e9" id="60e9" class="graf graf--p graf-after--p graf--trailing">There are some more exciting things I will share in a few days.</p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/534c10709206"><time class="dt-published" datetime="2018-01-19T12:05:45.261Z">January 19, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/turbo-geth-status-534c10709206" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>

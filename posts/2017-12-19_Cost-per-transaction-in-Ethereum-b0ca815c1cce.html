@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Cost per transaction in Ethereum</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">Cost per transaction in Ethereum</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Recently, one of the economists at CME Group published a very curious article…
+</section>
+<section data-field="body" class="e-content">
+<section name="15f3" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="0a58" id="0a58" class="graf graf--h3 graf--leading graf--title">Cost per transaction in Ethereum</h3><p name="390b" id="390b" class="graf graf--p graf-after--h3">Recently, one of the economists at CME Group published a very curious article: <a href="http://www.cmegroup.com/education/featured-reports/bitcoin-will-stunning-rally-sustain-or-sour-in-2018.html" data-href="http://www.cmegroup.com/education/featured-reports/bitcoin-will-stunning-rally-sustain-or-sour-in-2018.html" class="markup--anchor markup--p-anchor" rel="nofollow noopener noopener" target="_blank">http://www.cmegroup.com/education/featured-reports/bitcoin-will-stunning-rally-sustain-or-sour-in-2018.html</a></p><p name="45ca" id="45ca" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">CLARIFICATION</strong>: I should have emphasised that “cost of transaction” used in the article mentioned, and as referred below, is different from “transaction fee”. Cost of transaction is how much network is paying miners to process one transaction, on average. That includes block rewards, uncle rewards, and transaction fees.</p><p name="8709" id="8709" class="graf graf--p graf-after--p">One of the interesting points was the observation that in the past (though we only have very few data points), the cost per transaction (total mining revenue divided by the number of transactions) rising could be a sign of a price collapse. He used a chart available at blockchain.info to illustrate: <a href="https://blockchain.info/charts/cost-per-transaction?timespan=all" data-href="https://blockchain.info/charts/cost-per-transaction?timespan=all" class="markup--anchor markup--p-anchor" rel="nofollow noopener noopener noopener" target="_blank">https://blockchain.info/charts/cost-per-transaction?timespan=all</a></p><figure name="60b1" id="60b1" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 289px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 41.199999999999996%;"></div><img class="graf-image" data-image-id="1*htMojIr9GJCQtO770dH12A.png" data-width="2780" data-height="1146" src="https://cdn-images-1.medium.com/max/800/1*htMojIr9GJCQtO770dH12A.png"></div><figcaption class="imageCaption">Bitcoin cost per transaction, in USD</figcaption></figure><p name="d8bf" id="d8bf" class="graf graf--p graf-after--figure">What about Ethereum? I pulled some data from Etherscan: <a href="https://etherscan.io/charts" data-href="https://etherscan.io/charts" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://etherscan.io/charts</a></p><p name="7f9d" id="7f9d" class="graf graf--p graf-after--p">and wrote this little Python script to analyse:</p><pre name="8c9a" id="8c9a" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">import </strong>csv<br><strong class="markup--strong markup--pre-strong">import </strong>numpy <strong class="markup--strong markup--pre-strong">as </strong>np<br><strong class="markup--strong markup--pre-strong">import </strong>matplotlib.pyplot <strong class="markup--strong markup--pre-strong">as </strong>plt<br><strong class="markup--strong markup--pre-strong">import </strong>datetime<br><br><br><strong class="markup--strong markup--pre-strong">def </strong>readdata(filename, column, cast_func):<br>    <strong class="markup--strong markup--pre-strong">with </strong>open(filename) <strong class="markup--strong markup--pre-strong">as </strong>f:<br>        reader = csv.reader(f, delimiter=<strong class="markup--strong markup--pre-strong">&#39;,&#39;</strong>)<br>        reader.next()  <em class="markup--em markup--pre-em"># Skip the header<br>        </em><strong class="markup--strong markup--pre-strong">return </strong>np.array([cast_func(row[column]) <strong class="markup--strong markup--pre-strong">for </strong>row <strong class="markup--strong markup--pre-strong">in </strong>reader])<br><br>prices = readdata(<strong class="markup--strong markup--pre-strong">&#39;export-EtherPrice.csv&#39;</strong>, 2, float)<br>times = readdata(<strong class="markup--strong markup--pre-strong">&#39;export-EtherPrice.csv&#39;</strong>, 1, <strong class="markup--strong markup--pre-strong">lambda </strong>x: datetime.datetime.fromtimestamp(int(x)))<br>supply = readdata(<strong class="markup--strong markup--pre-strong">&#39;export-Ethersupply.csv&#39;</strong>, 2, float)<br>fees = readdata(<strong class="markup--strong markup--pre-strong">&#39;export-TransactionFee.csv&#39;</strong>, 2, <strong class="markup--strong markup--pre-strong">lambda </strong>x: float(x)/10**18)<br>txcount = readdata(<strong class="markup--strong markup--pre-strong">&#39;export-TxGrowth.csv&#39;</strong>, 2, float)<br><br>cost_per_tx = (supply + fees)*prices/txcount<br><br>plt.plot(times[10:],cost_per_tx[10:])<br>plt.plot(times[10:],prices[10:])<br>plt.show()</pre><p name="e6f6" id="e6f6" class="graf graf--p graf-after--pre">And here is what I got (green line is the price in USD, blue line is the cost per transaction in USD:</p><figure name="1052" id="1052" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 382px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 54.6%;"></div><img class="graf-image" data-image-id="1*KIa8_B5SM-0CC3A7LDeoBA.png" data-width="2196" data-height="1198" src="https://cdn-images-1.medium.com/max/800/1*KIa8_B5SM-0CC3A7LDeoBA.png"></div><figcaption class="imageCaption">Ethereum cost per transaction in USD (blue line) vs price in USD (green line)</figcaption></figure><p name="99c0" id="99c0" class="graf graf--p graf-after--figure">In order to see finer details of the cost rising and falling, plot it without the price:</p><figure name="fc50" id="fc50" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 406px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 57.9%;"></div><img class="graf-image" data-image-id="1*mP2Ug09G9izk1u6zniQ79w.png" data-width="1923" data-height="1114" src="https://cdn-images-1.medium.com/max/800/1*mP2Ug09G9izk1u6zniQ79w.png"></div><figcaption class="imageCaption">Ethereum cost per transaction in USD</figcaption></figure><p name="a1a0" id="a1a0" class="graf graf--p graf-after--figure graf--trailing">The peak in summer 2017 is probably ICO craze :)</p></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/b0ca815c1cce"><time class="dt-published" datetime="2017-12-19T17:10:32.233Z">December 19, 2017</time></a>.</p><p><a href="https://medium.com/@akhounov/cost-per-transaction-in-ethereum-b0ca815c1cce" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
