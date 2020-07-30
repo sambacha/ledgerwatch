@@ -57,7 +57,6 @@
 <li><span>Generate transaction lookup index. This is the mapping from transaction Id (transaction hash currently) to the location of that transaction (currently just the block number). This can be viewed as a reindexing of the block bodies.</span></li>
 <li><span>Generate transaction receipts. Although transaction receipts are generated during the stage 4 (transaction replay), they are currently not persisted there, because this is an optional setting. Turbo-geth is able to serve receipts even if they are not explicitely persisted, by re-computing them on the fly from the history. This method saves space, but has a peformance penalty. The users who need quicker access to receipts in exchange for extra disk space, can enable this stage. This will effectively replay all transactions again, but, unlike in the stage 4 (transaction replay), there is no generation of current state and the reverse diffs, therefore the process is faster.</span></li>
 <li><span>Activate transaction pool. Before the state is synced and is accessible, there is no use of running the transaction pool logic, because for the security of the network, transactions should not be relayed unless the node can verify that there are no nonce gaps created by those transactions, and that the sender can afford to pay for gas. Activation of the transaction pool means downloading the currently active transactions from peers and initiating verification and relay.</span></li>
-<li><span>Activate JSON RPC.</span></li>
 <li><span>Activate mining. This stage will only be activated when needed.</span></li>
 <li><span>History pruning (likely to be split into multiple stages too)</span></li>
 </ol><p><span>There might be more stages added in the future.</span></p><h2 id="Readiness-of-the-stages-and-an-alternative-plan" data-id="Readiness-of-the-stages-and-an-alternative-plan"><a class="anchor hidden-xs" href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness-of-the-stages-and-an-alternative-plan"><span class="octicon octicon-link"></span></a><span>Readiness of the stages, and an alternative plan</span></h2><table>
@@ -157,24 +156,24 @@
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#Towards-the-first-release-of-Turbo-geth" title="Towards the first release of Turbo-geth">Towards the first release of Turbo-geth</a><ul class="nav">
-<li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
-<li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
-<li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li class=""><a href="#Licence-and-language-migration-plan-out-of-scope-for-the-release" title="Licence and language migration plan (out of scope for the release)">Licence and language migration plan (out of scope for the release)</a></li>
-<li class=""><a href="#Separation-of-JSON-RPC-and-future-of-architecture-during-migration" title="Separation of JSON RPC and future of architecture during migration">Separation of JSON RPC and future of architecture during migration</a></li>
-<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
+<li><a href="#Distribution" title="Distribution">Distribution</a></li>
+<li><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
+<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li><a href="#Licence-and-language-migration-plan-out-of-scope-for-the-release" title="Licence and language migration plan (out of scope for the release)">Licence and language migration plan (out of scope for the release)</a></li>
+<li><a href="#Separation-of-JSON-RPC-and-future-of-architecture-during-migration" title="Separation of JSON RPC and future of architecture during migration">Separation of JSON RPC and future of architecture during migration</a></li>
+<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
 <li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
 <li><a href="#Disk-space" title="Disk space">Disk space</a><ul class="nav">
 <li><a href="#Two-state-buckets-and-no-preimages" title="Two state buckets and no preimages">Two state buckets and no preimages</a></li>
 </ul>
 </li>
 <li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
-<li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li class=""><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
+<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#LMDB-is-default-database-backend-with-boltDb-and-badger-as-options" title="LMDB is default database backend, with boltDb and badger as options">LMDB is default database backend, with boltDb and badger as options</a></li>
-<li class=""><a href="#Python-bindings-remote-DB-access-and-REST-API-daemon" title="Python bindings, remote DB access, and REST API daemon">Python bindings, remote DB access, and REST API daemon</a></li>
+<li><a href="#Python-bindings-remote-DB-access-and-REST-API-daemon" title="Python bindings, remote DB access, and REST API daemon">Python bindings, remote DB access, and REST API daemon</a></li>
 </ul>
 </li>
 </ul>
@@ -185,24 +184,24 @@
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
         <div class="toc"><ul class="nav">
 <li class=""><a href="#Towards-the-first-release-of-Turbo-geth" title="Towards the first release of Turbo-geth">Towards the first release of Turbo-geth</a><ul class="nav">
-<li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
-<li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
-<li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li class=""><a href="#Licence-and-language-migration-plan-out-of-scope-for-the-release" title="Licence and language migration plan (out of scope for the release)">Licence and language migration plan (out of scope for the release)</a></li>
-<li class=""><a href="#Separation-of-JSON-RPC-and-future-of-architecture-during-migration" title="Separation of JSON RPC and future of architecture during migration">Separation of JSON RPC and future of architecture during migration</a></li>
-<li class=""><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
+<li><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
+<li><a href="#Distribution" title="Distribution">Distribution</a></li>
+<li><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
+<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li><a href="#Licence-and-language-migration-plan-out-of-scope-for-the-release" title="Licence and language migration plan (out of scope for the release)">Licence and language migration plan (out of scope for the release)</a></li>
+<li><a href="#Separation-of-JSON-RPC-and-future-of-architecture-during-migration" title="Separation of JSON RPC and future of architecture during migration">Separation of JSON RPC and future of architecture during migration</a></li>
+<li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
 <li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
 <li><a href="#Disk-space" title="Disk space">Disk space</a><ul class="nav">
 <li><a href="#Two-state-buckets-and-no-preimages" title="Two state buckets and no preimages">Two state buckets and no preimages</a></li>
 </ul>
 </li>
 <li><a href="#Staged-sync" title="Staged sync">Staged sync</a></li>
-<li><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
-<li class=""><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
+<li class=""><a href="#Currently-envisaged-stages" title="Currently envisaged stages">Currently envisaged stages</a></li>
+<li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#LMDB-is-default-database-backend-with-boltDb-and-badger-as-options" title="LMDB is default database backend, with boltDb and badger as options">LMDB is default database backend, with boltDb and badger as options</a></li>
-<li class=""><a href="#Python-bindings-remote-DB-access-and-REST-API-daemon" title="Python bindings, remote DB access, and REST API daemon">Python bindings, remote DB access, and REST API daemon</a></li>
+<li><a href="#Python-bindings-remote-DB-access-and-REST-API-daemon" title="Python bindings, remote DB access, and REST API daemon">Python bindings, remote DB access, and REST API daemon</a></li>
 </ul>
 </li>
 </ul>
