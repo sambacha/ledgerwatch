@@ -157,7 +157,7 @@
 <li><span>LMDB python bindings. If you want to access the turbo-geth data from the same computer where turbo-geth process is running, you can use LDMB to open turbo-geth’s database in a read-only mode. Perhaps the easiest way to do that is via Python bindings: </span><a href="https://lmdb.readthedocs.io/en/release/" target="_blank" rel="noopener"><span>https://lmdb.readthedocs.io/en/release/</span></a><span>. This, of course, requires the knowledge of turbo-geth’s data model.</span></li>
 <li><span>Remote interface to the database. For those who run turbo-geth on one computer, but some analytics software or other things that need turbo-geth’s data, there is remote DB access. It uses gRPC as transport, and its use requires the knowledge of the turbo-geth’s data model.</span></li>
 <li><span>REST API daemon. Such daemon can be run on the same or a different computer from the turbo-geth node. REST API daemon accesses the live database of turbo-geth locally or remotely, via read-only interface. There can also be multiple daemons connected to the same turbo-geth node, which can help creating more cost effective infrastructure for some users. The REST API has only couple of functions at the moment, and it is not standardised in any way, but it is a useful platforms for users who want to get their hands dirty and create bespoke interfaces for their or their clients’ needs.</span></li>
-</ol></div>
+</ol><h2 id="Known-issues" data-id="Known-issues"><a class="anchor hidden-xs" href="#Known-issues" title="Known-issues"><span class="octicon octicon-link"></span></a><span>Known issues</span></h2><p><span>Only the most serious issues are listed here, more issues can be found in the usual place: </span><a href="https://github.com/ledgerwatch/turbo-geth/issues" target="_blank" rel="noopener"><span>https://github.com/ledgerwatch/turbo-geth/issues</span></a></p><h3 id="Memory-leak" data-id="Memory-leak"><a class="anchor hidden-xs" href="#Memory-leak" title="Memory-leak"><span class="octicon octicon-link"></span></a><span>Memory leak</span></h3><p><span>Once synced, and running for about 20 hours on 32 Gb machine, the turbo-geth process is killed by the operating system for running out of memory. We know that Go’s memory allocation is very low at that moment (less than 100 Mb), so the main suspect is unreclaimed objects created to one of the C libraries we use.</span></p></div>
     <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
         <div class="pull-right dropdown">
             <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
@@ -166,15 +166,15 @@
             <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
                 <div class="toc"><ul class="nav">
 <li class=""><a href="#Towards-the-first-release-of-Turbo-geth" title="Towards the first release of Turbo-geth">Towards the first release of Turbo-geth</a><ul class="nav">
-<li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
-<li class=""><a href="#When-are-we-going-from-“alpha”-to-“beta”" title="When are we going from “alpha” to “beta”?">When are we going from “alpha” to “beta”?</a></li>
-<li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
-<li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li class=""><a href="#Licence-and-language-migration-plan-out-of-scope-for-the-release" title="Licence and language migration plan (out of scope for the release)">Licence and language migration plan (out of scope for the release)</a></li>
+<li><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
+<li><a href="#When-are-we-going-from-“alpha”-to-“beta”" title="When are we going from “alpha” to “beta”?">When are we going from “alpha” to “beta”?</a></li>
+<li><a href="#Distribution" title="Distribution">Distribution</a></li>
+<li><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
+<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li><a href="#Licence-and-language-migration-plan-out-of-scope-for-the-release" title="Licence and language migration plan (out of scope for the release)">Licence and language migration plan (out of scope for the release)</a></li>
 <li><a href="#Separation-of-JSON-RPC-and-future-of-architecture-during-migration" title="Separation of JSON RPC and future of architecture during migration">Separation of JSON RPC and future of architecture during migration</a></li>
 <li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
 <li><a href="#Disk-space" title="Disk space">Disk space</a><ul class="nav">
 <li><a href="#Two-state-buckets-and-no-preimages" title="Two state buckets and no preimages">Two state buckets and no preimages</a></li>
 </ul>
@@ -184,7 +184,11 @@
 <li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#LMDB-is-default-database-backend" title="LMDB is default database backend">LMDB is default database backend</a></li>
-<li><a href="#Python-bindings-remote-DB-access-and-REST-API-daemon" title="Python bindings, remote DB access, and REST API daemon">Python bindings, remote DB access, and REST API daemon</a></li>
+<li class=""><a href="#Python-bindings-remote-DB-access-and-REST-API-daemon" title="Python bindings, remote DB access, and REST API daemon">Python bindings, remote DB access, and REST API daemon</a></li>
+<li><a href="#Known-issues" title="Known issues">Known issues</a><ul class="nav">
+<li><a href="#Memory-leak" title="Memory leak">Memory leak</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -195,15 +199,15 @@
     <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
         <div class="toc"><ul class="nav">
 <li class=""><a href="#Towards-the-first-release-of-Turbo-geth" title="Towards the first release of Turbo-geth">Towards the first release of Turbo-geth</a><ul class="nav">
-<li class=""><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
-<li class=""><a href="#When-are-we-going-from-“alpha”-to-“beta”" title="When are we going from “alpha” to “beta”?">When are we going from “alpha” to “beta”?</a></li>
-<li class=""><a href="#Distribution" title="Distribution">Distribution</a></li>
-<li class=""><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
-<li class=""><a href="#GPL-license" title="GPL license">GPL license</a></li>
-<li class=""><a href="#Licence-and-language-migration-plan-out-of-scope-for-the-release" title="Licence and language migration plan (out of scope for the release)">Licence and language migration plan (out of scope for the release)</a></li>
+<li><a href="#When-is-it-going-to-be-ready" title="When is it going to be ready?">When is it going to be ready?</a></li>
+<li><a href="#When-are-we-going-from-“alpha”-to-“beta”" title="When are we going from “alpha” to “beta”?">When are we going from “alpha” to “beta”?</a></li>
+<li><a href="#Distribution" title="Distribution">Distribution</a></li>
+<li><a href="#No-fast-sync-warp-sync-or-any-other-snapshot-sync" title="No fast sync, warp sync or any other snapshot sync">No fast sync, warp sync or any other snapshot sync</a></li>
+<li><a href="#GPL-license" title="GPL license">GPL license</a></li>
+<li><a href="#Licence-and-language-migration-plan-out-of-scope-for-the-release" title="Licence and language migration plan (out of scope for the release)">Licence and language migration plan (out of scope for the release)</a></li>
 <li><a href="#Separation-of-JSON-RPC-and-future-of-architecture-during-migration" title="Separation of JSON RPC and future of architecture during migration">Separation of JSON RPC and future of architecture during migration</a></li>
 <li><a href="#JSON-RPC-API" title="JSON RPC API">JSON RPC API</a></li>
-<li class=""><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
+<li><a href="#Testnet-support" title="Testnet support">Testnet support</a></li>
 <li><a href="#Disk-space" title="Disk space">Disk space</a><ul class="nav">
 <li><a href="#Two-state-buckets-and-no-preimages" title="Two state buckets and no preimages">Two state buckets and no preimages</a></li>
 </ul>
@@ -213,7 +217,11 @@
 <li><a href="#Readiness-of-the-stages-and-an-alternative-plan" title="Readiness of the stages, and an alternative plan">Readiness of the stages, and an alternative plan</a></li>
 <li><a href="#Integration-with-evmone-via-EVMC" title="Integration with evmone via EVMC">Integration with evmone via EVMC</a></li>
 <li><a href="#LMDB-is-default-database-backend" title="LMDB is default database backend">LMDB is default database backend</a></li>
-<li><a href="#Python-bindings-remote-DB-access-and-REST-API-daemon" title="Python bindings, remote DB access, and REST API daemon">Python bindings, remote DB access, and REST API daemon</a></li>
+<li class=""><a href="#Python-bindings-remote-DB-access-and-REST-API-daemon" title="Python bindings, remote DB access, and REST API daemon">Python bindings, remote DB access, and REST API daemon</a></li>
+<li><a href="#Known-issues" title="Known issues">Known issues</a><ul class="nav">
+<li><a href="#Memory-leak" title="Memory leak">Memory leak</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
