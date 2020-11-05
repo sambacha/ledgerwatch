@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Quick note on Turbo-Geth disk usage</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Quick note on Turbo-Geth disk usage</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,125 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Quick note on Turbo-Geth disk usage</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-After the last post on the Turbo-Geth preliminary performance numbers, I wanted to implement the “last” disk space optimisation. There were…
-</section>
-<section data-field="body" class="e-content">
-<section name="a37e" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="e597" id="e597" class="graf graf--h3 graf--leading graf--title">Quick note on Turbo-Geth disk usage</h3><p name="a445" id="a445" class="graf graf--p graf-after--h3">After the last post on the Turbo-Geth preliminary performance numbers, I wanted to implement the “last” disk space optimisation. There were actually two of them — one reducing the space it takes to store the trie keys for Accounts and Contract Storage, and another — reducing the space it takes to store Account values (after the observation that all non-contract accounts have the same Storage root hashes and the same Code hashes, each of these hashes costing us 32 bytes a pop!). However, when I ran the code to estimate the savings on the database that I have after syncing to block 4.952m, it turned out that the first measure would only save 5Gb out of 200Gb, and the second — only 14Gb out of 200Gb. This was definitely less than I expected, and almost not worth the trouble to do the change now. In order to explain why, I did the full analysis of how the storage in the database (after block 4.952m) is utilised. Please bear in mind that this break-down is very specific to Turbo-Geth, because in Geth, for example, you would also see a lot of space taken by the state trie (Turbo Geth does not store it, but computes it on the fly). Here is the result:</p><figure name="7c64" id="7c64" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 471px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 67.30000000000001%;"></div><img class="graf-image" data-image-id="1*g2X80nbddsVy6W7AnidjZw.png" data-width="1557" data-height="1048" src="https://cdn-images-1.medium.com/max/800/1*g2X80nbddsVy6W7AnidjZw.png"></div><figcaption class="imageCaption">How the database space is split in Turbo Geth at block 4.952m</figcaption></figure><p name="37c2" id="37c2" class="graf graf--p graf-after--figure">Transaction receipts (biggest red sector) and the associated lookup metadata (yellow sector) now take 43% of database. No wonder my planned optimisation that touched only “Accounts” and “Contract Storage”, would not achieve much.</p><p name="76c9" id="76c9" class="graf graf--p graf-after--p graf--trailing">I am now scratching my head again, thinking whether we could do something about those receipts…</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/e9b1d10911b7"><time class="dt-published" datetime="2018-02-05T07:16:41.451Z">February 5, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/quick-note-on-turbo-geth-disk-usage-e9b1d10911b7" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">Quick note on Turbo-Geth disk usage</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        After the last post on the Turbo-Geth preliminary performance numbers, I
+        wanted to implement the “last” disk space optimisation. There were…
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="a37e"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="e597"
+                id="e597"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Quick note on Turbo-Geth disk usage
+              </h3>
+              <p name="a445" id="a445" class="graf graf--p graf-after--h3">
+                After the last post on the Turbo-Geth preliminary performance
+                numbers, I wanted to implement the “last” disk space
+                optimisation. There were actually two of them — one reducing the
+                space it takes to store the trie keys for Accounts and Contract
+                Storage, and another — reducing the space it takes to store
+                Account values (after the observation that all non-contract
+                accounts have the same Storage root hashes and the same Code
+                hashes, each of these hashes costing us 32 bytes a pop!).
+                However, when I ran the code to estimate the savings on the
+                database that I have after syncing to block 4.952m, it turned
+                out that the first measure would only save 5Gb out of 200Gb, and
+                the second — only 14Gb out of 200Gb. This was definitely less
+                than I expected, and almost not worth the trouble to do the
+                change now. In order to explain why, I did the full analysis of
+                how the storage in the database (after block 4.952m) is
+                utilised. Please bear in mind that this break-down is very
+                specific to Turbo-Geth, because in Geth, for example, you would
+                also see a lot of space taken by the state trie (Turbo Geth does
+                not store it, but computes it on the fly). Here is the result:
+              </p>
+              <figure
+                name="7c64"
+                id="7c64"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 471px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 67.30000000000001%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*g2X80nbddsVy6W7AnidjZw.png"
+                    data-width="1557"
+                    data-height="1048"
+                    src="https://cdn-images-1.medium.com/max/800/1*g2X80nbddsVy6W7AnidjZw.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  How the database space is split in Turbo Geth at block 4.952m
+                </figcaption>
+              </figure>
+              <p name="37c2" id="37c2" class="graf graf--p graf-after--figure">
+                Transaction receipts (biggest red sector) and the associated
+                lookup metadata (yellow sector) now take 43% of database. No
+                wonder my planned optimisation that touched only “Accounts” and
+                “Contract Storage”, would not achieve much.
+              </p>
+              <p
+                name="76c9"
+                id="76c9"
+                class="graf graf--p graf-after--p graf--trailing"
+              >
+                I am now scratching my head again, thinking whether we could do
+                something about those receipts…
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/e9b1d10911b7"
+            ><time class="dt-published" datetime="2018-02-05T07:16:41.451Z"
+              >February 5, 2018</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/quick-note-on-turbo-geth-disk-usage-e9b1d10911b7"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

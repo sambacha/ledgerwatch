@@ -1,8 +1,16 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Token game — a possible model for more “civilised” token sales</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+      Token game — a possible model for more “civilised” token sales
+    </title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +63,342 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Token game — a possible model for more “civilised” token sales</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-Why is it a game?
-</section>
-<section data-field="body" class="e-content">
-<section name="a68b" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="500d" id="500d" class="graf graf--h3 graf--leading graf--title">Token game — a possible model for more “civilised” token sales</h3><h3 name="673d" id="673d" class="graf graf--h3 graf-after--h3">Why is it a game?</h3><p name="aa6e" id="aa6e" class="graf graf--p graf-after--h3">There have been a lot of proposals of various mechanisms for better token sales, which either include just an idea written as prose, or some code. While this is great, we would only know if these solutions work after they have been tested in “real life”. The token game will not be just and attempt to throw an idea into the wild, or just a piece of code for others to review in their free time. There will be a contract deployed on the Ethereum Main net, with the “Prize Pot” (not as a promise, but as a smart contract) for anyone who plays the game and therefore helps test the code in “real life”. The plan is to conduct multiple rounds, with a bigger bounty each time, and hopefully with higher participation. There is no direct monetisation involved, simply because there is no good way of doing it. Which means that the size of the bounty will always be greater than the amount collected by the game. In fact, the only reason the game “collects” anything is to make the concepts that are tested applicable to the token sales.</p><h3 name="78e1" id="78e1" class="graf graf--h3 graf-after--p">Where is the code and its status</h3><p name="a095" id="a095" class="graf graf--p graf-after--h3">Under development, feature complete, but still adding tests.</p><p name="d2f0" id="d2f0" class="graf graf--p graf-after--p">Contract: <a href="https://github.com/AlexeyAkhunov/tokengame/blob/master/contracts/TokenGame.sol" data-href="https://github.com/AlexeyAkhunov/tokengame/blob/master/contracts/TokenGame.sol" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://github.com/AlexeyAkhunov/tokengame/blob/master/contracts/TokenGame.sol</a></p><p name="151c" id="151c" class="graf graf--p graf-after--p">Tests:</p><p name="515d" id="515d" class="graf graf--p graf-after--p"><a href="https://github.com/AlexeyAkhunov/tokengame/blob/master/tests/TokenGame.kt" data-href="https://github.com/AlexeyAkhunov/tokengame/blob/master/tests/TokenGame.kt" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://github.com/AlexeyAkhunov/tokengame/blob/master/tests/TokenGame.kt</a></p><p name="00c9" id="00c9" class="graf graf--p graf-after--p">The idea of using Kotlin and EthereumJ for testing is courtesy to: <a href="https://github.com/Zoltu/recoverable-wallet" data-href="https://github.com/Zoltu/recoverable-wallet" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://github.com/Zoltu/recoverable-wallet</a></p><h3 name="d6b4" id="d6b4" class="graf graf--h3 graf-after--p">Caps</h3><p name="37ac" id="37ac" class="graf graf--p graf-after--h3">Caps on token sales have been almost universally introduced after the DAO incident in the summer of 2016, after which it has been suggested that no contract should not hold ETH in excess of $10M. The caps on token sales seemed a responsible thing to do. Very popular token sales were closing in matter of hours or tens of minutes. The caps slowly grew. Caps created competition to get into the popular sale at the beginning. The situation became absurd during the BAT sale on the 31st of May 2017, which sold out in roughly three blocks. In order to get in, one had to either employ some clever tricks, or be prepared to pay a very high fee.</p><h3 name="822f" id="822f" class="graf graf--h3 graf-after--p">Caps with proportional returns</h3><p name="3d91" id="3d91" class="graf graf--p graf-after--h3">This idea has been proposed many times, and it is to accept uncapped amount of ETH during the sale only limited by time. At the end of the sale, accept only the amount required, and return the rest proportionally to how much has been put in.</p><p name="9033" id="9033" class="graf graf--p graf-after--p">Two main problems have been pointed out. Lets call the first one “ambush”. One can wait until just before the end of sale, observe the current total contribution, and then contribute a relatively large amount (potentially borrowed for a very short time) as close to the end as possible, in an attempt to acquire a large share of tokens, unchallenged. The second problem is the ability of large ETH holders to dominate most of the ongoing sales by selling tokens as they hit the marketplaces and recycling the ETH to get into the next one. Lets call it a “whale” problem.</p><h3 name="56c5" id="56c5" class="graf graf--h3 graf-after--p">Anti-ambush: Dynamic extensions</h3><p name="0151" id="0151" class="graf graf--p graf-after--h3">Token game deals with the ambush by dynamically extending the end time of the game depending on the relative magnitude of the recent contributions. The “relative magnitude of recent contributions” is modelled as Time Weighted Exponential Moving Average of amount of wei contributed (function “exponential_decay”), divided by the total wei contributed so far. For example, if the initial duration is 1 week, and just before the end of the game, someone contributes the amount equal to the amount already collected, the game is extended by a maximum of 2 days. Subsequent extensions will require more and more sizeable contributions, and eventually the game will conclude. The details could be found in the “contribute” function of the TokenDistribution contract.</p><p name="dc06" id="dc06" class="graf graf--p graf-after--p">One of the desiderata in designing this feature was the lack of the incentive for the players to split up their contribution. Hopefully, if there is no need to do that, we shall have a better understanding of the token distributions, for example, from the excellent analyses done regularly by Corey Petty.</p><h3 name="5c3e" id="5c3e" class="graf graf--h3 graf-after--p">Anti-whale: Delay of excess returns gives token advantage</h3><p name="232e" id="232e" class="graf graf--p graf-after--h3">Vlad Zamfir has recently suggested the use of an uncapped sale, but instead of returning the excess ETH, burning it or donation to charity. It might eventually prove a workable model. However, burning seems quite extreme for the time being, and giving to charity is not a simple problem per se. In that twitter exchange, Ethan Buchman suggested using time locks as a multiplier for token allowance. The token game takes this idea a bit further and introduces exponential advantage in token allocation in exchange for readiness to lock up the excess ETH for extended period of time.</p><p name="33ae" id="33ae" class="graf graf--p graf-after--p">For example, the game looks to “collect” 10 ETH. Alice contributes 1 ETH, and she is happy to lock up the excess (part of her contribution which is not accepted in exchange for tokens) for 52 weeks (one year). Bob contributes 10 ETH, but he is only happy to lock up the excess for 4 week, and Carol (the whale) puts in 100 ETH, but with zero lock up time. In the current version of the code, 52 weeks of lockup gives Alice 1.07⁵²=33.72 advantage factor versus Carol. Bob will have 1.07⁴=1.31 advantage versus Carol, and Alice has advantage 1.07⁴⁸=25.72 versus Bob. In order to compute accepted amounts from Alice, Bob, and Carol, we use this reasoning:</p><pre name="1140" id="1140" class="graf graf--pre graf-after--p">accepted(Alice) + accepted(Bob) + accepted(Carol) = 10</pre><pre name="53de" id="53de" class="graf graf--pre graf-after--pre">accepted(Alice)/contributed(Alice) = 25.72 * accepted(Bob)/contributed(Bob)</pre><pre name="b19f" id="b19f" class="graf graf--pre graf-after--pre">accepted(Alice)/contributed(Alice) = 33.72 * accepted(Carol)/contributed(Carol)</pre><p name="7572" id="7572" class="graf graf--p graf-after--pre">There are 3 linear equations with 3 variables, therefore it is quite easy to solve:</p><pre name="9ddd" id="9ddd" class="graf graf--pre graf-after--p">accepted(Bob) = accepted(Alice)*contributed(Bob)/contributed(Alice)/25.72 = accepted(Alice)*10/1/25.72 = 0.38 * accepted(Alice)</pre><pre name="6225" id="6225" class="graf graf--pre graf-after--pre">accepted(Carol) = accepted(Alice)*contributed(Carol)/contributed(Alice)/33.72 = accepted(Alice)*100/1/33.72 = 2.96 * accepted(Alice)</pre><pre name="b725" id="b725" class="graf graf--pre graf-after--pre">accepted(Alice)[1 + 0.38 + 2.96] = 10</pre><pre name="c72d" id="c72d" class="graf graf--pre graf-after--pre">accepted(Alice)= 2.3</pre><p name="3846" id="3846" class="graf graf--p graf-after--pre">Alice is allowed to contribute 2.3 ETH, but she only put 1 ETH, therefore we take the whole 1 ETH, and then solve the equations again for Bob and Carol and remaining 9 ETH to accept:</p><pre name="2215" id="2215" class="graf graf--pre graf-after--p">accepted(Bob) + accepted(Carol) = 9</pre><pre name="85dc" id="85dc" class="graf graf--pre graf-after--pre">accepted(Bob)/contributed(Bob) = 1.31 * accepted(Carol)/contributed(Carol)</pre><pre name="5e39" id="5e39" class="graf graf--pre graf-after--pre">accepted(Carol) = accepted(Bob)*contributed(Carol)/contributed(Bob)/1.31 = accepted(Bob)*100/10/1.31 = 7.63*accepted(Bob)</pre><pre name="90bc" id="90bc" class="graf graf--pre graf-after--pre">accepted(Bob)[1 + 7.63] = 9</pre><pre name="6fc7" id="6fc7" class="graf graf--pre graf-after--pre">accepted(Bob) = 1.04</pre><pre name="7966" id="7966" class="graf graf--pre graf-after--pre">accepted(Carol) = 9 - 1.04 = 7.96</pre><p name="9c47" id="9c47" class="graf graf--p graf-after--pre">After the game, Alice will have acquired almost the same amount of tokens as Bob, without any excess locked for 52 weeks. Bob will have 8.96 ETH locked in for 4 weeks, and Carol will get only 8 times more tokens than Alice, despite having put 100 times more ether.</p><p name="c4b3" id="c4b3" class="graf graf--p graf-after--p">This mechanism is implemented in the function “close_next_bucket”, which needs to be called after the end of the game as many times as there are non-empty buckets (players locking up excess for the same amount of weeks are grouped into buckets, and the maximum lock up time is 100 weeks).</p><h3 name="0727" id="0727" class="graf graf--h3 graf-after--p">Security features</h3><p name="5dbc" id="5dbc" class="graf graf--p graf-after--h3">There are two security features in the Token Game contracts. Firstly, and very obviously, any participant can withdraw from the game completely at any time before the end of the game, using the “escape” function.</p><p name="3cf6" id="3cf6" class="graf graf--p graf-after--p">Players can, of course, rejoin, with the same or different lock up period. To prevent this mechanism from being used to endlessly extend the duration of the game, such withdrawals suspend the extension mechanism until the withdrawn amount is replenished by the new contributions:</p><pre name="27b6" id="27b6" class="graf graf--pre graf-after--p">if (total_wei_given &lt;= ema_divisor) return;</pre><p name="fc50" id="fc50" class="graf graf--p graf-after--pre">The same escape function is used in the case when the game contributions did not reach the target.</p><p name="9f5c" id="9f5c" class="graf graf--p graf-after--p">The escape functionality also allows everyone abandoning the game in case someone finds a way to extend it indefinitely.</p><p name="a9db" id="a9db" class="graf graf--p graf-after--p">The second feature is in the way the time locked excess is stored (contract ExcessWithdraw). When the excess is locked up (during the call to “close_next_bucket”), the player is given tokens capable of withdrawing the locked up ether in the future. Because these tokens are fully transferrable (ERC-20), they can be moved to a different account (for example, when the player upgrades her security and buys hardware wallet). They can also be sold, like a zero-coupon bonds with the blockchain as the counter-party.</p><h3 name="9174" id="9174" class="graf graf--h3 graf-after--p">Prize pot</h3><p name="cc0e" id="cc0e" class="graf graf--p graf-after--h3">Prize pot is funded before the game starts, but it can also be topped up during the game. In the end, the tokens distributed by the game, give equal share of the prize pot. If the game did not reach the target, the prize pot can be taken back by the owner of the game.</p><h3 name="eef3" id="eef3" class="graf graf--h3 graf-after--p">Feedback please</h3><p name="aa87" id="aa87" class="graf graf--p graf-after--h3 graf--trailing">I hope you will come and play the token game when it is launched. But for now, please leave any feedback in the comments, and thank you for your time.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/d54d5552f339"><time class="dt-published" datetime="2017-06-06T21:55:58.838Z">June 6, 2017</time></a>.</p><p><a href="https://medium.com/@akhounov/token-game-a-possible-model-for-a-more-civilised-token-sales-d54d5552f339" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">
+          Token game — a possible model for more “civilised” token sales
+        </h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        Why is it a game?
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="a68b"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="500d"
+                id="500d"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Token game — a possible model for more “civilised” token sales
+              </h3>
+              <h3 name="673d" id="673d" class="graf graf--h3 graf-after--h3">
+                Why is it a game?
+              </h3>
+              <p name="aa6e" id="aa6e" class="graf graf--p graf-after--h3">
+                There have been a lot of proposals of various mechanisms for
+                better token sales, which either include just an idea written as
+                prose, or some code. While this is great, we would only know if
+                these solutions work after they have been tested in “real life”.
+                The token game will not be just and attempt to throw an idea
+                into the wild, or just a piece of code for others to review in
+                their free time. There will be a contract deployed on the
+                Ethereum Main net, with the “Prize Pot” (not as a promise, but
+                as a smart contract) for anyone who plays the game and therefore
+                helps test the code in “real life”. The plan is to conduct
+                multiple rounds, with a bigger bounty each time, and hopefully
+                with higher participation. There is no direct monetisation
+                involved, simply because there is no good way of doing it. Which
+                means that the size of the bounty will always be greater than
+                the amount collected by the game. In fact, the only reason the
+                game “collects” anything is to make the concepts that are tested
+                applicable to the token sales.
+              </p>
+              <h3 name="78e1" id="78e1" class="graf graf--h3 graf-after--p">
+                Where is the code and its status
+              </h3>
+              <p name="a095" id="a095" class="graf graf--p graf-after--h3">
+                Under development, feature complete, but still adding tests.
+              </p>
+              <p name="d2f0" id="d2f0" class="graf graf--p graf-after--p">
+                Contract:
+                <a
+                  href="https://github.com/AlexeyAkhunov/tokengame/blob/master/contracts/TokenGame.sol"
+                  data-href="https://github.com/AlexeyAkhunov/tokengame/blob/master/contracts/TokenGame.sol"
+                  class="markup--anchor markup--p-anchor"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >https://github.com/AlexeyAkhunov/tokengame/blob/master/contracts/TokenGame.sol</a
+                >
+              </p>
+              <p name="151c" id="151c" class="graf graf--p graf-after--p">
+                Tests:
+              </p>
+              <p name="515d" id="515d" class="graf graf--p graf-after--p">
+                <a
+                  href="https://github.com/AlexeyAkhunov/tokengame/blob/master/tests/TokenGame.kt"
+                  data-href="https://github.com/AlexeyAkhunov/tokengame/blob/master/tests/TokenGame.kt"
+                  class="markup--anchor markup--p-anchor"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >https://github.com/AlexeyAkhunov/tokengame/blob/master/tests/TokenGame.kt</a
+                >
+              </p>
+              <p name="00c9" id="00c9" class="graf graf--p graf-after--p">
+                The idea of using Kotlin and EthereumJ for testing is courtesy
+                to:
+                <a
+                  href="https://github.com/Zoltu/recoverable-wallet"
+                  data-href="https://github.com/Zoltu/recoverable-wallet"
+                  class="markup--anchor markup--p-anchor"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >https://github.com/Zoltu/recoverable-wallet</a
+                >
+              </p>
+              <h3 name="d6b4" id="d6b4" class="graf graf--h3 graf-after--p">
+                Caps
+              </h3>
+              <p name="37ac" id="37ac" class="graf graf--p graf-after--h3">
+                Caps on token sales have been almost universally introduced
+                after the DAO incident in the summer of 2016, after which it has
+                been suggested that no contract should not hold ETH in excess of
+                $10M. The caps on token sales seemed a responsible thing to do.
+                Very popular token sales were closing in matter of hours or tens
+                of minutes. The caps slowly grew. Caps created competition to
+                get into the popular sale at the beginning. The situation became
+                absurd during the BAT sale on the 31st of May 2017, which sold
+                out in roughly three blocks. In order to get in, one had to
+                either employ some clever tricks, or be prepared to pay a very
+                high fee.
+              </p>
+              <h3 name="822f" id="822f" class="graf graf--h3 graf-after--p">
+                Caps with proportional returns
+              </h3>
+              <p name="3d91" id="3d91" class="graf graf--p graf-after--h3">
+                This idea has been proposed many times, and it is to accept
+                uncapped amount of ETH during the sale only limited by time. At
+                the end of the sale, accept only the amount required, and return
+                the rest proportionally to how much has been put in.
+              </p>
+              <p name="9033" id="9033" class="graf graf--p graf-after--p">
+                Two main problems have been pointed out. Lets call the first one
+                “ambush”. One can wait until just before the end of sale,
+                observe the current total contribution, and then contribute a
+                relatively large amount (potentially borrowed for a very short
+                time) as close to the end as possible, in an attempt to acquire
+                a large share of tokens, unchallenged. The second problem is the
+                ability of large ETH holders to dominate most of the ongoing
+                sales by selling tokens as they hit the marketplaces and
+                recycling the ETH to get into the next one. Lets call it a
+                “whale” problem.
+              </p>
+              <h3 name="56c5" id="56c5" class="graf graf--h3 graf-after--p">
+                Anti-ambush: Dynamic extensions
+              </h3>
+              <p name="0151" id="0151" class="graf graf--p graf-after--h3">
+                Token game deals with the ambush by dynamically extending the
+                end time of the game depending on the relative magnitude of the
+                recent contributions. The “relative magnitude of recent
+                contributions” is modelled as Time Weighted Exponential Moving
+                Average of amount of wei contributed (function
+                “exponential_decay”), divided by the total wei contributed so
+                far. For example, if the initial duration is 1 week, and just
+                before the end of the game, someone contributes the amount equal
+                to the amount already collected, the game is extended by a
+                maximum of 2 days. Subsequent extensions will require more and
+                more sizeable contributions, and eventually the game will
+                conclude. The details could be found in the “contribute”
+                function of the TokenDistribution contract.
+              </p>
+              <p name="dc06" id="dc06" class="graf graf--p graf-after--p">
+                One of the desiderata in designing this feature was the lack of
+                the incentive for the players to split up their contribution.
+                Hopefully, if there is no need to do that, we shall have a
+                better understanding of the token distributions, for example,
+                from the excellent analyses done regularly by Corey Petty.
+              </p>
+              <h3 name="5c3e" id="5c3e" class="graf graf--h3 graf-after--p">
+                Anti-whale: Delay of excess returns gives token advantage
+              </h3>
+              <p name="232e" id="232e" class="graf graf--p graf-after--h3">
+                Vlad Zamfir has recently suggested the use of an uncapped sale,
+                but instead of returning the excess ETH, burning it or donation
+                to charity. It might eventually prove a workable model. However,
+                burning seems quite extreme for the time being, and giving to
+                charity is not a simple problem per se. In that twitter
+                exchange, Ethan Buchman suggested using time locks as a
+                multiplier for token allowance. The token game takes this idea a
+                bit further and introduces exponential advantage in token
+                allocation in exchange for readiness to lock up the excess ETH
+                for extended period of time.
+              </p>
+              <p name="33ae" id="33ae" class="graf graf--p graf-after--p">
+                For example, the game looks to “collect” 10 ETH. Alice
+                contributes 1 ETH, and she is happy to lock up the excess (part
+                of her contribution which is not accepted in exchange for
+                tokens) for 52 weeks (one year). Bob contributes 10 ETH, but he
+                is only happy to lock up the excess for 4 week, and Carol (the
+                whale) puts in 100 ETH, but with zero lock up time. In the
+                current version of the code, 52 weeks of lockup gives Alice
+                1.07⁵²=33.72 advantage factor versus Carol. Bob will have
+                1.07⁴=1.31 advantage versus Carol, and Alice has advantage
+                1.07⁴⁸=25.72 versus Bob. In order to compute accepted amounts
+                from Alice, Bob, and Carol, we use this reasoning:
+              </p>
+              <pre name="1140" id="1140" class="graf graf--pre graf-after--p">
+accepted(Alice) + accepted(Bob) + accepted(Carol) = 10</pre
+              >
+              <pre name="53de" id="53de" class="graf graf--pre graf-after--pre">
+accepted(Alice)/contributed(Alice) = 25.72 * accepted(Bob)/contributed(Bob)</pre
+              >
+              <pre name="b19f" id="b19f" class="graf graf--pre graf-after--pre">
+accepted(Alice)/contributed(Alice) = 33.72 * accepted(Carol)/contributed(Carol)</pre
+              >
+              <p name="7572" id="7572" class="graf graf--p graf-after--pre">
+                There are 3 linear equations with 3 variables, therefore it is
+                quite easy to solve:
+              </p>
+              <pre name="9ddd" id="9ddd" class="graf graf--pre graf-after--p">
+accepted(Bob) = accepted(Alice)*contributed(Bob)/contributed(Alice)/25.72 = accepted(Alice)*10/1/25.72 = 0.38 * accepted(Alice)</pre
+              >
+              <pre name="6225" id="6225" class="graf graf--pre graf-after--pre">
+accepted(Carol) = accepted(Alice)*contributed(Carol)/contributed(Alice)/33.72 = accepted(Alice)*100/1/33.72 = 2.96 * accepted(Alice)</pre
+              >
+              <pre name="b725" id="b725" class="graf graf--pre graf-after--pre">
+accepted(Alice)[1 + 0.38 + 2.96] = 10</pre
+              >
+              <pre name="c72d" id="c72d" class="graf graf--pre graf-after--pre">
+accepted(Alice)= 2.3</pre
+              >
+              <p name="3846" id="3846" class="graf graf--p graf-after--pre">
+                Alice is allowed to contribute 2.3 ETH, but she only put 1 ETH,
+                therefore we take the whole 1 ETH, and then solve the equations
+                again for Bob and Carol and remaining 9 ETH to accept:
+              </p>
+              <pre name="2215" id="2215" class="graf graf--pre graf-after--p">
+accepted(Bob) + accepted(Carol) = 9</pre
+              >
+              <pre name="85dc" id="85dc" class="graf graf--pre graf-after--pre">
+accepted(Bob)/contributed(Bob) = 1.31 * accepted(Carol)/contributed(Carol)</pre
+              >
+              <pre name="5e39" id="5e39" class="graf graf--pre graf-after--pre">
+accepted(Carol) = accepted(Bob)*contributed(Carol)/contributed(Bob)/1.31 = accepted(Bob)*100/10/1.31 = 7.63*accepted(Bob)</pre
+              >
+              <pre name="90bc" id="90bc" class="graf graf--pre graf-after--pre">
+accepted(Bob)[1 + 7.63] = 9</pre
+              >
+              <pre name="6fc7" id="6fc7" class="graf graf--pre graf-after--pre">
+accepted(Bob) = 1.04</pre
+              >
+              <pre name="7966" id="7966" class="graf graf--pre graf-after--pre">
+accepted(Carol) = 9 - 1.04 = 7.96</pre
+              >
+              <p name="9c47" id="9c47" class="graf graf--p graf-after--pre">
+                After the game, Alice will have acquired almost the same amount
+                of tokens as Bob, without any excess locked for 52 weeks. Bob
+                will have 8.96 ETH locked in for 4 weeks, and Carol will get
+                only 8 times more tokens than Alice, despite having put 100
+                times more ether.
+              </p>
+              <p name="c4b3" id="c4b3" class="graf graf--p graf-after--p">
+                This mechanism is implemented in the function
+                “close_next_bucket”, which needs to be called after the end of
+                the game as many times as there are non-empty buckets (players
+                locking up excess for the same amount of weeks are grouped into
+                buckets, and the maximum lock up time is 100 weeks).
+              </p>
+              <h3 name="0727" id="0727" class="graf graf--h3 graf-after--p">
+                Security features
+              </h3>
+              <p name="5dbc" id="5dbc" class="graf graf--p graf-after--h3">
+                There are two security features in the Token Game contracts.
+                Firstly, and very obviously, any participant can withdraw from
+                the game completely at any time before the end of the game,
+                using the “escape” function.
+              </p>
+              <p name="3cf6" id="3cf6" class="graf graf--p graf-after--p">
+                Players can, of course, rejoin, with the same or different lock
+                up period. To prevent this mechanism from being used to
+                endlessly extend the duration of the game, such withdrawals
+                suspend the extension mechanism until the withdrawn amount is
+                replenished by the new contributions:
+              </p>
+              <pre name="27b6" id="27b6" class="graf graf--pre graf-after--p">
+if (total_wei_given &lt;= ema_divisor) return;</pre
+              >
+              <p name="fc50" id="fc50" class="graf graf--p graf-after--pre">
+                The same escape function is used in the case when the game
+                contributions did not reach the target.
+              </p>
+              <p name="9f5c" id="9f5c" class="graf graf--p graf-after--p">
+                The escape functionality also allows everyone abandoning the
+                game in case someone finds a way to extend it indefinitely.
+              </p>
+              <p name="a9db" id="a9db" class="graf graf--p graf-after--p">
+                The second feature is in the way the time locked excess is
+                stored (contract ExcessWithdraw). When the excess is locked up
+                (during the call to “close_next_bucket”), the player is given
+                tokens capable of withdrawing the locked up ether in the future.
+                Because these tokens are fully transferrable (ERC-20), they can
+                be moved to a different account (for example, when the player
+                upgrades her security and buys hardware wallet). They can also
+                be sold, like a zero-coupon bonds with the blockchain as the
+                counter-party.
+              </p>
+              <h3 name="9174" id="9174" class="graf graf--h3 graf-after--p">
+                Prize pot
+              </h3>
+              <p name="cc0e" id="cc0e" class="graf graf--p graf-after--h3">
+                Prize pot is funded before the game starts, but it can also be
+                topped up during the game. In the end, the tokens distributed by
+                the game, give equal share of the prize pot. If the game did not
+                reach the target, the prize pot can be taken back by the owner
+                of the game.
+              </p>
+              <h3 name="eef3" id="eef3" class="graf graf--h3 graf-after--p">
+                Feedback please
+              </h3>
+              <p
+                name="aa87"
+                id="aa87"
+                class="graf graf--p graf-after--h3 graf--trailing"
+              >
+                I hope you will come and play the token game when it is
+                launched. But for now, please leave any feedback in the
+                comments, and thank you for your time.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/d54d5552f339"
+            ><time class="dt-published" datetime="2017-06-06T21:55:58.838Z"
+              >June 6, 2017</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/token-game-a-possible-model-for-a-more-civilised-token-sales-d54d5552f339"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

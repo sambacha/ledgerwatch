@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>The shades of statefulness (in Ethereum nodes)</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The shades of statefulness (in Ethereum nodes)</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,477 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">The shades of statefulness (in Ethereum nodes)</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-This is a raw-half and backed continuation of the research into stateless clients that has been published here. But what I got so far is…
-</section>
-<section data-field="body" class="e-content">
-<section name="4d7e" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="c244" id="c244" class="graf graf--h3 graf--leading graf--title">The shades of statefulness (in Ethereum nodes)</h3><p name="70cb" id="70cb" class="graf graf--p graf-after--h3">This is a half backed continuation of the research into stateless clients that has been published <a href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc" data-href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc" class="markup--anchor markup--p-anchor" target="_blank">here</a>. But what I got so far is potentially quite promising, so I am excited to share. And, I will write a more detailed explanation of what is going on, so don’t worry if you don’t get the point of the chart below.</p><p name="ade5" id="ade5" class="graf graf--p graf-after--p">At the end of the previous article, I suggested two possible ways to reduce the size of the block proofs, and therefore, the bandwidth consumption of the stateless clients. One of them is adding some “statefulness” by assuming that most of the peers already saw the block proof from the previous block and you can simply show them the difference between the block proof for the current block, and the block proof for the previous block.</p><p name="852b" id="852b" class="graf graf--p graf-after--p">I have implemented that and it is currently running through the blocks (at the same I have fixed some flaws of the previous prototype, like not using compact keys and other bugs causing failures). It is currently around the block 4.7m and producing stats for the block proofs with 1 block of “statefulness”.</p><p name="ff30" id="ff30" class="graf graf--p graf-after--p">But then I realised, mostly intuitively, that I will have to generalise this, and make the degree of statefullness adjustable. And I wrote another prototype, where instead of making client 1-block stateful, I made it 256-blocks stateful. 256 blocks is about 1 hour. Effectively, block proofs would omit the information that was accessed by transactions within the last 256 blocks. At the moment, the implementation is very inefficient, but I managed to get some early “sneak preview” numbers from it. Lets see. First, total sizes of the block proofs:</p><figure name="9bca" id="9bca" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*9u_K4ZHUWHye0a3WoEuABQ.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*9u_K4ZHUWHye0a3WoEuABQ.png"></div><figcaption class="imageCaption">Block proofs sizes for fully stateless mode</figcaption></figure><figure name="df0d" id="df0d" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*2dYXjYp_V5euuR7_HPfr6A.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*2dYXjYp_V5euuR7_HPfr6A.png"></div><figcaption class="imageCaption">Block proof sizes for 256-block stateful mode</figcaption></figure><p name="cba6" id="cba6" class="graf graf--p graf-after--figure">We see substantial reduction. Why? Lets do the breakdown the same way as before:</p><figure name="1fe6" id="1fe6" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*nvYUuRLKPt1GdL_GNotPZw.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*nvYUuRLKPt1GdL_GNotPZw.png"></div><figcaption class="imageCaption">Breakdown for fully stateless mode</figcaption></figure><figure name="4c60" id="4c60" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*-mH4_tW9J4XvEQYJOLPoiQ.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*-mH4_tW9J4XvEQYJOLPoiQ.png"></div><figcaption class="imageCaption">Breakdown for 256-block stateful mode</figcaption></figure><p name="d722" id="d722" class="graf graf--p graf-after--figure">Next, key-values for the main trie:</p><figure name="0bff" id="0bff" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*AdaDAG1fxqRHHXBbXKm00Q.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*AdaDAG1fxqRHHXBbXKm00Q.png"></div><figcaption class="imageCaption">Sizes of keys and values in block proofs for fully stateless mode</figcaption></figure><figure name="46e5" id="46e5" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*21zu2WKFnlL917j_Cc1_eA.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*21zu2WKFnlL917j_Cc1_eA.png"></div><figcaption class="imageCaption">Sizes of keys and values in block proofs for 256-block stateful mode</figcaption></figure><p name="bdcb" id="bdcb" class="graf graf--p graf-after--figure">Keys and values for contract storage:</p><figure name="770f" id="770f" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*Miyfe5wwmAkeatgJ6I2GfA.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*Miyfe5wwmAkeatgJ6I2GfA.png"></div><figcaption class="imageCaption">Sizes of contract storage keys and values in block proofs for fully stateless mode</figcaption></figure><figure name="ac10" id="ac10" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*kUkE2HciBTzZUG-Y-k3BrQ.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*kUkE2HciBTzZUG-Y-k3BrQ.png"></div><figcaption class="imageCaption">Sizes of contract storage keys and values in block proofs for 256-block stateful mode</figcaption></figure><p name="09a1" id="09a1" class="graf graf--p graf-after--figure">And now, the 2 most interesting parts. Hashes (and structure — masks) for the main trie:</p><figure name="be44" id="be44" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*z-u_xfwImxbvZGGFldVblw.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*z-u_xfwImxbvZGGFldVblw.png"></div><figcaption class="imageCaption">Sizes of hashes and masks in block proofs for fully stateless mode</figcaption></figure><figure name="add5" id="add5" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*iJO8GSLG9-JMpXlq45-y8w.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*iJO8GSLG9-JMpXlq45-y8w.png"></div><figcaption class="imageCaption">Sizes of hashes and masks in block proofs for 256-block stateful mode</figcaption></figure><p name="3891" id="3891" class="graf graf--p graf-after--figure">And, finally, hashes (and structure — masks) for contract storage:</p><figure name="a8bf" id="a8bf" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*1uJTveObtgFos13IPMQERg.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*1uJTveObtgFos13IPMQERg.png"></div><figcaption class="imageCaption">Sizes of contract storage hashes and masks in block proofs for fully stateless mode</figcaption></figure><figure name="3497" id="3497" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*87bsdKqnGEHCWpHmFFqwYg.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*87bsdKqnGEHCWpHmFFqwYg.png"></div><figcaption class="imageCaption">Sizes of contract storage hashes and masks in block proofs for 256-block stateful mode</figcaption></figure><p name="dd5d" id="dd5d" class="graf graf--p graf-after--figure">In order to have a chance of getting data for more than a few thousand blocks, I will need to implement a special data structure that can produce these 256-block stateful proofs efficiently. Incidentally, this would also be the data structure that would be needed in the client implementation, and it will have to be formally specified as a part of the stateless clients proposal.</p><h4 name="1b9e" id="1b9e" class="graf graf--h4 graf-after--p">What are the consequences of this?</h4><p name="a003" id="a003" class="graf graf--p graf-after--h4">If the next, more full batch of data look encouraging (it also needs to include the memory footprint of different modes with various shades of statefulness), then potentially the nodes in the Ethereum network would be able to flexibly decide on which point of the “tradeoff curve” they want to be:</p><ul class="postList"><li name="7b55" id="7b55" class="graf graf--li graf-after--p">More stateful (currently all full nodes are assumed to be fully stateful) — consume more memory and potentially do disk I/O, but less bandwidth (because peers will be able to send you smaller proofs)</li><li name="3d1b" id="3d1b" class="graf graf--li graf-after--li">More stateless — consume less memory, but more bandwidth (because peers will need to send you larger proofs).</li></ul><p name="ecaa" id="ecaa" class="graf graf--p graf-after--li graf--trailing">When a node joins the network, it would start in a fully stateless mode, and as it “soaks” up the block proofs, it can become more and more stateful to the desired tradeoff point. Also, it might be possible for the nodes to dynamically shift along the tradeoff curve, for example, to limit memory consumption.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/697b0f88cd04"><time class="dt-published" datetime="2019-04-25T19:05:21.804Z">April 25, 2019</time></a>.</p><p><a href="https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">The shades of statefulness (in Ethereum nodes)</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        This is a raw-half and backed continuation of the research into
+        stateless clients that has been published here. But what I got so far
+        is…
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="4d7e"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="c244"
+                id="c244"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                The shades of statefulness (in Ethereum nodes)
+              </h3>
+              <p name="70cb" id="70cb" class="graf graf--p graf-after--h3">
+                This is a half backed continuation of the research into
+                stateless clients that has been published
+                <a
+                  href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc"
+                  data-href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >here</a
+                >. But what I got so far is potentially quite promising, so I am
+                excited to share. And, I will write a more detailed explanation
+                of what is going on, so don’t worry if you don’t get the point
+                of the chart below.
+              </p>
+              <p name="ade5" id="ade5" class="graf graf--p graf-after--p">
+                At the end of the previous article, I suggested two possible
+                ways to reduce the size of the block proofs, and therefore, the
+                bandwidth consumption of the stateless clients. One of them is
+                adding some “statefulness” by assuming that most of the peers
+                already saw the block proof from the previous block and you can
+                simply show them the difference between the block proof for the
+                current block, and the block proof for the previous block.
+              </p>
+              <p name="852b" id="852b" class="graf graf--p graf-after--p">
+                I have implemented that and it is currently running through the
+                blocks (at the same I have fixed some flaws of the previous
+                prototype, like not using compact keys and other bugs causing
+                failures). It is currently around the block 4.7m and producing
+                stats for the block proofs with 1 block of “statefulness”.
+              </p>
+              <p name="ff30" id="ff30" class="graf graf--p graf-after--p">
+                But then I realised, mostly intuitively, that I will have to
+                generalise this, and make the degree of statefullness
+                adjustable. And I wrote another prototype, where instead of
+                making client 1-block stateful, I made it 256-blocks stateful.
+                256 blocks is about 1 hour. Effectively, block proofs would omit
+                the information that was accessed by transactions within the
+                last 256 blocks. At the moment, the implementation is very
+                inefficient, but I managed to get some early “sneak preview”
+                numbers from it. Lets see. First, total sizes of the block
+                proofs:
+              </p>
+              <figure
+                name="9bca"
+                id="9bca"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*9u_K4ZHUWHye0a3WoEuABQ.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*9u_K4ZHUWHye0a3WoEuABQ.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Block proofs sizes for fully stateless mode
+                </figcaption>
+              </figure>
+              <figure
+                name="df0d"
+                id="df0d"
+                class="graf graf--figure graf-after--figure"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*2dYXjYp_V5euuR7_HPfr6A.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*2dYXjYp_V5euuR7_HPfr6A.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Block proof sizes for 256-block stateful mode
+                </figcaption>
+              </figure>
+              <p name="cba6" id="cba6" class="graf graf--p graf-after--figure">
+                We see substantial reduction. Why? Lets do the breakdown the
+                same way as before:
+              </p>
+              <figure
+                name="1fe6"
+                id="1fe6"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*nvYUuRLKPt1GdL_GNotPZw.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*nvYUuRLKPt1GdL_GNotPZw.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Breakdown for fully stateless mode
+                </figcaption>
+              </figure>
+              <figure
+                name="4c60"
+                id="4c60"
+                class="graf graf--figure graf-after--figure"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*-mH4_tW9J4XvEQYJOLPoiQ.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*-mH4_tW9J4XvEQYJOLPoiQ.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Breakdown for 256-block stateful mode
+                </figcaption>
+              </figure>
+              <p name="d722" id="d722" class="graf graf--p graf-after--figure">
+                Next, key-values for the main trie:
+              </p>
+              <figure
+                name="0bff"
+                id="0bff"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*AdaDAG1fxqRHHXBbXKm00Q.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*AdaDAG1fxqRHHXBbXKm00Q.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sizes of keys and values in block proofs for fully stateless
+                  mode
+                </figcaption>
+              </figure>
+              <figure
+                name="46e5"
+                id="46e5"
+                class="graf graf--figure graf-after--figure"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*21zu2WKFnlL917j_Cc1_eA.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*21zu2WKFnlL917j_Cc1_eA.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sizes of keys and values in block proofs for 256-block
+                  stateful mode
+                </figcaption>
+              </figure>
+              <p name="bdcb" id="bdcb" class="graf graf--p graf-after--figure">
+                Keys and values for contract storage:
+              </p>
+              <figure
+                name="770f"
+                id="770f"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*Miyfe5wwmAkeatgJ6I2GfA.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*Miyfe5wwmAkeatgJ6I2GfA.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sizes of contract storage keys and values in block proofs for
+                  fully stateless mode
+                </figcaption>
+              </figure>
+              <figure
+                name="ac10"
+                id="ac10"
+                class="graf graf--figure graf-after--figure"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*kUkE2HciBTzZUG-Y-k3BrQ.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*kUkE2HciBTzZUG-Y-k3BrQ.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sizes of contract storage keys and values in block proofs for
+                  256-block stateful mode
+                </figcaption>
+              </figure>
+              <p name="09a1" id="09a1" class="graf graf--p graf-after--figure">
+                And now, the 2 most interesting parts. Hashes (and
+                structure — masks) for the main trie:
+              </p>
+              <figure
+                name="be44"
+                id="be44"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*z-u_xfwImxbvZGGFldVblw.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*z-u_xfwImxbvZGGFldVblw.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sizes of hashes and masks in block proofs for fully stateless
+                  mode
+                </figcaption>
+              </figure>
+              <figure
+                name="add5"
+                id="add5"
+                class="graf graf--figure graf-after--figure"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*iJO8GSLG9-JMpXlq45-y8w.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*iJO8GSLG9-JMpXlq45-y8w.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sizes of hashes and masks in block proofs for 256-block
+                  stateful mode
+                </figcaption>
+              </figure>
+              <p name="3891" id="3891" class="graf graf--p graf-after--figure">
+                And, finally, hashes (and structure — masks) for contract
+                storage:
+              </p>
+              <figure
+                name="a8bf"
+                id="a8bf"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*1uJTveObtgFos13IPMQERg.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*1uJTveObtgFos13IPMQERg.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sizes of contract storage hashes and masks in block proofs for
+                  fully stateless mode
+                </figcaption>
+              </figure>
+              <figure
+                name="3497"
+                id="3497"
+                class="graf graf--figure graf-after--figure"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*87bsdKqnGEHCWpHmFFqwYg.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*87bsdKqnGEHCWpHmFFqwYg.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sizes of contract storage hashes and masks in block proofs for
+                  256-block stateful mode
+                </figcaption>
+              </figure>
+              <p name="dd5d" id="dd5d" class="graf graf--p graf-after--figure">
+                In order to have a chance of getting data for more than a few
+                thousand blocks, I will need to implement a special data
+                structure that can produce these 256-block stateful proofs
+                efficiently. Incidentally, this would also be the data structure
+                that would be needed in the client implementation, and it will
+                have to be formally specified as a part of the stateless clients
+                proposal.
+              </p>
+              <h4 name="1b9e" id="1b9e" class="graf graf--h4 graf-after--p">
+                What are the consequences of this?
+              </h4>
+              <p name="a003" id="a003" class="graf graf--p graf-after--h4">
+                If the next, more full batch of data look encouraging (it also
+                needs to include the memory footprint of different modes with
+                various shades of statefulness), then potentially the nodes in
+                the Ethereum network would be able to flexibly decide on which
+                point of the “tradeoff curve” they want to be:
+              </p>
+              <ul class="postList">
+                <li name="7b55" id="7b55" class="graf graf--li graf-after--p">
+                  More stateful (currently all full nodes are assumed to be
+                  fully stateful) — consume more memory and potentially do disk
+                  I/O, but less bandwidth (because peers will be able to send
+                  you smaller proofs)
+                </li>
+                <li name="3d1b" id="3d1b" class="graf graf--li graf-after--li">
+                  More stateless — consume less memory, but more bandwidth
+                  (because peers will need to send you larger proofs).
+                </li>
+              </ul>
+              <p
+                name="ecaa"
+                id="ecaa"
+                class="graf graf--p graf-after--li graf--trailing"
+              >
+                When a node joins the network, it would start in a fully
+                stateless mode, and as it “soaks” up the block proofs, it can
+                become more and more stateful to the desired tradeoff point.
+                Also, it might be possible for the nodes to dynamically shift
+                along the tradeoff curve, for example, to limit memory
+                consumption.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/697b0f88cd04"
+            ><time class="dt-published" datetime="2019-04-25T19:05:21.804Z"
+              >April 25, 2019</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

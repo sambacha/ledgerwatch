@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>State Rent changes for the next Ethereum hard fork</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>State Rent changes for the next Ethereum hard fork</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,159 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">State Rent changes for the next Ethereum hard fork</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-This is a written version of the opinion I expresses at the recent gathering of Ethereum 1x in Berlin.
-</section>
-<section data-field="body" class="e-content">
-<section name="87b2" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="5dec" id="5dec" class="graf graf--h3 graf--leading graf--title">State Rent changes for the next Ethereum hard fork</h3><p name="a02a" id="a02a" class="graf graf--p graf-after--h3">This is a written version of the opinion I expressed at the recent gathering of Ethereum 1x in Berlin.</p><p name="b496" id="b496" class="graf graf--p graf-after--p">I do not have EIPs yet, and I might not have them in time for the May “deadline”. And that is because I do not want just to create “placeholder” EIP which is under-specified and not particularly thought through. Just to get onto the “train”. I would like us to have a better process with higher quality EIPs, and going against this idea straight away with EIPs full of TBDs would be a step backwards.</p><p name="063c" id="063c" class="graf graf--p graf-after--p">My primary focus at the moment is research into semi-stateless client and specification of the necessary data structures (see the <a href="https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04" data-href="https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04" class="markup--anchor markup--p-anchor" target="_blank">latest</a>).</p><p name="ea0c" id="ea0c" class="graf graf--p graf-after--p">However, it would be a shame if we did not start moving into the direction of the State reduction, simply due to procedural limitations. Currently I think it is still a good idea to prepare the changes <strong class="markup--strong markup--p-strong">A</strong>, <strong class="markup--strong markup--p-strong">B</strong>, <strong class="markup--strong markup--p-strong">C</strong>, <strong class="markup--strong markup--p-strong">D</strong> and <strong class="markup--strong markup--p-strong">H</strong> from <a href="https://github.com/ledgerwatch/eth_state/blob/master/State_Fees_3.pdf" data-href="https://github.com/ledgerwatch/eth_state/blob/master/State_Fees_3.pdf" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">State Fees version 3 proposal</a>, though the next steps would change in the proposal version 4 (which is still in the works).</p><figure name="b797" id="b797" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 386px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 55.1%;"></div><img class="graf-image" data-image-id="1*-u6pXyaFlBhHcfoDQB9XPA.png" data-width="2059" data-height="1135" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*-u6pXyaFlBhHcfoDQB9XPA.png"></div></figure><p name="deaf" id="deaf" class="graf graf--p graf-after--figure">Since around January-February 2019, my plans was to delegate prototyping and test generation of these changes (and finally preparation of EIPs) within my working group (that is why we are extending it from 2 to 3 people). But, as you all know, growing a cohesive team takes time and effort, and some time ago I realised that trying to get it all done by 15 of May would be impossible. Therefore, we will simply proceed on our best effort basis, and not be anxious about deadlines (in fact I decided not to read too much into these deadlines back in beginning of March, and the work got so much better).</p><p name="9461" id="9461" class="graf graf--p graf-after--p graf--trailing">So I will keep the proposed dates in mind, but at the same I will kind of ignore them. Because when the EIPs are ready and good enough quality, we will put them in. Of course, it would be a shame if we then had to wait 9 months until the next planned upgrade, but I am confident that people can be flexible and understand the priorities.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/f68a826558c5"><time class="dt-published" datetime="2019-04-27T10:02:11.170Z">April 27, 2019</time></a>.</p><p><a href="https://medium.com/@akhounov/state-rent-changes-for-the-next-ethereum-hard-fork-f68a826558c5" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">
+          State Rent changes for the next Ethereum hard fork
+        </h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        This is a written version of the opinion I expresses at the recent
+        gathering of Ethereum 1x in Berlin.
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="87b2"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="5dec"
+                id="5dec"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                State Rent changes for the next Ethereum hard fork
+              </h3>
+              <p name="a02a" id="a02a" class="graf graf--p graf-after--h3">
+                This is a written version of the opinion I expressed at the
+                recent gathering of Ethereum 1x in Berlin.
+              </p>
+              <p name="b496" id="b496" class="graf graf--p graf-after--p">
+                I do not have EIPs yet, and I might not have them in time for
+                the May “deadline”. And that is because I do not want just to
+                create “placeholder” EIP which is under-specified and not
+                particularly thought through. Just to get onto the “train”. I
+                would like us to have a better process with higher quality EIPs,
+                and going against this idea straight away with EIPs full of TBDs
+                would be a step backwards.
+              </p>
+              <p name="063c" id="063c" class="graf graf--p graf-after--p">
+                My primary focus at the moment is research into semi-stateless
+                client and specification of the necessary data structures (see
+                the
+                <a
+                  href="https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04"
+                  data-href="https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >latest</a
+                >).
+              </p>
+              <p name="ea0c" id="ea0c" class="graf graf--p graf-after--p">
+                However, it would be a shame if we did not start moving into the
+                direction of the State reduction, simply due to procedural
+                limitations. Currently I think it is still a good idea to
+                prepare the changes
+                <strong class="markup--strong markup--p-strong">A</strong>,
+                <strong class="markup--strong markup--p-strong">B</strong>,
+                <strong class="markup--strong markup--p-strong">C</strong>,
+                <strong class="markup--strong markup--p-strong">D</strong> and
+                <strong class="markup--strong markup--p-strong">H</strong> from
+                <a
+                  href="https://github.com/ledgerwatch/eth_state/blob/master/State_Fees_3.pdf"
+                  data-href="https://github.com/ledgerwatch/eth_state/blob/master/State_Fees_3.pdf"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >State Fees version 3 proposal</a
+                >, though the next steps would change in the proposal version 4
+                (which is still in the works).
+              </p>
+              <figure
+                name="b797"
+                id="b797"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 386px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 55.1%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*-u6pXyaFlBhHcfoDQB9XPA.png"
+                    data-width="2059"
+                    data-height="1135"
+                    data-is-featured="true"
+                    src="https://cdn-images-1.medium.com/max/800/1*-u6pXyaFlBhHcfoDQB9XPA.png"
+                  />
+                </div>
+              </figure>
+              <p name="deaf" id="deaf" class="graf graf--p graf-after--figure">
+                Since around January-February 2019, my plans was to delegate
+                prototyping and test generation of these changes (and finally
+                preparation of EIPs) within my working group (that is why we are
+                extending it from 2 to 3 people). But, as you all know, growing
+                a cohesive team takes time and effort, and some time ago I
+                realised that trying to get it all done by 15 of May would be
+                impossible. Therefore, we will simply proceed on our best effort
+                basis, and not be anxious about deadlines (in fact I decided not
+                to read too much into these deadlines back in beginning of
+                March, and the work got so much better).
+              </p>
+              <p
+                name="9461"
+                id="9461"
+                class="graf graf--p graf-after--p graf--trailing"
+              >
+                So I will keep the proposed dates in mind, but at the same I
+                will kind of ignore them. Because when the EIPs are ready and
+                good enough quality, we will put them in. Of course, it would be
+                a shame if we then had to wait 9 months until the next planned
+                upgrade, but I am confident that people can be flexible and
+                understand the priorities.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/f68a826558c5"
+            ><time class="dt-published" datetime="2019-04-27T10:02:11.170Z"
+              >April 27, 2019</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/state-rent-changes-for-the-next-ethereum-hard-fork-f68a826558c5"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

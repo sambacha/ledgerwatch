@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Do not worry about Ripple</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Do not worry about Ripple</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,143 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Do not worry about Ripple</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-Run by banks?
-</section>
-<section data-field="body" class="e-content">
-<section name="c6f0" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="b7a9" id="b7a9" class="graf graf--h3 graf--leading graf--title">Do not worry about Ripple</h3><h3 name="e89e" id="e89e" class="graf graf--h3 graf-after--h3">Run by banks?</h3><p name="c55c" id="c55c" class="graf graf--p graf-after--h3">Ripple is not necessarily run by banks. It just turned out that the concept of assets in Ripple (IOUs for various fiat currencies) very accurately represents what bank money really is. Originally (Ripple was around before Bitcoin) the idea was that anyone would be able to run a Ripple gateway and issue IOUs (by accepting people’s deposits and processing withdrawals in exchange for those IOUs). But due to problems with reversed fiat transactions and various regulations, it turned out that the existing banks are actually the perfect gateways.</p><h3 name="151e" id="151e" class="graf graf--h3 graf-after--p">What is the function of XRP?</h3><p name="5cc5" id="5cc5" class="graf graf--p graf-after--h3">My understanding is that XRP (native currency of Ripple) has 2 functions in such system:</p><ol class="postList"><li name="ea65" id="ea65" class="graf graf--li graf-after--p">A small amount of it is required to create IOUs (to prevent spamming)</li><li name="0693" id="0693" class="graf graf--li graf-after--li">It can play a role of intermediate asset if there is no direct market between IOUs. For example, if there is Citi USD IOUs and Chase USD IOUs, and there is no direct swap, you might be able to swap one for XRP and then XRP for another</li></ol><h3 name="8793" id="8793" class="graf graf--h3 graf-after--li">Consensus mechanism centralised?</h3><p name="c617" id="c617" class="graf graf--p graf-after--h3">People often criticise Ripple’s consensus mechanism. When you set up a node (I tried to do that back in 2014, but gave up after 2 weeks of trying, though I got Bitcoin and Ethereum POC going in no time), you specify the list of nodes that you “trust” (or just take the default which contains bunch of sX.ripple.com servers), and then you definition of finality of certain transaction depends on your list of “trusted” servers. If your list is too non-standard, you might see different picture of finality from others. Therefore, most people simply use the default, because it is a “Shelling point”</p><h3 name="66d8" id="66d8" class="graf graf--h3 graf-after--p">Is it good or bad?</h3><p name="56f4" id="56f4" class="graf graf--p graf-after--h3">I think adoption of Ripple allows banks (and their customers) to better deal with bank money (IOUs) especially in an event of a credit crisis, where value of various IOUs diverge between each other and from the high-powered money (cash and central bank money). Traditionally, accounting systems in banks (and other enterprises) simply assume that “money is money”, leaving out the nuances that most money is actually someone’s liability. If you start using Ripple to improve your accounting, it is less likely you will be sending money into a “black hole” (bankrupted counter-party), as it happened to many in the first days after Lehman filed for bankruptcy.</p><h3 name="1043" id="1043" class="graf graf--h3 graf-after--p">Competition?</h3><p name="e5d2" id="e5d2" class="graf graf--p graf-after--h3 graf--trailing">And I also think that Ripple is not a competition for Bitcoin or Ethereum, or any other public cryptocurrencies. Ripple is a platform for IOU management. It can also have IOUs for Ethereum and Bitcoin, if you will. But Bitcoin and Ethereum, if they stay de-centralised, will still be like high-powered money in relation to those IOUs. The synergy is possible.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/a62d94e6ece1"><time class="dt-published" datetime="2017-12-31T19:52:14.895Z">December 31, 2017</time></a>.</p><p><a href="https://medium.com/@akhounov/do-not-worry-about-ripple-a62d94e6ece1" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">Do not worry about Ripple</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        Run by banks?
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="c6f0"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="b7a9"
+                id="b7a9"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Do not worry about Ripple
+              </h3>
+              <h3 name="e89e" id="e89e" class="graf graf--h3 graf-after--h3">
+                Run by banks?
+              </h3>
+              <p name="c55c" id="c55c" class="graf graf--p graf-after--h3">
+                Ripple is not necessarily run by banks. It just turned out that
+                the concept of assets in Ripple (IOUs for various fiat
+                currencies) very accurately represents what bank money really
+                is. Originally (Ripple was around before Bitcoin) the idea was
+                that anyone would be able to run a Ripple gateway and issue IOUs
+                (by accepting people’s deposits and processing withdrawals in
+                exchange for those IOUs). But due to problems with reversed fiat
+                transactions and various regulations, it turned out that the
+                existing banks are actually the perfect gateways.
+              </p>
+              <h3 name="151e" id="151e" class="graf graf--h3 graf-after--p">
+                What is the function of XRP?
+              </h3>
+              <p name="5cc5" id="5cc5" class="graf graf--p graf-after--h3">
+                My understanding is that XRP (native currency of Ripple) has 2
+                functions in such system:
+              </p>
+              <ol class="postList">
+                <li name="ea65" id="ea65" class="graf graf--li graf-after--p">
+                  A small amount of it is required to create IOUs (to prevent
+                  spamming)
+                </li>
+                <li name="0693" id="0693" class="graf graf--li graf-after--li">
+                  It can play a role of intermediate asset if there is no direct
+                  market between IOUs. For example, if there is Citi USD IOUs
+                  and Chase USD IOUs, and there is no direct swap, you might be
+                  able to swap one for XRP and then XRP for another
+                </li>
+              </ol>
+              <h3 name="8793" id="8793" class="graf graf--h3 graf-after--li">
+                Consensus mechanism centralised?
+              </h3>
+              <p name="c617" id="c617" class="graf graf--p graf-after--h3">
+                People often criticise Ripple’s consensus mechanism. When you
+                set up a node (I tried to do that back in 2014, but gave up
+                after 2 weeks of trying, though I got Bitcoin and Ethereum POC
+                going in no time), you specify the list of nodes that you
+                “trust” (or just take the default which contains bunch of
+                sX.ripple.com servers), and then you definition of finality of
+                certain transaction depends on your list of “trusted” servers.
+                If your list is too non-standard, you might see different
+                picture of finality from others. Therefore, most people simply
+                use the default, because it is a “Shelling point”
+              </p>
+              <h3 name="66d8" id="66d8" class="graf graf--h3 graf-after--p">
+                Is it good or bad?
+              </h3>
+              <p name="56f4" id="56f4" class="graf graf--p graf-after--h3">
+                I think adoption of Ripple allows banks (and their customers) to
+                better deal with bank money (IOUs) especially in an event of a
+                credit crisis, where value of various IOUs diverge between each
+                other and from the high-powered money (cash and central bank
+                money). Traditionally, accounting systems in banks (and other
+                enterprises) simply assume that “money is money”, leaving out
+                the nuances that most money is actually someone’s liability. If
+                you start using Ripple to improve your accounting, it is less
+                likely you will be sending money into a “black hole” (bankrupted
+                counter-party), as it happened to many in the first days after
+                Lehman filed for bankruptcy.
+              </p>
+              <h3 name="1043" id="1043" class="graf graf--h3 graf-after--p">
+                Competition?
+              </h3>
+              <p
+                name="e5d2"
+                id="e5d2"
+                class="graf graf--p graf-after--h3 graf--trailing"
+              >
+                And I also think that Ripple is not a competition for Bitcoin or
+                Ethereum, or any other public cryptocurrencies. Ripple is a
+                platform for IOU management. It can also have IOUs for Ethereum
+                and Bitcoin, if you will. But Bitcoin and Ethereum, if they stay
+                de-centralised, will still be like high-powered money in
+                relation to those IOUs. The synergy is possible.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/a62d94e6ece1"
+            ><time class="dt-published" datetime="2017-12-31T19:52:14.895Z"
+              >December 31, 2017</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/do-not-worry-about-ripple-a62d94e6ece1"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Roadmap for Turbo-Geth</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Roadmap for Turbo-Geth</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,257 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Roadmap for Turbo-Geth</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-For the last few weeks (since 3rd of December 2017), I have been obsessed with the idea of optimising Ethereum client (in particular…
-</section>
-<section data-field="body" class="e-content">
-<section name="583b" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="6536" id="6536" class="graf graf--h3 graf--leading graf--title">Roadmap for Turbo-Geth</h3><p name="034e" id="034e" class="graf graf--p graf-after--h3">For the last few weeks (since 3rd of December 2017), I have been obsessed with the idea of optimising Ethereum client (in particular go-ethereum, but I am sure almost everything can be carried over to other implementations). I believe this is an urgent demand, and it will not go away even with introduction of Casper.</p><p name="38c4" id="38c4" class="graf graf--p graf-after--p">Majority of optimisations are related to handling of Ethereum state. The main goal of optimisations is to reduce the time it takes for blocks to propagate through the network, which will allow further increase in gas limit without corresponding increase of the uncle rate.</p><p name="57d0" id="57d0" class="graf graf--p graf-after--p">Now I feel I need to publish this, before I get deeper and deeper and start neglecting other aspects of my life. I need to publish this to get rid of that obsession.</p><p name="5604" id="5604" class="graf graf--p graf-after--p">This is my plan. I have forked go-ethereum repository, and started making changes. When the changes are more-less polished, I will try to make into a working client. But the intent is, of course, to get at least some of these changes ported back into the go-ethereum. Now I will list the optimisations. I am planning to further expand the points with more details. I will also add preamble describing the current layout of the state in the go-ethereum node.</p><ol class="postList"><li name="5a92" id="5a92" class="graf graf--li graf-after--p">Reuse of stateDB object, and specifically its storage tries (one per account) between the blocks. Currently, the stateDB object is re-created before each new block gets processed. There is a cache of the account trie, which allows new StateDB object to pick up the old trie, but there is no cache of storage trie. Therefore, storage tries come into processing of every block cold. I have implemented this change in my version in these commits: <a href="https://github.com/AlexeyAkhunov/go-ethereum/commit/666c7845fa34feed2f22c6d908d3d8ae04f180b3" data-href="https://github.com/AlexeyAkhunov/go-ethereum/commit/666c7845fa34feed2f22c6d908d3d8ae04f180b3" class="markup--anchor markup--li-anchor" rel="noopener" target="_blank">this</a> and <a href="https://github.com/AlexeyAkhunov/go-ethereum/commit/921a588b77eeed54736acbd168a26dda3750dfe6" data-href="https://github.com/AlexeyAkhunov/go-ethereum/commit/921a588b77eeed54736acbd168a26dda3750dfe6" class="markup--anchor markup--li-anchor" rel="noopener" target="_blank">this</a>.</li><li name="c249" id="c249" class="graf graf--li graf-after--li">Change the trie node caching from generation-based approach to node-count based approach. Currently, by default 120 so-called generations of the trie nodes are stored. Generation advances whenever the state is committed into the database (after block processing). Each node carries the generation mark, which is brought in line with the current generation whenever the node is touched. Nodes with generation mark smaller than “current generation — 120” are evicted from the cache. The change is to have generation advance every time a node gets touched. That means we won’t keep certain number of generations, but instead certain number of nodes. This parameter (number of nodes to keep) will be much easier to calibrate than the number of generations, so more memory can be given to the trie node cache. I have implemented this change (with some other stuff) in this <a href="https://github.com/AlexeyAkhunov/go-ethereum/commit/c9bf9b21923142070ada30a69f0ab416ed3dc4c2" data-href="https://github.com/AlexeyAkhunov/go-ethereum/commit/c9bf9b21923142070ada30a69f0ab416ed3dc4c2" class="markup--anchor markup--li-anchor" rel="noopener" target="_blank">commit</a>.</li><li name="4015" id="4015" class="graf graf--li graf-after--li">Change the way the trie nodes are stored in the database, specifically what constitutes the key. Currently, each node is stored as one record in LevelDB. The key is the 32-byte hash of the node, and the value is the RLP serialisation of the node. Nodes can be of 3 types: full nodes (array of 17 elements, 16 for each nibble, and 17-th for the value), short nodes (key-value pair), and value nodes (leaves of the trie). Value nodes exist only theoretically, but not actually in the database, because their existence requires having 2 SHA3 images that only differ in the last 4 bits. Practically, all trie leaves are contained in short nodes. When a trie branch is “cold” (not expanded), in order to reach a certain leaf or sub-branch, a few levels of the trie need to be expanded (4 levels on average). Each expansion requires a lookup in the LevelDB. The worst thing about it is that these lookups have to be sequential, because the key for the deeper level is contained on the level right above it. The change is to have LevelDB keys not being hashes of the values, but instead based on the paths from the root to the branch of leaf. The key would be constructed as follows: &lt;trie prefix&gt;|&lt;path&gt;|&lt;block mask&gt;. &lt;trie prefix&gt; allows differentiating tries from each other. In my implementation, account trie has “AT” prefix in all its keys, and each storage trie has the address of the account as prefix. &lt;Path&gt; is a compact representation of path from the trie root to the branch or leaf. &lt;block mask&gt; is bitwise-inverted value of block number in which the entry was created. This trick allows finding the nodes that were added prior to a certain block using LevelDB’s range queries (LevelDB stores records in sorted order, so the range queries are efficient). I have implemented this change, but it is spread over many commits.</li><li name="1bc1" id="1bc1" class="graf graf--li graf-after--li">Handling of chain re-orgs. After change (3), in order to support chain re-orgs, we need to be able to remove all nodes belonging to the certain range of blocks, before we apply the new blocks. This could be easily achieved by storing some additional info in the database. Each time we store a trie node, we also add a record with a key &lt;block number&gt;|&lt;counter&gt; and value being the key of the node. When we need to clean up, we use range query &lt;block number&gt;* to find all nodes to clean up. I have not implemented this change yet.</li><li name="63f6" id="63f6" class="graf graf--li graf-after--li">State reads to require only 1 database lookup. With the change (3), and a small addition, where for each short node, we also write out the value node separately, with the full path, we can read values from the state without expanding the trie at all. I have implemented this change in this <a href="https://github.com/AlexeyAkhunov/go-ethereum/commit/471916a7ac9789de710ae5e7c30f75a6c35b7de9" data-href="https://github.com/AlexeyAkhunov/go-ethereum/commit/471916a7ac9789de710ae5e7c30f75a6c35b7de9" class="markup--anchor markup--li-anchor" rel="noopener" target="_blank">commit</a>, but it is a bit messy. Subsequent profiling sessions showed that state reading is now negligible and does not even appear in the report.</li><li name="6575" id="6575" class="graf graf--li graf-after--li">Pre-fetch trie expansion lookups for state modifications, in parallel. Because of change (3), trie expansions are not dependent on each other, and can be performed in parallel. I have implemented this (spread over many commits) and currently profiling and tuning it. It is currently not clear whether this in fact is an improvement. It looks like LevelDB serialises concurrent reads, so this could only work with a different database (perhaps BoltDB or BadgerDB?)</li><li name="c7ed" id="c7ed" class="graf graf--li graf-after--li">Pre-fetch based on transactions in the mempool. Looking at the current mempool, nodes can estimate what transactions can be included into the next block. And, I conjecture, in most cases, running them against the current state and pre-expanding some areas of the tries will speed up the processing of the next block, when it does come. I have not impemented this change yet.</li><li name="dfa3" id="dfa3" class="graf graf--li graf-after--li">More efficient memory usage for storing the trie. After change (2), the next observation that needs to be made (I have made it in the past and need to re-verify it for Ethereum tries) that most of the trie nodes stored in memory will end up being full nodes with 2 occupied and 15 non-occupied nodes. Because they are stored as array of 17 elements, each element being a reference (8 bytes), it ends up being 136 bytes per node. If this type of node does indeed turn out to be dominant, we can store it in 17 bytes (4 bits for the index of the first non-empty child, 4 bit bits for the index of the second non-empty child, and 16 bytes for children).</li><li name="156e" id="156e" class="graf graf--li graf-after--li graf--trailing">More efficient storage of trie nodes in the database. I have not done the analysis, but I suspect that there is quite a lot of repetition in the trie nodes stored in the database. In particular, certain trie nodes, once touched, but then never used, will be repeatedly referenced from the sibling nodes. Once I have done analysis on this, I can suggest some ways to improve this.</li></ol></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/31cbfb1e72b7"><time class="dt-published" datetime="2018-01-06T16:42:32.641Z">January 6, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/roadmap-for-turbo-geth-31cbfb1e72b7" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">Roadmap for Turbo-Geth</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        For the last few weeks (since 3rd of December 2017), I have been
+        obsessed with the idea of optimising Ethereum client (in particular…
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="583b"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="6536"
+                id="6536"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Roadmap for Turbo-Geth
+              </h3>
+              <p name="034e" id="034e" class="graf graf--p graf-after--h3">
+                For the last few weeks (since 3rd of December 2017), I have been
+                obsessed with the idea of optimising Ethereum client (in
+                particular go-ethereum, but I am sure almost everything can be
+                carried over to other implementations). I believe this is an
+                urgent demand, and it will not go away even with introduction of
+                Casper.
+              </p>
+              <p name="38c4" id="38c4" class="graf graf--p graf-after--p">
+                Majority of optimisations are related to handling of Ethereum
+                state. The main goal of optimisations is to reduce the time it
+                takes for blocks to propagate through the network, which will
+                allow further increase in gas limit without corresponding
+                increase of the uncle rate.
+              </p>
+              <p name="57d0" id="57d0" class="graf graf--p graf-after--p">
+                Now I feel I need to publish this, before I get deeper and
+                deeper and start neglecting other aspects of my life. I need to
+                publish this to get rid of that obsession.
+              </p>
+              <p name="5604" id="5604" class="graf graf--p graf-after--p">
+                This is my plan. I have forked go-ethereum repository, and
+                started making changes. When the changes are more-less polished,
+                I will try to make into a working client. But the intent is, of
+                course, to get at least some of these changes ported back into
+                the go-ethereum. Now I will list the optimisations. I am
+                planning to further expand the points with more details. I will
+                also add preamble describing the current layout of the state in
+                the go-ethereum node.
+              </p>
+              <ol class="postList">
+                <li name="5a92" id="5a92" class="graf graf--li graf-after--p">
+                  Reuse of stateDB object, and specifically its storage tries
+                  (one per account) between the blocks. Currently, the stateDB
+                  object is re-created before each new block gets processed.
+                  There is a cache of the account trie, which allows new StateDB
+                  object to pick up the old trie, but there is no cache of
+                  storage trie. Therefore, storage tries come into processing of
+                  every block cold. I have implemented this change in my version
+                  in these commits:
+                  <a
+                    href="https://github.com/AlexeyAkhunov/go-ethereum/commit/666c7845fa34feed2f22c6d908d3d8ae04f180b3"
+                    data-href="https://github.com/AlexeyAkhunov/go-ethereum/commit/666c7845fa34feed2f22c6d908d3d8ae04f180b3"
+                    class="markup--anchor markup--li-anchor"
+                    rel="noopener"
+                    target="_blank"
+                    >this</a
+                  >
+                  and
+                  <a
+                    href="https://github.com/AlexeyAkhunov/go-ethereum/commit/921a588b77eeed54736acbd168a26dda3750dfe6"
+                    data-href="https://github.com/AlexeyAkhunov/go-ethereum/commit/921a588b77eeed54736acbd168a26dda3750dfe6"
+                    class="markup--anchor markup--li-anchor"
+                    rel="noopener"
+                    target="_blank"
+                    >this</a
+                  >.
+                </li>
+                <li name="c249" id="c249" class="graf graf--li graf-after--li">
+                  Change the trie node caching from generation-based approach to
+                  node-count based approach. Currently, by default 120 so-called
+                  generations of the trie nodes are stored. Generation advances
+                  whenever the state is committed into the database (after block
+                  processing). Each node carries the generation mark, which is
+                  brought in line with the current generation whenever the node
+                  is touched. Nodes with generation mark smaller than “current
+                  generation — 120” are evicted from the cache. The change is to
+                  have generation advance every time a node gets touched. That
+                  means we won’t keep certain number of generations, but instead
+                  certain number of nodes. This parameter (number of nodes to
+                  keep) will be much easier to calibrate than the number of
+                  generations, so more memory can be given to the trie node
+                  cache. I have implemented this change (with some other stuff)
+                  in this
+                  <a
+                    href="https://github.com/AlexeyAkhunov/go-ethereum/commit/c9bf9b21923142070ada30a69f0ab416ed3dc4c2"
+                    data-href="https://github.com/AlexeyAkhunov/go-ethereum/commit/c9bf9b21923142070ada30a69f0ab416ed3dc4c2"
+                    class="markup--anchor markup--li-anchor"
+                    rel="noopener"
+                    target="_blank"
+                    >commit</a
+                  >.
+                </li>
+                <li name="4015" id="4015" class="graf graf--li graf-after--li">
+                  Change the way the trie nodes are stored in the database,
+                  specifically what constitutes the key. Currently, each node is
+                  stored as one record in LevelDB. The key is the 32-byte hash
+                  of the node, and the value is the RLP serialisation of the
+                  node. Nodes can be of 3 types: full nodes (array of 17
+                  elements, 16 for each nibble, and 17-th for the value), short
+                  nodes (key-value pair), and value nodes (leaves of the trie).
+                  Value nodes exist only theoretically, but not actually in the
+                  database, because their existence requires having 2 SHA3
+                  images that only differ in the last 4 bits. Practically, all
+                  trie leaves are contained in short nodes. When a trie branch
+                  is “cold” (not expanded), in order to reach a certain leaf or
+                  sub-branch, a few levels of the trie need to be expanded (4
+                  levels on average). Each expansion requires a lookup in the
+                  LevelDB. The worst thing about it is that these lookups have
+                  to be sequential, because the key for the deeper level is
+                  contained on the level right above it. The change is to have
+                  LevelDB keys not being hashes of the values, but instead based
+                  on the paths from the root to the branch of leaf. The key
+                  would be constructed as follows: &lt;trie
+                  prefix&gt;|&lt;path&gt;|&lt;block mask&gt;. &lt;trie
+                  prefix&gt; allows differentiating tries from each other. In my
+                  implementation, account trie has “AT” prefix in all its keys,
+                  and each storage trie has the address of the account as
+                  prefix. &lt;Path&gt; is a compact representation of path from
+                  the trie root to the branch or leaf. &lt;block mask&gt; is
+                  bitwise-inverted value of block number in which the entry was
+                  created. This trick allows finding the nodes that were added
+                  prior to a certain block using LevelDB’s range queries
+                  (LevelDB stores records in sorted order, so the range queries
+                  are efficient). I have implemented this change, but it is
+                  spread over many commits.
+                </li>
+                <li name="1bc1" id="1bc1" class="graf graf--li graf-after--li">
+                  Handling of chain re-orgs. After change (3), in order to
+                  support chain re-orgs, we need to be able to remove all nodes
+                  belonging to the certain range of blocks, before we apply the
+                  new blocks. This could be easily achieved by storing some
+                  additional info in the database. Each time we store a trie
+                  node, we also add a record with a key &lt;block
+                  number&gt;|&lt;counter&gt; and value being the key of the
+                  node. When we need to clean up, we use range query &lt;block
+                  number&gt;* to find all nodes to clean up. I have not
+                  implemented this change yet.
+                </li>
+                <li name="63f6" id="63f6" class="graf graf--li graf-after--li">
+                  State reads to require only 1 database lookup. With the change
+                  (3), and a small addition, where for each short node, we also
+                  write out the value node separately, with the full path, we
+                  can read values from the state without expanding the trie at
+                  all. I have implemented this change in this
+                  <a
+                    href="https://github.com/AlexeyAkhunov/go-ethereum/commit/471916a7ac9789de710ae5e7c30f75a6c35b7de9"
+                    data-href="https://github.com/AlexeyAkhunov/go-ethereum/commit/471916a7ac9789de710ae5e7c30f75a6c35b7de9"
+                    class="markup--anchor markup--li-anchor"
+                    rel="noopener"
+                    target="_blank"
+                    >commit</a
+                  >, but it is a bit messy. Subsequent profiling sessions showed
+                  that state reading is now negligible and does not even appear
+                  in the report.
+                </li>
+                <li name="6575" id="6575" class="graf graf--li graf-after--li">
+                  Pre-fetch trie expansion lookups for state modifications, in
+                  parallel. Because of change (3), trie expansions are not
+                  dependent on each other, and can be performed in parallel. I
+                  have implemented this (spread over many commits) and currently
+                  profiling and tuning it. It is currently not clear whether
+                  this in fact is an improvement. It looks like LevelDB
+                  serialises concurrent reads, so this could only work with a
+                  different database (perhaps BoltDB or BadgerDB?)
+                </li>
+                <li name="c7ed" id="c7ed" class="graf graf--li graf-after--li">
+                  Pre-fetch based on transactions in the mempool. Looking at the
+                  current mempool, nodes can estimate what transactions can be
+                  included into the next block. And, I conjecture, in most
+                  cases, running them against the current state and
+                  pre-expanding some areas of the tries will speed up the
+                  processing of the next block, when it does come. I have not
+                  impemented this change yet.
+                </li>
+                <li name="dfa3" id="dfa3" class="graf graf--li graf-after--li">
+                  More efficient memory usage for storing the trie. After change
+                  (2), the next observation that needs to be made (I have made
+                  it in the past and need to re-verify it for Ethereum tries)
+                  that most of the trie nodes stored in memory will end up being
+                  full nodes with 2 occupied and 15 non-occupied nodes. Because
+                  they are stored as array of 17 elements, each element being a
+                  reference (8 bytes), it ends up being 136 bytes per node. If
+                  this type of node does indeed turn out to be dominant, we can
+                  store it in 17 bytes (4 bits for the index of the first
+                  non-empty child, 4 bit bits for the index of the second
+                  non-empty child, and 16 bytes for children).
+                </li>
+                <li
+                  name="156e"
+                  id="156e"
+                  class="graf graf--li graf-after--li graf--trailing"
+                >
+                  More efficient storage of trie nodes in the database. I have
+                  not done the analysis, but I suspect that there is quite a lot
+                  of repetition in the trie nodes stored in the database. In
+                  particular, certain trie nodes, once touched, but then never
+                  used, will be repeatedly referenced from the sibling nodes.
+                  Once I have done analysis on this, I can suggest some ways to
+                  improve this.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/31cbfb1e72b7"
+            ><time class="dt-published" datetime="2018-01-06T16:42:32.641Z"
+              >January 6, 2018</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/roadmap-for-turbo-geth-31cbfb1e72b7"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

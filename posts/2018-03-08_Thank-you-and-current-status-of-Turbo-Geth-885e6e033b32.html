@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Thank you and current status of Turbo-Geth</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Thank you and current status of Turbo-Geth</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,128 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Thank you and current status of Turbo-Geth</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-First of all, I would like to extend my gratitude to Ethereum Foundation and the Scalability Fund for awarding Turbo-Geth project a very…
-</section>
-<section data-field="body" class="e-content">
-<section name="bd82" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="08c1" id="08c1" class="graf graf--h3 graf--leading graf--title">Thank you and current status of Turbo-Geth</h3><p name="e8ff" id="e8ff" class="graf graf--p graf-after--h3">First of all, I would like to extend my gratitude to Ethereum Foundation and the Scalability Fund for awarding Turbo-Geth project a very generous grant of $25&#39;000. This will definitely prove immensely helpful in the developement and testing (I am using Cloud machines for testing now and the bills are getting quite high). And this is not just about money, I really appreciate the recognition of my efforts.</p><p name="a358" id="a358" class="graf graf--p graf-after--p">This grant makes me want to work harder on Turbo-Geth. And this is a good moment to update you all on my progress.</p><p name="31be" id="31be" class="graf graf--p graf-after--p">Since my <a href="https://medium.com/@akhounov/more-on-ethereum-accounts-trie-structure-8383a9fd4c93" data-href="https://medium.com/@akhounov/more-on-ethereum-accounts-trie-structure-8383a9fd4c93" class="markup--anchor markup--p-anchor" target="_blank">last post</a>, I have managed to implement the idea of the “hash file”, which is a memory-mapped file always with the size of 32Mb, kept alongside the “chaindata” database file. It stores hashes of all nodes on the level 5 of the accounts trie (there are maximum 16⁵ of them, because the trie is hexary). Updates to the file are coincided with the committing to the “chaindata” database file.</p><p name="9090" id="9090" class="graf graf--p graf-after--p">Each time Turbo-Geth starts, it tries to rebuild the top of the accounts trie (levels from 0 to 5) from the hashfile. This process takes about 0,5 seconds normally. If it does not succeed, however (because hashfile is missing or corrupted, or incorrect — meaning that the restored root hash does not match what is expected), hashfile is reconstructed from the “chaindata” database, which currently takes about 1,5 hours for the block 5m on a cold machine.</p><p name="abb4" id="abb4" class="graf graf--p graf-after--p">Introduction of the hashfile not only solves the problem of the slow startup, but also allows running a Turbo-Geth node on a machine with a very modest amount of memory. Previous version required tens of Gb of memory to rebuild account trie from “chain data”, but rebuilding the hashfile has a constant memory footprint in the range of 100Mb.</p><p name="c5a0" id="c5a0" class="graf graf--p graf-after--p graf--trailing">Another thing that I have completed is the rebase to the latest (as of 7th of March) master of go-ethereum, to get all the fixes and improvements in, and also to be able to upgrade to go 1.10. Number of conflicts around trie management code is large, and now I am working through the broken tests again. Lots of tests simply do not apply anymore (for example, state trie sync won’t work for Turbo-Geth, because it does not materialise state trie as such). Also, it does not use intermediate trie cache database, introduced in geth 1.8. I am most excited about testing the RPC API requests before running another performance benchmark on the cloud.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/885e6e033b32"><time class="dt-published" datetime="2018-03-08T09:35:21.713Z">March 8, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/thank-you-and-current-status-of-turbo-geth-885e6e033b32" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">Thank you and current status of Turbo-Geth</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        First of all, I would like to extend my gratitude to Ethereum Foundation
+        and the Scalability Fund for awarding Turbo-Geth project a very…
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="bd82"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="08c1"
+                id="08c1"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Thank you and current status of Turbo-Geth
+              </h3>
+              <p name="e8ff" id="e8ff" class="graf graf--p graf-after--h3">
+                First of all, I would like to extend my gratitude to Ethereum
+                Foundation and the Scalability Fund for awarding Turbo-Geth
+                project a very generous grant of $25&#39;000. This will
+                definitely prove immensely helpful in the developement and
+                testing (I am using Cloud machines for testing now and the bills
+                are getting quite high). And this is not just about money, I
+                really appreciate the recognition of my efforts.
+              </p>
+              <p name="a358" id="a358" class="graf graf--p graf-after--p">
+                This grant makes me want to work harder on Turbo-Geth. And this
+                is a good moment to update you all on my progress.
+              </p>
+              <p name="31be" id="31be" class="graf graf--p graf-after--p">
+                Since my
+                <a
+                  href="https://medium.com/@akhounov/more-on-ethereum-accounts-trie-structure-8383a9fd4c93"
+                  data-href="https://medium.com/@akhounov/more-on-ethereum-accounts-trie-structure-8383a9fd4c93"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >last post</a
+                >, I have managed to implement the idea of the “hash file”,
+                which is a memory-mapped file always with the size of 32Mb, kept
+                alongside the “chaindata” database file. It stores hashes of all
+                nodes on the level 5 of the accounts trie (there are maximum 16⁵
+                of them, because the trie is hexary). Updates to the file are
+                coincided with the committing to the “chaindata” database file.
+              </p>
+              <p name="9090" id="9090" class="graf graf--p graf-after--p">
+                Each time Turbo-Geth starts, it tries to rebuild the top of the
+                accounts trie (levels from 0 to 5) from the hashfile. This
+                process takes about 0,5 seconds normally. If it does not
+                succeed, however (because hashfile is missing or corrupted, or
+                incorrect — meaning that the restored root hash does not match
+                what is expected), hashfile is reconstructed from the
+                “chaindata” database, which currently takes about 1,5 hours for
+                the block 5m on a cold machine.
+              </p>
+              <p name="abb4" id="abb4" class="graf graf--p graf-after--p">
+                Introduction of the hashfile not only solves the problem of the
+                slow startup, but also allows running a Turbo-Geth node on a
+                machine with a very modest amount of memory. Previous version
+                required tens of Gb of memory to rebuild account trie from
+                “chain data”, but rebuilding the hashfile has a constant memory
+                footprint in the range of 100Mb.
+              </p>
+              <p
+                name="c5a0"
+                id="c5a0"
+                class="graf graf--p graf-after--p graf--trailing"
+              >
+                Another thing that I have completed is the rebase to the latest
+                (as of 7th of March) master of go-ethereum, to get all the fixes
+                and improvements in, and also to be able to upgrade to go 1.10.
+                Number of conflicts around trie management code is large, and
+                now I am working through the broken tests again. Lots of tests
+                simply do not apply anymore (for example, state trie sync won’t
+                work for Turbo-Geth, because it does not materialise state trie
+                as such). Also, it does not use intermediate trie cache
+                database, introduced in geth 1.8. I am most excited about
+                testing the RPC API requests before running another performance
+                benchmark on the cloud.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/885e6e033b32"
+            ><time class="dt-published" datetime="2018-03-08T09:35:21.713Z"
+              >March 8, 2018</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/thank-you-and-current-status-of-turbo-geth-885e6e033b32"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Turbo-Geth: Where we are at</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Turbo-Geth: Where we are at</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,289 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Turbo-Geth: Where we are at</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-It has been almost 3 months since my last post. In the meantime, I presented Turbo-Geth at EDCON. I have been working on this most of my…
-</section>
-<section data-field="body" class="e-content">
-<section name="e128" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="a51f" id="a51f" class="graf graf--h3 graf--leading graf--title">Turbo-Geth: Where we are at</h3><p name="78bf" id="78bf" class="graf graf--p graf-after--h3">It has been almost 3 months since my last post. In the meantime, I presented <a href="https://youtu.be/vlLFQqfgOPk?t=23579" data-href="https://youtu.be/vlLFQqfgOPk?t=23579" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">Turbo-Geth at EDCON</a>. I have been working on this most of my time, learnt a lot, had moments of doubt, frustrations, lots of “a-ha” moments.</p><h3 name="5f02" id="5f02" class="graf graf--h3 graf-after--p">Grant</h3><p name="c94b" id="c94b" class="graf graf--p graf-after--h3">The Grant from the Ethereum Foundation was announced back in March 2018, and my previous blog post was about saying “Thank you”. We did exchange some paperwork in these 3 months, but the actual money has not arrived yet, unfortunately. I am not writing this to complain (I know they are probably overwhelmed by the processing of all those grants, but I don’t know if this affects everyone or I am just unlucky), just wanted to let everyone know that it is still my very own project. In some ways, this is good, because I feel a bit less pressure (see the Conclusion). I still earn some money from other projects, so I am still happy.</p><h3 name="3ce8" id="3ce8" class="graf graf--h3 graf-after--p">Upstream, downstream</h3><p name="45be" id="45be" class="graf graf--p graf-after--h3">Geth 1.8.11 has been released yesterday and I have rebased my code to it, which is now in this branch: <a href="https://github.com/AlexeyAkhunov/go-ethereum/commits/turbo-geth-4" data-href="https://github.com/AlexeyAkhunov/go-ethereum/commits/turbo-geth-4" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://github.com/AlexeyAkhunov/go-ethereum/commits/turbo-geth-4</a></p><p name="c3b8" id="c3b8" class="graf graf--p graf-after--p">I was not able to feed any of my changes upstream so far, because most of them are based on a drastically changed database architecture. But if I find something that is easily transferrable — I will surely do. For example, the optimisation of receipts and log storage described below is kind of trivial, but will require upgrading geth database on startup for existing users, so it is more work than it might seem.</p><h3 name="d375" id="d375" class="graf graf--h3 graf-after--p">Benchmarks</h3><p name="29f9" id="29f9" class="graf graf--p graf-after--h3">I am currently running 3 processes, 2 of them actually running slightly older version of the code. Both are virtual machines in Google cloud with 4 cpus and 26Gb memory, one has SSD (blue), another — HDD (purple).</p><figure name="b523" id="b523" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*uvO1qPDK7N6Ihqx646kbMg.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*uvO1qPDK7N6Ihqx646kbMg.png"></div></figure><p name="5bd4" id="5bd4" class="graf graf--p graf-after--figure">They are kind of OK, but both of them essentially start “crawling” increasingly slower after block 4m. So I think this is still not very good.</p><h3 name="18b3" id="18b3" class="graf graf--h3 graf-after--p">Disk usage</h3><p name="3bf8" id="3bf8" class="graf graf--p graf-after--h3">The 3rd test is running the latest code (turbo-geth-4 branch). Compared to the previous tests, it has optimisation for transaction receipts and logs (events). Firstly, it does not store information like Transaction hashes and block hashes with every single log entry. Secondly, it does not store bloom filter (256 bytes) with every transaction, but calculates it on the fly from the logs during the RPC request. At the moment, it is syncing at the block 4.36m with the total database size (this is archive node, remember?) of 78Gb, whereas the previous version at the same height had 99Gb. According to my earlier assessment, this gap will keep growing with the increasing height.</p><p name="c895" id="c895" class="graf graf--p graf-after--p">Another optimisation I made was better encoding of empty accounts (they are encoded by a single byte, instead of usual 80), and accounts without any code and storage (saving 64 bytes for code hash and storage root hash). I did not quantify the saving, but I would around 10% from what I could remember.</p><p name="1ff4" id="1ff4" class="graf graf--p graf-after--p">And, finally, I have made another modification to BoltDB to compress its pages. Since most pages have lots of similar keys, page now stores the common prefix for all the keys on that page, and only suffix parts of the keys are stored. This saved some space, but introduced some runtime costs, which I will handle later.</p><p name="6b73" id="6b73" class="graf graf--p graf-after--p">When my latests test nodes syncs to the tip, I will publish the breakdown of the disk usage as I did before.</p><h3 name="1c96" id="1c96" class="graf graf--h3 graf-after--p">Current state vs History</h3><p name="93fc" id="93fc" class="graf graf--p graf-after--h3">This is experimental, but at some point I decided to try to store history of state separately from the current state. That improved the sync performance, but not very significantly. I am going to keep them separated, with one modification. Instead of having the current state being basically a copy of the latest state in history, I will update the history not with the current state, but with the previous once. This means that when the state of an item is modified, two things can happen:</p><ol class="postList"><li name="e77b" id="e77b" class="graf graf--li graf-after--p">If the item did not exist before, only current state is written</li><li name="d0ef" id="d0ef" class="graf graf--li graf-after--li">If the item existed before (has current state), the current state is appended to the history, and is replaced with the modified state</li></ol><p name="a19c" id="a19c" class="graf graf--p graf-after--li">This should negate some of the disk space blow-up that was introduced by the separation of the current state and history.</p><h3 name="a238" id="a238" class="graf graf--h3 graf-after--p">eth Tester</h3><p name="48bc" id="48bc" class="graf graf--p graf-after--h3">It is called “eth” tester not because it is fashionable to invent names that either begin with “eth” or end with “eth”, but because it is using so-called “eth” protocol (which has commands like “GetBlockHeaderMsg”, “GetBlockBodiesMsg”, “NewBlockMsg”…), the protocol that two ethereum nodes use to exchange information with each other — download and propagate blocks and transactions.</p><p name="7025" id="7025" class="graf graf--p graf-after--p">I need this tool to be able to test things like chain re-ogrs (because Turbo-Geth handles them differently from Geth), and hopefully some other aspects.</p><p name="7b2a" id="7b2a" class="graf graf--p graf-after--p">It is in a very early stages and by writing it, I am also learning great deal about how nodes talk to each other: <a href="https://github.com/AlexeyAkhunov/go-ethereum/tree/turbo-geth-4/cmd/tester" data-href="https://github.com/AlexeyAkhunov/go-ethereum/tree/turbo-geth-4/cmd/tester" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://github.com/AlexeyAkhunov/go-ethereum/tree/turbo-geth-4/cmd/tester</a></p><h3 name="6061" id="6061" class="graf graf--h3 graf-after--p">Syncing vs Following the tip: Throughput vs Latency</h3><p name="335f" id="335f" class="graf graf--p graf-after--h3">This is my thought of the day. In order to have the best performance, the client needs to treat these two modes (syncing and following the tip) differently. One needs the highest throughput possible, while the other — the lowest latency.</p><p name="fbc6" id="fbc6" class="graf graf--p graf-after--p">What I will try to do is to split the syncing process into 2 alternating phases — execution and verification. Execution phase will download a block, execute all transactions, and write out the state history. When certain number of blocks are executed (lets say, 64k), we verify state roots of those blocks, by building and advancing patricia merkle tree.</p><p name="483b" id="483b" class="graf graf--p graf-after--p">I don’t know if this is going to be very fast, but I hope so. Why? Firstly, because if BoltDB pages are committed, and without ongoing modifications, searching in them does not require materialising extra data structures in memory (like appending key prefixes to the key suffixes :) ), but simply walking over memory map. Secondly, it should be possible to know in advance which parts of the Patricia Merkle tree to expand in the beginning, so that no (or very little) Disk I/O is required during the advancement stage.</p><h3 name="7b45" id="7b45" class="graf graf--h3 graf-after--p">Conclusion</h3><p name="5bbb" id="5bbb" class="graf graf--p graf-after--h3 graf--trailing">Turbo-Geth is still a Proof-Of-Concept for me. Although it does achieve certain desirable properties, mainly reduction of database size, I do not consider it a breakthrough. I have learnt a lot, both about Go language (this is my first project in Go), and about go-ethereum code, and that is probably the most valuable result so far.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/94598690bb02"><time class="dt-published" datetime="2018-06-13T23:07:07.540Z">June 13, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/turbo-geth-where-we-are-at-94598690bb02" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">Turbo-Geth: Where we are at</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        It has been almost 3 months since my last post. In the meantime, I
+        presented Turbo-Geth at EDCON. I have been working on this most of my…
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="e128"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="a51f"
+                id="a51f"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Turbo-Geth: Where we are at
+              </h3>
+              <p name="78bf" id="78bf" class="graf graf--p graf-after--h3">
+                It has been almost 3 months since my last post. In the meantime,
+                I presented
+                <a
+                  href="https://youtu.be/vlLFQqfgOPk?t=23579"
+                  data-href="https://youtu.be/vlLFQqfgOPk?t=23579"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >Turbo-Geth at EDCON</a
+                >. I have been working on this most of my time, learnt a lot,
+                had moments of doubt, frustrations, lots of “a-ha” moments.
+              </p>
+              <h3 name="5f02" id="5f02" class="graf graf--h3 graf-after--p">
+                Grant
+              </h3>
+              <p name="c94b" id="c94b" class="graf graf--p graf-after--h3">
+                The Grant from the Ethereum Foundation was announced back in
+                March 2018, and my previous blog post was about saying “Thank
+                you”. We did exchange some paperwork in these 3 months, but the
+                actual money has not arrived yet, unfortunately. I am not
+                writing this to complain (I know they are probably overwhelmed
+                by the processing of all those grants, but I don’t know if this
+                affects everyone or I am just unlucky), just wanted to let
+                everyone know that it is still my very own project. In some
+                ways, this is good, because I feel a bit less pressure (see the
+                Conclusion). I still earn some money from other projects, so I
+                am still happy.
+              </p>
+              <h3 name="3ce8" id="3ce8" class="graf graf--h3 graf-after--p">
+                Upstream, downstream
+              </h3>
+              <p name="45be" id="45be" class="graf graf--p graf-after--h3">
+                Geth 1.8.11 has been released yesterday and I have rebased my
+                code to it, which is now in this branch:
+                <a
+                  href="https://github.com/AlexeyAkhunov/go-ethereum/commits/turbo-geth-4"
+                  data-href="https://github.com/AlexeyAkhunov/go-ethereum/commits/turbo-geth-4"
+                  class="markup--anchor markup--p-anchor"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >https://github.com/AlexeyAkhunov/go-ethereum/commits/turbo-geth-4</a
+                >
+              </p>
+              <p name="c3b8" id="c3b8" class="graf graf--p graf-after--p">
+                I was not able to feed any of my changes upstream so far,
+                because most of them are based on a drastically changed database
+                architecture. But if I find something that is easily
+                transferrable — I will surely do. For example, the optimisation
+                of receipts and log storage described below is kind of trivial,
+                but will require upgrading geth database on startup for existing
+                users, so it is more work than it might seem.
+              </p>
+              <h3 name="d375" id="d375" class="graf graf--h3 graf-after--p">
+                Benchmarks
+              </h3>
+              <p name="29f9" id="29f9" class="graf graf--p graf-after--h3">
+                I am currently running 3 processes, 2 of them actually running
+                slightly older version of the code. Both are virtual machines in
+                Google cloud with 4 cpus and 26Gb memory, one has SSD (blue),
+                another — HDD (purple).
+              </p>
+              <figure
+                name="b523"
+                id="b523"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*uvO1qPDK7N6Ihqx646kbMg.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*uvO1qPDK7N6Ihqx646kbMg.png"
+                  />
+                </div>
+              </figure>
+              <p name="5bd4" id="5bd4" class="graf graf--p graf-after--figure">
+                They are kind of OK, but both of them essentially start
+                “crawling” increasingly slower after block 4m. So I think this
+                is still not very good.
+              </p>
+              <h3 name="18b3" id="18b3" class="graf graf--h3 graf-after--p">
+                Disk usage
+              </h3>
+              <p name="3bf8" id="3bf8" class="graf graf--p graf-after--h3">
+                The 3rd test is running the latest code (turbo-geth-4 branch).
+                Compared to the previous tests, it has optimisation for
+                transaction receipts and logs (events). Firstly, it does not
+                store information like Transaction hashes and block hashes with
+                every single log entry. Secondly, it does not store bloom filter
+                (256 bytes) with every transaction, but calculates it on the fly
+                from the logs during the RPC request. At the moment, it is
+                syncing at the block 4.36m with the total database size (this is
+                archive node, remember?) of 78Gb, whereas the previous version
+                at the same height had 99Gb. According to my earlier assessment,
+                this gap will keep growing with the increasing height.
+              </p>
+              <p name="c895" id="c895" class="graf graf--p graf-after--p">
+                Another optimisation I made was better encoding of empty
+                accounts (they are encoded by a single byte, instead of usual
+                80), and accounts without any code and storage (saving 64 bytes
+                for code hash and storage root hash). I did not quantify the
+                saving, but I would around 10% from what I could remember.
+              </p>
+              <p name="1ff4" id="1ff4" class="graf graf--p graf-after--p">
+                And, finally, I have made another modification to BoltDB to
+                compress its pages. Since most pages have lots of similar keys,
+                page now stores the common prefix for all the keys on that page,
+                and only suffix parts of the keys are stored. This saved some
+                space, but introduced some runtime costs, which I will handle
+                later.
+              </p>
+              <p name="6b73" id="6b73" class="graf graf--p graf-after--p">
+                When my latests test nodes syncs to the tip, I will publish the
+                breakdown of the disk usage as I did before.
+              </p>
+              <h3 name="1c96" id="1c96" class="graf graf--h3 graf-after--p">
+                Current state vs History
+              </h3>
+              <p name="93fc" id="93fc" class="graf graf--p graf-after--h3">
+                This is experimental, but at some point I decided to try to
+                store history of state separately from the current state. That
+                improved the sync performance, but not very significantly. I am
+                going to keep them separated, with one modification. Instead of
+                having the current state being basically a copy of the latest
+                state in history, I will update the history not with the current
+                state, but with the previous once. This means that when the
+                state of an item is modified, two things can happen:
+              </p>
+              <ol class="postList">
+                <li name="e77b" id="e77b" class="graf graf--li graf-after--p">
+                  If the item did not exist before, only current state is
+                  written
+                </li>
+                <li name="d0ef" id="d0ef" class="graf graf--li graf-after--li">
+                  If the item existed before (has current state), the current
+                  state is appended to the history, and is replaced with the
+                  modified state
+                </li>
+              </ol>
+              <p name="a19c" id="a19c" class="graf graf--p graf-after--li">
+                This should negate some of the disk space blow-up that was
+                introduced by the separation of the current state and history.
+              </p>
+              <h3 name="a238" id="a238" class="graf graf--h3 graf-after--p">
+                eth Tester
+              </h3>
+              <p name="48bc" id="48bc" class="graf graf--p graf-after--h3">
+                It is called “eth” tester not because it is fashionable to
+                invent names that either begin with “eth” or end with “eth”, but
+                because it is using so-called “eth” protocol (which has commands
+                like “GetBlockHeaderMsg”, “GetBlockBodiesMsg”, “NewBlockMsg”…),
+                the protocol that two ethereum nodes use to exchange information
+                with each other — download and propagate blocks and
+                transactions.
+              </p>
+              <p name="7025" id="7025" class="graf graf--p graf-after--p">
+                I need this tool to be able to test things like chain re-ogrs
+                (because Turbo-Geth handles them differently from Geth), and
+                hopefully some other aspects.
+              </p>
+              <p name="7b2a" id="7b2a" class="graf graf--p graf-after--p">
+                It is in a very early stages and by writing it, I am also
+                learning great deal about how nodes talk to each other:
+                <a
+                  href="https://github.com/AlexeyAkhunov/go-ethereum/tree/turbo-geth-4/cmd/tester"
+                  data-href="https://github.com/AlexeyAkhunov/go-ethereum/tree/turbo-geth-4/cmd/tester"
+                  class="markup--anchor markup--p-anchor"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >https://github.com/AlexeyAkhunov/go-ethereum/tree/turbo-geth-4/cmd/tester</a
+                >
+              </p>
+              <h3 name="6061" id="6061" class="graf graf--h3 graf-after--p">
+                Syncing vs Following the tip: Throughput vs Latency
+              </h3>
+              <p name="335f" id="335f" class="graf graf--p graf-after--h3">
+                This is my thought of the day. In order to have the best
+                performance, the client needs to treat these two modes (syncing
+                and following the tip) differently. One needs the highest
+                throughput possible, while the other — the lowest latency.
+              </p>
+              <p name="fbc6" id="fbc6" class="graf graf--p graf-after--p">
+                What I will try to do is to split the syncing process into 2
+                alternating phases — execution and verification. Execution phase
+                will download a block, execute all transactions, and write out
+                the state history. When certain number of blocks are executed
+                (lets say, 64k), we verify state roots of those blocks, by
+                building and advancing patricia merkle tree.
+              </p>
+              <p name="483b" id="483b" class="graf graf--p graf-after--p">
+                I don’t know if this is going to be very fast, but I hope so.
+                Why? Firstly, because if BoltDB pages are committed, and without
+                ongoing modifications, searching in them does not require
+                materialising extra data structures in memory (like appending
+                key prefixes to the key suffixes :) ), but simply walking over
+                memory map. Secondly, it should be possible to know in advance
+                which parts of the Patricia Merkle tree to expand in the
+                beginning, so that no (or very little) Disk I/O is required
+                during the advancement stage.
+              </p>
+              <h3 name="7b45" id="7b45" class="graf graf--h3 graf-after--p">
+                Conclusion
+              </h3>
+              <p
+                name="5bbb"
+                id="5bbb"
+                class="graf graf--p graf-after--h3 graf--trailing"
+              >
+                Turbo-Geth is still a Proof-Of-Concept for me. Although it does
+                achieve certain desirable properties, mainly reduction of
+                database size, I do not consider it a breakthrough. I have
+                learnt a lot, both about Go language (this is my first project
+                in Go), and about go-ethereum code, and that is probably the
+                most valuable result so far.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/94598690bb02"
+            ><time class="dt-published" datetime="2018-06-13T23:07:07.540Z"
+              >June 13, 2018</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/turbo-geth-where-we-are-at-94598690bb02"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

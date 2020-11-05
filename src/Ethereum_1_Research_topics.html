@@ -1,395 +1,2832 @@
-
 <!DOCTYPE html>
 
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="mobile-web-app-capable" content="yes">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>
-        Ethereum 1 Research topics - HackMD
+      Ethereum 1 Research topics - HackMD
     </title>
-    <link rel="icon" type="image/png" href="https://hackmd.io/favicon.png">
-    <link rel="apple-touch-icon" href="https://hackmd.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="https://hackmd.io/favicon.png" />
+    <link
+      rel="apple-touch-icon"
+      href="https://hackmd.io/apple-touch-icon.png"
+    />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" integrity="sha256-QiWfLIsCT02Sdwkogf6YMiQlj4NE84MKkzEMkZnMGdg=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css" integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU=" crossorigin="anonymous" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"
+      integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css"
+      integrity="sha256-QiWfLIsCT02Sdwkogf6YMiQlj4NE84MKkzEMkZnMGdg="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css"
+      integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/emojify.js/1.1.0/css/basic/emojify.min.css"
+      integrity="sha256-UOrvMOsSDSrW6szVLe8ZDZezBxh5IoIfgTwdNDgTjiU="
+      crossorigin="anonymous"
+    />
     <style>
-        @charset "UTF-8";@import url(https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i|Source+Code+Pro:300,400,500|Source+Sans+Pro:300,300i,400,400i,600,600i|Source+Serif+Pro&subset=latin-ext);.hljs{display:block;background:#fff;padding:.5em;color:#333;overflow-x:auto}.hljs-comment,.hljs-meta{color:#969896}.hljs-emphasis,.hljs-quote,.hljs-string,.hljs-strong,.hljs-template-variable,.hljs-variable{color:#df5000}.hljs-keyword,.hljs-selector-tag,.hljs-type{color:#a71d5d}.hljs-attribute,.hljs-bullet,.hljs-literal,.hljs-number,.hljs-symbol{color:#0086b3}.hljs-built_in,.hljs-builtin-name{color:#005cc5}.hljs-name,.hljs-section{color:#63a35c}.hljs-tag{color:#333}.hljs-attr,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-selector-pseudo,.hljs-title{color:#795da3}.hljs-addition{color:#55a532;background-color:#eaffea}.hljs-deletion{color:#bd2c00;background-color:#ffecec}.hljs-link{text-decoration:underline}.markdown-body{font-size:16px;line-height:1.5;word-wrap:break-word}.markdown-body:after,.markdown-body:before{display:table;content:""}.markdown-body:after{clear:both}.markdown-body>:first-child{margin-top:0!important}.markdown-body>:last-child{margin-bottom:0!important}.markdown-body a:not([href]){color:inherit;text-decoration:none}.markdown-body .absent{color:#c00}.markdown-body .anchor{float:left;padding-right:4px;margin-left:-20px;line-height:1}.markdown-body .anchor:focus{outline:none}.markdown-body blockquote,.markdown-body dl,.markdown-body ol,.markdown-body p,.markdown-body pre,.markdown-body table,.markdown-body ul{margin-top:0;margin-bottom:16px}.markdown-body hr{height:.25em;padding:0;margin:24px 0;background-color:#e7e7e7;border:0}.markdown-body blockquote{font-size:16px;padding:0 1em;color:#777;border-left:.25em solid #ddd}.markdown-body blockquote>:first-child{margin-top:0}.markdown-body blockquote>:last-child{margin-bottom:0}.markdown-body kbd,.popover kbd{display:inline-block;padding:3px 5px;font-size:11px;line-height:10px;color:#555;vertical-align:middle;background-color:#fcfcfc;border:1px solid #ccc;border-bottom-color:#bbb;border-radius:3px;box-shadow:inset 0 -1px 0 #bbb}.markdown-body .loweralpha{list-style-type:lower-alpha}.markdown-body h1,.markdown-body h2,.markdown-body h3,.markdown-body h4,.markdown-body h5,.markdown-body h6{margin-top:24px;margin-bottom:16px;font-weight:600;line-height:1.25}.markdown-body h1 .octicon-link,.markdown-body h2 .octicon-link,.markdown-body h3 .octicon-link,.markdown-body h4 .octicon-link,.markdown-body h5 .octicon-link,.markdown-body h6 .octicon-link{color:#000;vertical-align:middle;visibility:hidden}.markdown-body h1:hover .anchor,.markdown-body h2:hover .anchor,.markdown-body h3:hover .anchor,.markdown-body h4:hover .anchor,.markdown-body h5:hover .anchor,.markdown-body h6:hover .anchor{text-decoration:none}.markdown-body h1:hover .anchor .octicon-link,.markdown-body h2:hover .anchor .octicon-link,.markdown-body h3:hover .anchor .octicon-link,.markdown-body h4:hover .anchor .octicon-link,.markdown-body h5:hover .anchor .octicon-link,.markdown-body h6:hover .anchor .octicon-link{visibility:visible}.markdown-body h1 code,.markdown-body h1 tt,.markdown-body h2 code,.markdown-body h2 tt,.markdown-body h3 code,.markdown-body h3 tt,.markdown-body h4 code,.markdown-body h4 tt,.markdown-body h5 code,.markdown-body h5 tt,.markdown-body h6 code,.markdown-body h6 tt{font-size:inherit}.markdown-body h1{font-size:2em}.markdown-body h1,.markdown-body h2{padding-bottom:.3em;border-bottom:1px solid #eee}.markdown-body h2{font-size:1.5em}.markdown-body h3{font-size:1.25em}.markdown-body h4{font-size:1em}.markdown-body h5{font-size:.875em}.markdown-body h6{font-size:.85em;color:#777}.markdown-body ol,.markdown-body ul{padding-left:2em}.markdown-body ol.no-list,.markdown-body ul.no-list{padding:0;list-style-type:none}.markdown-body ol ol,.markdown-body ol ul,.markdown-body ul ol,.markdown-body ul ul{margin-top:0;margin-bottom:0}.markdown-body li>p{margin-top:16px}.markdown-body li+li{margin-top:.25em}.markdown-body dl{padding:0}.markdown-body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}.markdown-body dl dd{padding:0 16px;margin-bottom:16px}.markdown-body table{display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}.markdown-body table th{font-weight:700}.markdown-body table td,.markdown-body table th{padding:6px 13px;border:1px solid #ddd}.markdown-body table tr{background-color:#fff;border-top:1px solid #ccc}.markdown-body table tr:nth-child(2n){background-color:#f8f8f8}.markdown-body img{max-width:100%;box-sizing:content-box;background-color:#fff}.markdown-body img[align=right]{padding-left:20px}.markdown-body img[align=left]{padding-right:20px}.markdown-body .emoji{max-width:none;vertical-align:text-top;background-color:transparent}.markdown-body span.frame{display:block;overflow:hidden}.markdown-body span.frame>span{display:block;float:left;width:auto;padding:7px;margin:13px 0 0;overflow:hidden;border:1px solid #ddd}.markdown-body span.frame span img{display:block;float:left}.markdown-body span.frame span span{display:block;padding:5px 0 0;clear:both;color:#333}.markdown-body span.align-center{display:block;overflow:hidden;clear:both}.markdown-body span.align-center>span{display:block;margin:13px auto 0;overflow:hidden;text-align:center}.markdown-body span.align-center span img{margin:0 auto;text-align:center}.markdown-body span.align-right{display:block;overflow:hidden;clear:both}.markdown-body span.align-right>span{display:block;margin:13px 0 0;overflow:hidden;text-align:right}.markdown-body span.align-right span img{margin:0;text-align:right}.markdown-body span.float-left{display:block;float:left;margin-right:13px;overflow:hidden}.markdown-body span.float-left span{margin:13px 0 0}.markdown-body span.float-right{display:block;float:right;margin-left:13px;overflow:hidden}.markdown-body span.float-right>span{display:block;margin:13px auto 0;overflow:hidden;text-align:right}.markdown-body code,.markdown-body tt{padding:0;padding-top:.2em;padding-bottom:.2em;margin:0;font-size:85%;background-color:rgba(0,0,0,.04);border-radius:3px}.markdown-body code:after,.markdown-body code:before,.markdown-body tt:after,.markdown-body tt:before{letter-spacing:-.2em;content:"\00a0"}.markdown-body code br,.markdown-body tt br{display:none}.markdown-body del code{text-decoration:inherit}.markdown-body pre{word-wrap:normal}.markdown-body pre>code{padding:0;margin:0;font-size:100%;word-break:normal;white-space:pre;background:transparent;border:0}.markdown-body .highlight{margin-bottom:16px}.markdown-body .highlight pre{margin-bottom:0;word-break:normal}.markdown-body .highlight pre,.markdown-body pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#f7f7f7;border-radius:3px}.markdown-body pre code,.markdown-body pre tt{display:inline;max-width:auto;padding:0;margin:0;overflow:visible;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}.markdown-body pre code:after,.markdown-body pre code:before,.markdown-body pre tt:after,.markdown-body pre tt:before{content:normal}.markdown-body .csv-data td,.markdown-body .csv-data th{padding:5px;overflow:hidden;font-size:12px;line-height:1;text-align:left;white-space:nowrap}.markdown-body .csv-data .blob-line-num{padding:10px 8px 9px;text-align:right;background:#fff;border:0}.markdown-body .csv-data tr{border-top:0}.markdown-body .csv-data th{font-weight:700;background:#f8f8f8;border-top:0}.news .alert .markdown-body blockquote{padding:0 0 0 40px;border:0 none}.activity-tab .news .alert .commits,.activity-tab .news .markdown-body blockquote{padding-left:0}.task-list-item{list-style-type:none}.task-list-item label{font-weight:400}.task-list-item.enabled label{cursor:pointer}.task-list-item+.task-list-item{margin-top:3px}.task-list-item-checkbox{float:left;margin:.31em 0 .2em -1.3em!important;vertical-align:middle;cursor:default!important}.markdown-body{padding-top:40px;padding-bottom:40px;max-width:758px;overflow:visible!important}.markdown-body .emoji{vertical-align:top}.markdown-body pre{border:inherit!important}.markdown-body code{color:inherit!important}.markdown-body pre code .wrapper{display:-moz-inline-flex;display:-ms-inline-flex;display:-o-inline-flex;display:inline-flex}.markdown-body pre code .gutter{float:left;overflow:hidden;-webkit-user-select:none;user-select:none}.markdown-body pre code .gutter.linenumber{text-align:right;position:relative;display:inline-block;cursor:default;z-index:4;padding:0 8px 0 0;min-width:20px;box-sizing:content-box;color:#afafaf!important;border-right:3px solid #6ce26c!important}.markdown-body pre code .gutter.linenumber>span:before{content:attr(data-linenumber)}.markdown-body pre code .code{float:left;margin:0 0 0 16px}.markdown-body .gist .line-numbers{border-left:none;border-top:none;border-bottom:none}.markdown-body .gist .line-data{border:none}.markdown-body .gist table{border-spacing:0;border-collapse:inherit!important}.markdown-body code[data-gist-id]{background:none;padding:0}.markdown-body code[data-gist-id]:after,.markdown-body code[data-gist-id]:before{content:""}.markdown-body code[data-gist-id] .blob-num{border:unset}.markdown-body code[data-gist-id] table{overflow:unset;margin-bottom:unset}.markdown-body code[data-gist-id] table tr{background:unset}.markdown-body[dir=rtl] pre{direction:ltr}.markdown-body[dir=rtl] code{direction:ltr;unicode-bidi:embed}.markdown-body .alert>p{margin-bottom:0}.markdown-body pre.abc,.markdown-body pre.flow-chart,.markdown-body pre.graphviz,.markdown-body pre.mermaid,.markdown-body pre.sequence-diagram{text-align:center;background-color:inherit;border-radius:0;white-space:inherit}.markdown-body pre.abc>code,.markdown-body pre.flow-chart>code,.markdown-body pre.graphviz>code,.markdown-body pre.mermaid>code,.markdown-body pre.sequence-diagram>code{text-align:left}.markdown-body pre.abc>svg,.markdown-body pre.flow-chart>svg,.markdown-body pre.graphviz>svg,.markdown-body pre.mermaid>svg,.markdown-body pre.sequence-diagram>svg{max-width:100%;height:100%}.markdown-body pre>code.wrap{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word}.markdown-body .alert>p,.markdown-body .alert>ul{margin-bottom:0}.markdown-body summary{display:list-item}.markdown-body summary:focus{outline:none}.markdown-body details summary{cursor:pointer}.markdown-body details:not([open])>:not(summary){display:none}.markdown-body figure{margin:1em 40px}.markdown-body .mark,.markdown-body mark{background-color:#fff1a7}.vimeo,.youtube{cursor:pointer;display:table;text-align:center;background-position:50%;background-repeat:no-repeat;background-size:contain;background-color:#000;overflow:hidden}.vimeo,.youtube{position:relative;width:100%}.youtube{padding-bottom:56.25%}.vimeo img{width:100%;object-fit:contain;z-index:0}.youtube img{object-fit:cover;z-index:0}.vimeo iframe,.youtube iframe,.youtube img{width:100%;height:100%;position:absolute;top:0;left:0}.vimeo iframe,.youtube iframe{vertical-align:middle;z-index:1}.vimeo .icon,.youtube .icon{position:absolute;height:auto;width:auto;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;opacity:.3;transition:opacity .2s;z-index:0}.vimeo:hover .icon,.youtube:hover .icon{opacity:.6;transition:opacity .2s}.slideshare .inner,.speakerdeck .inner{position:relative;width:100%}.slideshare .inner iframe,.speakerdeck .inner iframe{position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}.MJX_Assistive_MathML{display:none}.ui-infobar{position:relative;z-index:2;max-width:760px;margin:25px auto -25px;padding:0 15px;color:#777}.toc .invisable-node{list-style-type:none}.ui-toc{position:fixed;bottom:20px;z-index:998}.ui-toc-label{opacity:.3;background-color:#ccc;border:none;transition:opacity .2s}.ui-toc .open .ui-toc-label{opacity:1;color:#fff;transition:opacity .2s}.ui-toc-label:focus{opacity:.3;background-color:#ccc;color:#000}.ui-toc-label:hover{opacity:1;background-color:#ccc;transition:opacity .2s}.ui-toc-dropdown{margin-top:23px;margin-bottom:20px;padding-left:10px;padding-right:10px;max-width:45vw;width:25vw;max-height:70vh;overflow:auto;text-align:inherit}.ui-toc-dropdown>.toc{max-height:calc(70vh - 100px);overflow:auto}.ui-toc-dropdown[dir=rtl] .nav{padding-right:0;letter-spacing:.0029em}.ui-toc-dropdown a{overflow:hidden;text-overflow:ellipsis;white-space:pre}.ui-toc-dropdown .nav>li>a{display:block;padding:4px 20px;font-size:13px;font-weight:500;color:#767676}.ui-toc-dropdown .nav>li:first-child:last-child > ul,.ui-toc-dropdown .toc.expand ul{display:block}.ui-toc-dropdown .nav>li>a:focus,.ui-toc-dropdown .nav>li>a:hover{padding-left:19px;color:#000;text-decoration:none;background-color:transparent;border-left:1px solid #000}.ui-toc-dropdown[dir=rtl] .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav>li>a:hover{padding-right:19px;border-left:none;border-right:1px solid #000}.ui-toc-dropdown .nav>.active:focus>a,.ui-toc-dropdown .nav>.active:hover>a,.ui-toc-dropdown .nav>.active>a{padding-left:18px;font-weight:700;color:#000;background-color:transparent;border-left:2px solid #000}.ui-toc-dropdown[dir=rtl] .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav>.active>a{padding-right:18px;border-left:none;border-right:2px solid #000}.ui-toc-dropdown .nav .nav{display:none;padding-bottom:10px}.ui-toc-dropdown .nav>.active>ul{display:block}.ui-toc-dropdown .nav .nav>li>a{padding-top:1px;padding-bottom:1px;padding-left:30px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a{padding-right:30px}.ui-toc-dropdown .nav .nav>li>ul>li>a{padding-top:1px;padding-bottom:1px;padding-left:40px;font-size:12px;font-weight:400}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a{padding-right:40px}.ui-toc-dropdown .nav .nav>li>a:focus,.ui-toc-dropdown .nav .nav>li>a:hover{padding-left:29px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>a:hover{padding-right:29px}.ui-toc-dropdown .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown .nav .nav>li>ul>li>a:hover{padding-left:39px}.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:focus,.ui-toc-dropdown[dir=rtl] .nav .nav>li>ul>li>a:hover{padding-right:39px}.ui-toc-dropdown .nav .nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>a{padding-left:28px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>a{padding-right:28px}.ui-toc-dropdown .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown .nav .nav>.active>.nav>.active>a{padding-left:38px;font-weight:500}.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:focus>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active:hover>a,.ui-toc-dropdown[dir=rtl] .nav .nav>.active>.nav>.active>a{padding-right:38px}.markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,sans-serif}html[lang^=ja] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] .markdown-body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}html .markdown-body[lang^=ja]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html .markdown-body[lang=zh-tw]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html .markdown-body[lang=zh-cn]{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}html[lang^=ja] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,ＭＳ\ Ｐゴシック,sans-serif}html[lang=zh-tw] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,微軟正黑UI,sans-serif}html[lang=zh-cn] .ui-toc-dropdown{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,微软雅黑UI,sans-serif}html .ui-toc-dropdown[lang^=ja]{font-family:Source Sans Pro,Helvetica,Arial,Meiryo UI,MS PGothic,ＭＳ\ Ｐゴシック,sans-serif}html .ui-toc-dropdown[lang=zh-tw]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft JhengHei UI,微軟正黑UI,sans-serif}html .ui-toc-dropdown[lang=zh-cn]{font-family:Source Sans Pro,Helvetica,Arial,Microsoft YaHei UI,微软雅黑UI,sans-serif}.ui-affix-toc{position:fixed;top:0;max-width:15vw;max-height:70vh;overflow:auto}.back-to-top,.expand-toggle,.go-to-bottom{display:block;padding:4px 10px;margin-top:10px;margin-left:10px;font-size:12px;font-weight:500;color:#999}.back-to-top:focus,.back-to-top:hover,.expand-toggle:focus,.expand-toggle:hover,.go-to-bottom:focus,.go-to-bottom:hover{color:#563d7c;text-decoration:none}.back-to-top,.go-to-bottom{margin-top:0}.ui-user-icon{width:20px;height:20px;display:block;border-radius:3px;margin-top:2px;margin-bottom:2px;margin-right:5px;background-position:50%;background-repeat:no-repeat;background-size:cover}.ui-user-icon.small{width:18px;height:18px;display:inline-block;vertical-align:middle;margin:0 0 .2em}.ui-infobar>small>span{line-height:22px}.ui-infobar>small .dropdown{display:inline-block}.ui-infobar>small .dropdown a:focus,.ui-infobar>small .dropdown a:hover{text-decoration:none}.ui-published-note{color:#337ab7}.ui-published-note .fa{font-size:20px;vertical-align:top}.unselectable{-webkit-user-select:none;-o-user-select:none;user-select:none}@media print{blockquote,div,img,pre,table{page-break-inside:avoid!important}a[href]:after{font-size:12px!important}}.markdown-body.slides{position:relative;z-index:1;color:#222}.markdown-body.slides:before{content:"";display:block;position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;background-color:currentColor;box-shadow:0 0 0 50vw}.markdown-body.slides section[data-markdown]{position:relative;margin-bottom:1.5em;background-color:#fff;text-align:center}.markdown-body.slides section[data-markdown] code{text-align:left}.markdown-body.slides section[data-markdown]:before{content:"";display:block;padding-bottom:56.23%}.markdown-body.slides section[data-markdown]>div:first-child{position:absolute;top:50%;left:1em;right:1em;transform:translateY(-50%);max-height:100%;overflow:hidden}.markdown-body.slides section[data-markdown]>ul{display:inline-block}.markdown-body.slides>section>section+section:after{content:"";position:absolute;top:-1.5em;right:1em;height:1.5em;border:3px solid #777}body{font-smoothing:subpixel-antialiased!important;-webkit-font-smoothing:subpixel-antialiased!important;-moz-osx-font-smoothing:auto!important;text-shadow:0 0 1em transparent,1px 1px 1.2px rgba(0,0,0,.004);-webkit-overflow-scrolling:touch;letter-spacing:.025em}.focus,:focus{outline:none!important}::-moz-focus-inner{border:0!important}body{font-family:Source Sans Pro,Helvetica,Arial,sans-serif}html[lang^=ja] body{font-family:Source Sans Pro,Helvetica,Arial,Hiragino Kaku Gothic Pro,ヒラギノ角ゴ Pro W3,Osaka,Meiryo,メイリオ,MS Gothic,ＭＳ\ ゴシック,sans-serif}html[lang=zh-tw] body{font-family:Source Sans Pro,Helvetica,Arial,PingFang TC,Microsoft JhengHei,微軟正黑,sans-serif}html[lang=zh-cn] body{font-family:Source Sans Pro,Helvetica,Arial,PingFang SC,Microsoft YaHei,微软雅黑,sans-serif}abbr[title]{border-bottom:none;text-decoration:underline;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}abbr[data-original-title],abbr[title]{cursor:help}body.modal-open{overflow-y:auto;padding-right:0!important}
+      @charset "UTF-8";
+      @import url(
+        https://fonts.googleapis.com/css?family=Roboto:300,
+        300i,
+        400,
+        400i,
+        500,
+        500i|Source + Code + Pro:300,
+        400,
+        500|Source + Sans + Pro:300,
+        300i,
+        400,
+        400i,
+        600,
+        600i|Source + Serif + Pro&subset=latin-ext
+      );
+      .hljs {
+        display: block;
+        background: #fff;
+        padding: 0.5em;
+        color: #333;
+        overflow-x: auto;
+      }
+      .hljs-comment,
+      .hljs-meta {
+        color: #969896;
+      }
+      .hljs-emphasis,
+      .hljs-quote,
+      .hljs-string,
+      .hljs-strong,
+      .hljs-template-variable,
+      .hljs-variable {
+        color: #df5000;
+      }
+      .hljs-keyword,
+      .hljs-selector-tag,
+      .hljs-type {
+        color: #a71d5d;
+      }
+      .hljs-attribute,
+      .hljs-bullet,
+      .hljs-literal,
+      .hljs-number,
+      .hljs-symbol {
+        color: #0086b3;
+      }
+      .hljs-built_in,
+      .hljs-builtin-name {
+        color: #005cc5;
+      }
+      .hljs-name,
+      .hljs-section {
+        color: #63a35c;
+      }
+      .hljs-tag {
+        color: #333;
+      }
+      .hljs-attr,
+      .hljs-selector-attr,
+      .hljs-selector-class,
+      .hljs-selector-id,
+      .hljs-selector-pseudo,
+      .hljs-title {
+        color: #795da3;
+      }
+      .hljs-addition {
+        color: #55a532;
+        background-color: #eaffea;
+      }
+      .hljs-deletion {
+        color: #bd2c00;
+        background-color: #ffecec;
+      }
+      .hljs-link {
+        text-decoration: underline;
+      }
+      .markdown-body {
+        font-size: 16px;
+        line-height: 1.5;
+        word-wrap: break-word;
+      }
+      .markdown-body:after,
+      .markdown-body:before {
+        display: table;
+        content: "";
+      }
+      .markdown-body:after {
+        clear: both;
+      }
+      .markdown-body > :first-child {
+        margin-top: 0 !important;
+      }
+      .markdown-body > :last-child {
+        margin-bottom: 0 !important;
+      }
+      .markdown-body a:not([href]) {
+        color: inherit;
+        text-decoration: none;
+      }
+      .markdown-body .absent {
+        color: #c00;
+      }
+      .markdown-body .anchor {
+        float: left;
+        padding-right: 4px;
+        margin-left: -20px;
+        line-height: 1;
+      }
+      .markdown-body .anchor:focus {
+        outline: none;
+      }
+      .markdown-body blockquote,
+      .markdown-body dl,
+      .markdown-body ol,
+      .markdown-body p,
+      .markdown-body pre,
+      .markdown-body table,
+      .markdown-body ul {
+        margin-top: 0;
+        margin-bottom: 16px;
+      }
+      .markdown-body hr {
+        height: 0.25em;
+        padding: 0;
+        margin: 24px 0;
+        background-color: #e7e7e7;
+        border: 0;
+      }
+      .markdown-body blockquote {
+        font-size: 16px;
+        padding: 0 1em;
+        color: #777;
+        border-left: 0.25em solid #ddd;
+      }
+      .markdown-body blockquote > :first-child {
+        margin-top: 0;
+      }
+      .markdown-body blockquote > :last-child {
+        margin-bottom: 0;
+      }
+      .markdown-body kbd,
+      .popover kbd {
+        display: inline-block;
+        padding: 3px 5px;
+        font-size: 11px;
+        line-height: 10px;
+        color: #555;
+        vertical-align: middle;
+        background-color: #fcfcfc;
+        border: 1px solid #ccc;
+        border-bottom-color: #bbb;
+        border-radius: 3px;
+        box-shadow: inset 0 -1px 0 #bbb;
+      }
+      .markdown-body .loweralpha {
+        list-style-type: lower-alpha;
+      }
+      .markdown-body h1,
+      .markdown-body h2,
+      .markdown-body h3,
+      .markdown-body h4,
+      .markdown-body h5,
+      .markdown-body h6 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        line-height: 1.25;
+      }
+      .markdown-body h1 .octicon-link,
+      .markdown-body h2 .octicon-link,
+      .markdown-body h3 .octicon-link,
+      .markdown-body h4 .octicon-link,
+      .markdown-body h5 .octicon-link,
+      .markdown-body h6 .octicon-link {
+        color: #000;
+        vertical-align: middle;
+        visibility: hidden;
+      }
+      .markdown-body h1:hover .anchor,
+      .markdown-body h2:hover .anchor,
+      .markdown-body h3:hover .anchor,
+      .markdown-body h4:hover .anchor,
+      .markdown-body h5:hover .anchor,
+      .markdown-body h6:hover .anchor {
+        text-decoration: none;
+      }
+      .markdown-body h1:hover .anchor .octicon-link,
+      .markdown-body h2:hover .anchor .octicon-link,
+      .markdown-body h3:hover .anchor .octicon-link,
+      .markdown-body h4:hover .anchor .octicon-link,
+      .markdown-body h5:hover .anchor .octicon-link,
+      .markdown-body h6:hover .anchor .octicon-link {
+        visibility: visible;
+      }
+      .markdown-body h1 code,
+      .markdown-body h1 tt,
+      .markdown-body h2 code,
+      .markdown-body h2 tt,
+      .markdown-body h3 code,
+      .markdown-body h3 tt,
+      .markdown-body h4 code,
+      .markdown-body h4 tt,
+      .markdown-body h5 code,
+      .markdown-body h5 tt,
+      .markdown-body h6 code,
+      .markdown-body h6 tt {
+        font-size: inherit;
+      }
+      .markdown-body h1 {
+        font-size: 2em;
+      }
+      .markdown-body h1,
+      .markdown-body h2 {
+        padding-bottom: 0.3em;
+        border-bottom: 1px solid #eee;
+      }
+      .markdown-body h2 {
+        font-size: 1.5em;
+      }
+      .markdown-body h3 {
+        font-size: 1.25em;
+      }
+      .markdown-body h4 {
+        font-size: 1em;
+      }
+      .markdown-body h5 {
+        font-size: 0.875em;
+      }
+      .markdown-body h6 {
+        font-size: 0.85em;
+        color: #777;
+      }
+      .markdown-body ol,
+      .markdown-body ul {
+        padding-left: 2em;
+      }
+      .markdown-body ol.no-list,
+      .markdown-body ul.no-list {
+        padding: 0;
+        list-style-type: none;
+      }
+      .markdown-body ol ol,
+      .markdown-body ol ul,
+      .markdown-body ul ol,
+      .markdown-body ul ul {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      .markdown-body li > p {
+        margin-top: 16px;
+      }
+      .markdown-body li + li {
+        margin-top: 0.25em;
+      }
+      .markdown-body dl {
+        padding: 0;
+      }
+      .markdown-body dl dt {
+        padding: 0;
+        margin-top: 16px;
+        font-size: 1em;
+        font-style: italic;
+        font-weight: 700;
+      }
+      .markdown-body dl dd {
+        padding: 0 16px;
+        margin-bottom: 16px;
+      }
+      .markdown-body table {
+        display: block;
+        width: 100%;
+        overflow: auto;
+        word-break: normal;
+        word-break: keep-all;
+      }
+      .markdown-body table th {
+        font-weight: 700;
+      }
+      .markdown-body table td,
+      .markdown-body table th {
+        padding: 6px 13px;
+        border: 1px solid #ddd;
+      }
+      .markdown-body table tr {
+        background-color: #fff;
+        border-top: 1px solid #ccc;
+      }
+      .markdown-body table tr:nth-child(2n) {
+        background-color: #f8f8f8;
+      }
+      .markdown-body img {
+        max-width: 100%;
+        box-sizing: content-box;
+        background-color: #fff;
+      }
+      .markdown-body img[align="right"] {
+        padding-left: 20px;
+      }
+      .markdown-body img[align="left"] {
+        padding-right: 20px;
+      }
+      .markdown-body .emoji {
+        max-width: none;
+        vertical-align: text-top;
+        background-color: transparent;
+      }
+      .markdown-body span.frame {
+        display: block;
+        overflow: hidden;
+      }
+      .markdown-body span.frame > span {
+        display: block;
+        float: left;
+        width: auto;
+        padding: 7px;
+        margin: 13px 0 0;
+        overflow: hidden;
+        border: 1px solid #ddd;
+      }
+      .markdown-body span.frame span img {
+        display: block;
+        float: left;
+      }
+      .markdown-body span.frame span span {
+        display: block;
+        padding: 5px 0 0;
+        clear: both;
+        color: #333;
+      }
+      .markdown-body span.align-center {
+        display: block;
+        overflow: hidden;
+        clear: both;
+      }
+      .markdown-body span.align-center > span {
+        display: block;
+        margin: 13px auto 0;
+        overflow: hidden;
+        text-align: center;
+      }
+      .markdown-body span.align-center span img {
+        margin: 0 auto;
+        text-align: center;
+      }
+      .markdown-body span.align-right {
+        display: block;
+        overflow: hidden;
+        clear: both;
+      }
+      .markdown-body span.align-right > span {
+        display: block;
+        margin: 13px 0 0;
+        overflow: hidden;
+        text-align: right;
+      }
+      .markdown-body span.align-right span img {
+        margin: 0;
+        text-align: right;
+      }
+      .markdown-body span.float-left {
+        display: block;
+        float: left;
+        margin-right: 13px;
+        overflow: hidden;
+      }
+      .markdown-body span.float-left span {
+        margin: 13px 0 0;
+      }
+      .markdown-body span.float-right {
+        display: block;
+        float: right;
+        margin-left: 13px;
+        overflow: hidden;
+      }
+      .markdown-body span.float-right > span {
+        display: block;
+        margin: 13px auto 0;
+        overflow: hidden;
+        text-align: right;
+      }
+      .markdown-body code,
+      .markdown-body tt {
+        padding: 0;
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+        margin: 0;
+        font-size: 85%;
+        background-color: rgba(0, 0, 0, 0.04);
+        border-radius: 3px;
+      }
+      .markdown-body code:after,
+      .markdown-body code:before,
+      .markdown-body tt:after,
+      .markdown-body tt:before {
+        letter-spacing: -0.2em;
+        content: "\00a0";
+      }
+      .markdown-body code br,
+      .markdown-body tt br {
+        display: none;
+      }
+      .markdown-body del code {
+        text-decoration: inherit;
+      }
+      .markdown-body pre {
+        word-wrap: normal;
+      }
+      .markdown-body pre > code {
+        padding: 0;
+        margin: 0;
+        font-size: 100%;
+        word-break: normal;
+        white-space: pre;
+        background: transparent;
+        border: 0;
+      }
+      .markdown-body .highlight {
+        margin-bottom: 16px;
+      }
+      .markdown-body .highlight pre {
+        margin-bottom: 0;
+        word-break: normal;
+      }
+      .markdown-body .highlight pre,
+      .markdown-body pre {
+        padding: 16px;
+        overflow: auto;
+        font-size: 85%;
+        line-height: 1.45;
+        background-color: #f7f7f7;
+        border-radius: 3px;
+      }
+      .markdown-body pre code,
+      .markdown-body pre tt {
+        display: inline;
+        max-width: auto;
+        padding: 0;
+        margin: 0;
+        overflow: visible;
+        line-height: inherit;
+        word-wrap: normal;
+        background-color: transparent;
+        border: 0;
+      }
+      .markdown-body pre code:after,
+      .markdown-body pre code:before,
+      .markdown-body pre tt:after,
+      .markdown-body pre tt:before {
+        content: normal;
+      }
+      .markdown-body .csv-data td,
+      .markdown-body .csv-data th {
+        padding: 5px;
+        overflow: hidden;
+        font-size: 12px;
+        line-height: 1;
+        text-align: left;
+        white-space: nowrap;
+      }
+      .markdown-body .csv-data .blob-line-num {
+        padding: 10px 8px 9px;
+        text-align: right;
+        background: #fff;
+        border: 0;
+      }
+      .markdown-body .csv-data tr {
+        border-top: 0;
+      }
+      .markdown-body .csv-data th {
+        font-weight: 700;
+        background: #f8f8f8;
+        border-top: 0;
+      }
+      .news .alert .markdown-body blockquote {
+        padding: 0 0 0 40px;
+        border: 0 none;
+      }
+      .activity-tab .news .alert .commits,
+      .activity-tab .news .markdown-body blockquote {
+        padding-left: 0;
+      }
+      .task-list-item {
+        list-style-type: none;
+      }
+      .task-list-item label {
+        font-weight: 400;
+      }
+      .task-list-item.enabled label {
+        cursor: pointer;
+      }
+      .task-list-item + .task-list-item {
+        margin-top: 3px;
+      }
+      .task-list-item-checkbox {
+        float: left;
+        margin: 0.31em 0 0.2em -1.3em !important;
+        vertical-align: middle;
+        cursor: default !important;
+      }
+      .markdown-body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        max-width: 758px;
+        overflow: visible !important;
+      }
+      .markdown-body .emoji {
+        vertical-align: top;
+      }
+      .markdown-body pre {
+        border: inherit !important;
+      }
+      .markdown-body code {
+        color: inherit !important;
+      }
+      .markdown-body pre code .wrapper {
+        display: -moz-inline-flex;
+        display: -ms-inline-flex;
+        display: -o-inline-flex;
+        display: inline-flex;
+      }
+      .markdown-body pre code .gutter {
+        float: left;
+        overflow: hidden;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      .markdown-body pre code .gutter.linenumber {
+        text-align: right;
+        position: relative;
+        display: inline-block;
+        cursor: default;
+        z-index: 4;
+        padding: 0 8px 0 0;
+        min-width: 20px;
+        box-sizing: content-box;
+        color: #afafaf !important;
+        border-right: 3px solid #6ce26c !important;
+      }
+      .markdown-body pre code .gutter.linenumber > span:before {
+        content: attr(data-linenumber);
+      }
+      .markdown-body pre code .code {
+        float: left;
+        margin: 0 0 0 16px;
+      }
+      .markdown-body .gist .line-numbers {
+        border-left: none;
+        border-top: none;
+        border-bottom: none;
+      }
+      .markdown-body .gist .line-data {
+        border: none;
+      }
+      .markdown-body .gist table {
+        border-spacing: 0;
+        border-collapse: inherit !important;
+      }
+      .markdown-body code[data-gist-id] {
+        background: none;
+        padding: 0;
+      }
+      .markdown-body code[data-gist-id]:after,
+      .markdown-body code[data-gist-id]:before {
+        content: "";
+      }
+      .markdown-body code[data-gist-id] .blob-num {
+        border: unset;
+      }
+      .markdown-body code[data-gist-id] table {
+        overflow: unset;
+        margin-bottom: unset;
+      }
+      .markdown-body code[data-gist-id] table tr {
+        background: unset;
+      }
+      .markdown-body[dir="rtl"] pre {
+        direction: ltr;
+      }
+      .markdown-body[dir="rtl"] code {
+        direction: ltr;
+        unicode-bidi: embed;
+      }
+      .markdown-body .alert > p {
+        margin-bottom: 0;
+      }
+      .markdown-body pre.abc,
+      .markdown-body pre.flow-chart,
+      .markdown-body pre.graphviz,
+      .markdown-body pre.mermaid,
+      .markdown-body pre.sequence-diagram {
+        text-align: center;
+        background-color: inherit;
+        border-radius: 0;
+        white-space: inherit;
+      }
+      .markdown-body pre.abc > code,
+      .markdown-body pre.flow-chart > code,
+      .markdown-body pre.graphviz > code,
+      .markdown-body pre.mermaid > code,
+      .markdown-body pre.sequence-diagram > code {
+        text-align: left;
+      }
+      .markdown-body pre.abc > svg,
+      .markdown-body pre.flow-chart > svg,
+      .markdown-body pre.graphviz > svg,
+      .markdown-body pre.mermaid > svg,
+      .markdown-body pre.sequence-diagram > svg {
+        max-width: 100%;
+        height: 100%;
+      }
+      .markdown-body pre > code.wrap {
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -pre-wrap;
+        white-space: -o-pre-wrap;
+        word-wrap: break-word;
+      }
+      .markdown-body .alert > p,
+      .markdown-body .alert > ul {
+        margin-bottom: 0;
+      }
+      .markdown-body summary {
+        display: list-item;
+      }
+      .markdown-body summary:focus {
+        outline: none;
+      }
+      .markdown-body details summary {
+        cursor: pointer;
+      }
+      .markdown-body details:not([open]) > :not(summary) {
+        display: none;
+      }
+      .markdown-body figure {
+        margin: 1em 40px;
+      }
+      .markdown-body .mark,
+      .markdown-body mark {
+        background-color: #fff1a7;
+      }
+      .vimeo,
+      .youtube {
+        cursor: pointer;
+        display: table;
+        text-align: center;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-color: #000;
+        overflow: hidden;
+      }
+      .vimeo,
+      .youtube {
+        position: relative;
+        width: 100%;
+      }
+      .youtube {
+        padding-bottom: 56.25%;
+      }
+      .vimeo img {
+        width: 100%;
+        object-fit: contain;
+        z-index: 0;
+      }
+      .youtube img {
+        object-fit: cover;
+        z-index: 0;
+      }
+      .vimeo iframe,
+      .youtube iframe,
+      .youtube img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .vimeo iframe,
+      .youtube iframe {
+        vertical-align: middle;
+        z-index: 1;
+      }
+      .vimeo .icon,
+      .youtube .icon {
+        position: absolute;
+        height: auto;
+        width: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        opacity: 0.3;
+        transition: opacity 0.2s;
+        z-index: 0;
+      }
+      .vimeo:hover .icon,
+      .youtube:hover .icon {
+        opacity: 0.6;
+        transition: opacity 0.2s;
+      }
+      .slideshare .inner,
+      .speakerdeck .inner {
+        position: relative;
+        width: 100%;
+      }
+      .slideshare .inner iframe,
+      .speakerdeck .inner iframe {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .MJX_Assistive_MathML {
+        display: none;
+      }
+      .ui-infobar {
+        position: relative;
+        z-index: 2;
+        max-width: 760px;
+        margin: 25px auto -25px;
+        padding: 0 15px;
+        color: #777;
+      }
+      .toc .invisable-node {
+        list-style-type: none;
+      }
+      .ui-toc {
+        position: fixed;
+        bottom: 20px;
+        z-index: 998;
+      }
+      .ui-toc-label {
+        opacity: 0.3;
+        background-color: #ccc;
+        border: none;
+        transition: opacity 0.2s;
+      }
+      .ui-toc .open .ui-toc-label {
+        opacity: 1;
+        color: #fff;
+        transition: opacity 0.2s;
+      }
+      .ui-toc-label:focus {
+        opacity: 0.3;
+        background-color: #ccc;
+        color: #000;
+      }
+      .ui-toc-label:hover {
+        opacity: 1;
+        background-color: #ccc;
+        transition: opacity 0.2s;
+      }
+      .ui-toc-dropdown {
+        margin-top: 23px;
+        margin-bottom: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        max-width: 45vw;
+        width: 25vw;
+        max-height: 70vh;
+        overflow: auto;
+        text-align: inherit;
+      }
+      .ui-toc-dropdown > .toc {
+        max-height: calc(70vh - 100px);
+        overflow: auto;
+      }
+      .ui-toc-dropdown[dir="rtl"] .nav {
+        padding-right: 0;
+        letter-spacing: 0.0029em;
+      }
+      .ui-toc-dropdown a {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: pre;
+      }
+      .ui-toc-dropdown .nav > li > a {
+        display: block;
+        padding: 4px 20px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #767676;
+      }
+      .ui-toc-dropdown .nav > li:first-child:last-child > ul,
+      .ui-toc-dropdown .toc.expand ul {
+        display: block;
+      }
+      .ui-toc-dropdown .nav > li > a:focus,
+      .ui-toc-dropdown .nav > li > a:hover {
+        padding-left: 19px;
+        color: #000;
+        text-decoration: none;
+        background-color: transparent;
+        border-left: 1px solid #000;
+      }
+      .ui-toc-dropdown[dir="rtl"] .nav > li > a:focus,
+      .ui-toc-dropdown[dir="rtl"] .nav > li > a:hover {
+        padding-right: 19px;
+        border-left: none;
+        border-right: 1px solid #000;
+      }
+      .ui-toc-dropdown .nav > .active:focus > a,
+      .ui-toc-dropdown .nav > .active:hover > a,
+      .ui-toc-dropdown .nav > .active > a {
+        padding-left: 18px;
+        font-weight: 700;
+        color: #000;
+        background-color: transparent;
+        border-left: 2px solid #000;
+      }
+      .ui-toc-dropdown[dir="rtl"] .nav > .active:focus > a,
+      .ui-toc-dropdown[dir="rtl"] .nav > .active:hover > a,
+      .ui-toc-dropdown[dir="rtl"] .nav > .active > a {
+        padding-right: 18px;
+        border-left: none;
+        border-right: 2px solid #000;
+      }
+      .ui-toc-dropdown .nav .nav {
+        display: none;
+        padding-bottom: 10px;
+      }
+      .ui-toc-dropdown .nav > .active > ul {
+        display: block;
+      }
+      .ui-toc-dropdown .nav .nav > li > a {
+        padding-top: 1px;
+        padding-bottom: 1px;
+        padding-left: 30px;
+        font-size: 12px;
+        font-weight: 400;
+      }
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > li > a {
+        padding-right: 30px;
+      }
+      .ui-toc-dropdown .nav .nav > li > ul > li > a {
+        padding-top: 1px;
+        padding-bottom: 1px;
+        padding-left: 40px;
+        font-size: 12px;
+        font-weight: 400;
+      }
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > li > ul > li > a {
+        padding-right: 40px;
+      }
+      .ui-toc-dropdown .nav .nav > li > a:focus,
+      .ui-toc-dropdown .nav .nav > li > a:hover {
+        padding-left: 29px;
+      }
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > li > a:focus,
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > li > a:hover {
+        padding-right: 29px;
+      }
+      .ui-toc-dropdown .nav .nav > li > ul > li > a:focus,
+      .ui-toc-dropdown .nav .nav > li > ul > li > a:hover {
+        padding-left: 39px;
+      }
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > li > ul > li > a:focus,
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > li > ul > li > a:hover {
+        padding-right: 39px;
+      }
+      .ui-toc-dropdown .nav .nav > .active:focus > a,
+      .ui-toc-dropdown .nav .nav > .active:hover > a,
+      .ui-toc-dropdown .nav .nav > .active > a {
+        padding-left: 28px;
+        font-weight: 500;
+      }
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > .active:focus > a,
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > .active:hover > a,
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > .active > a {
+        padding-right: 28px;
+      }
+      .ui-toc-dropdown .nav .nav > .active > .nav > .active:focus > a,
+      .ui-toc-dropdown .nav .nav > .active > .nav > .active:hover > a,
+      .ui-toc-dropdown .nav .nav > .active > .nav > .active > a {
+        padding-left: 38px;
+        font-weight: 500;
+      }
+      .ui-toc-dropdown[dir="rtl"]
+        .nav
+        .nav
+        > .active
+        > .nav
+        > .active:focus
+        > a,
+      .ui-toc-dropdown[dir="rtl"]
+        .nav
+        .nav
+        > .active
+        > .nav
+        > .active:hover
+        > a,
+      .ui-toc-dropdown[dir="rtl"] .nav .nav > .active > .nav > .active > a {
+        padding-right: 38px;
+      }
+      .markdown-body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue,
+          Helvetica, Roboto, Arial, sans-serif;
+      }
+      html[lang^="ja"] .markdown-body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue,
+          Helvetica, Roboto, Arial, Hiragino Kaku Gothic Pro,
+          ヒラギノ角ゴ Pro W3, Osaka, Meiryo, メイリオ, MS Gothic, ＭＳ\ゴシック,
+          sans-serif;
+      }
+      html[lang="zh-tw"] .markdown-body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue,
+          Helvetica, Roboto, Arial, PingFang TC, Microsoft JhengHei, 微軟正黑,
+          sans-serif;
+      }
+      html[lang="zh-cn"] .markdown-body {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue,
+          Helvetica, Roboto, Arial, PingFang SC, Microsoft YaHei, 微软雅黑,
+          sans-serif;
+      }
+      html .markdown-body[lang^="ja"] {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue,
+          Helvetica, Roboto, Arial, Hiragino Kaku Gothic Pro,
+          ヒラギノ角ゴ Pro W3, Osaka, Meiryo, メイリオ, MS Gothic, ＭＳ\ゴシック,
+          sans-serif;
+      }
+      html .markdown-body[lang="zh-tw"] {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue,
+          Helvetica, Roboto, Arial, PingFang TC, Microsoft JhengHei, 微軟正黑,
+          sans-serif;
+      }
+      html .markdown-body[lang="zh-cn"] {
+        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue,
+          Helvetica, Roboto, Arial, PingFang SC, Microsoft YaHei, 微软雅黑,
+          sans-serif;
+      }
+      html[lang^="ja"] .ui-toc-dropdown {
+        font-family: Source Sans Pro, Helvetica, Arial, Meiryo UI, MS PGothic,
+          ＭＳ\Ｐゴシック, sans-serif;
+      }
+      html[lang="zh-tw"] .ui-toc-dropdown {
+        font-family: Source Sans Pro, Helvetica, Arial, Microsoft JhengHei UI,
+          微軟正黑UI, sans-serif;
+      }
+      html[lang="zh-cn"] .ui-toc-dropdown {
+        font-family: Source Sans Pro, Helvetica, Arial, Microsoft YaHei UI,
+          微软雅黑UI, sans-serif;
+      }
+      html .ui-toc-dropdown[lang^="ja"] {
+        font-family: Source Sans Pro, Helvetica, Arial, Meiryo UI, MS PGothic,
+          ＭＳ\Ｐゴシック, sans-serif;
+      }
+      html .ui-toc-dropdown[lang="zh-tw"] {
+        font-family: Source Sans Pro, Helvetica, Arial, Microsoft JhengHei UI,
+          微軟正黑UI, sans-serif;
+      }
+      html .ui-toc-dropdown[lang="zh-cn"] {
+        font-family: Source Sans Pro, Helvetica, Arial, Microsoft YaHei UI,
+          微软雅黑UI, sans-serif;
+      }
+      .ui-affix-toc {
+        position: fixed;
+        top: 0;
+        max-width: 15vw;
+        max-height: 70vh;
+        overflow: auto;
+      }
+      .back-to-top,
+      .expand-toggle,
+      .go-to-bottom {
+        display: block;
+        padding: 4px 10px;
+        margin-top: 10px;
+        margin-left: 10px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #999;
+      }
+      .back-to-top:focus,
+      .back-to-top:hover,
+      .expand-toggle:focus,
+      .expand-toggle:hover,
+      .go-to-bottom:focus,
+      .go-to-bottom:hover {
+        color: #563d7c;
+        text-decoration: none;
+      }
+      .back-to-top,
+      .go-to-bottom {
+        margin-top: 0;
+      }
+      .ui-user-icon {
+        width: 20px;
+        height: 20px;
+        display: block;
+        border-radius: 3px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        margin-right: 5px;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .ui-user-icon.small {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 0 0.2em;
+      }
+      .ui-infobar > small > span {
+        line-height: 22px;
+      }
+      .ui-infobar > small .dropdown {
+        display: inline-block;
+      }
+      .ui-infobar > small .dropdown a:focus,
+      .ui-infobar > small .dropdown a:hover {
+        text-decoration: none;
+      }
+      .ui-published-note {
+        color: #337ab7;
+      }
+      .ui-published-note .fa {
+        font-size: 20px;
+        vertical-align: top;
+      }
+      .unselectable {
+        -webkit-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
+      @media print {
+        blockquote,
+        div,
+        img,
+        pre,
+        table {
+          page-break-inside: avoid !important;
+        }
+        a[href]:after {
+          font-size: 12px !important;
+        }
+      }
+      .markdown-body.slides {
+        position: relative;
+        z-index: 1;
+        color: #222;
+      }
+      .markdown-body.slides:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        background-color: currentColor;
+        box-shadow: 0 0 0 50vw;
+      }
+      .markdown-body.slides section[data-markdown] {
+        position: relative;
+        margin-bottom: 1.5em;
+        background-color: #fff;
+        text-align: center;
+      }
+      .markdown-body.slides section[data-markdown] code {
+        text-align: left;
+      }
+      .markdown-body.slides section[data-markdown]:before {
+        content: "";
+        display: block;
+        padding-bottom: 56.23%;
+      }
+      .markdown-body.slides section[data-markdown] > div:first-child {
+        position: absolute;
+        top: 50%;
+        left: 1em;
+        right: 1em;
+        transform: translateY(-50%);
+        max-height: 100%;
+        overflow: hidden;
+      }
+      .markdown-body.slides section[data-markdown] > ul {
+        display: inline-block;
+      }
+      .markdown-body.slides > section > section + section:after {
+        content: "";
+        position: absolute;
+        top: -1.5em;
+        right: 1em;
+        height: 1.5em;
+        border: 3px solid #777;
+      }
+      body {
+        font-smoothing: subpixel-antialiased !important;
+        -webkit-font-smoothing: subpixel-antialiased !important;
+        -moz-osx-font-smoothing: auto !important;
+        text-shadow: 0 0 1em transparent, 1px 1px 1.2px rgba(0, 0, 0, 0.004);
+        -webkit-overflow-scrolling: touch;
+        letter-spacing: 0.025em;
+      }
+      .focus,
+      :focus {
+        outline: none !important;
+      }
+      ::-moz-focus-inner {
+        border: 0 !important;
+      }
+      body {
+        font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
+      }
+      html[lang^="ja"] body {
+        font-family: Source Sans Pro, Helvetica, Arial, Hiragino Kaku Gothic Pro,
+          ヒラギノ角ゴ Pro W3, Osaka, Meiryo, メイリオ, MS Gothic, ＭＳ\ゴシック,
+          sans-serif;
+      }
+      html[lang="zh-tw"] body {
+        font-family: Source Sans Pro, Helvetica, Arial, PingFang TC,
+          Microsoft JhengHei, 微軟正黑, sans-serif;
+      }
+      html[lang="zh-cn"] body {
+        font-family: Source Sans Pro, Helvetica, Arial, PingFang SC,
+          Microsoft YaHei, 微软雅黑, sans-serif;
+      }
+      abbr[title] {
+        border-bottom: none;
+        text-decoration: underline;
+        -webkit-text-decoration: underline dotted;
+        text-decoration: underline dotted;
+      }
+      abbr[data-original-title],
+      abbr[title] {
+        cursor: help;
+      }
+      body.modal-open {
+        overflow-y: auto;
+        padding-right: 0 !important;
+      }
     </style>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
-    	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"
+        integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g="
+        crossorigin="anonymous"
+      ></script>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"
+        integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE="
+        crossorigin="anonymous"
+      ></script>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"
+        integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo="
+        crossorigin="anonymous"
+      ></script>
     <![endif]-->
-</head>
+  </head>
 
-<body>
-    <div id="doc" class="markdown-body container-fluid comment-enabled" data-hard-breaks="true" style="position: relative;"><h1 id="Ethereum-1-Research-topics"><a class="anchor hidden-xs" href="#Ethereum-1-Research-topics" title="Ethereum-1-Research-topics"><span class="octicon octicon-link"></span></a>Ethereum 1 Research topics</h1><h2 id="Migration-from-hexary-to-binary-tries"><a class="anchor hidden-xs" href="#Migration-from-hexary-to-binary-tries" title="Migration-from-hexary-to-binary-tries"><span class="octicon octicon-link"></span></a>Migration from hexary to binary tries</h2><p>If it is found that binary merkle tries are more beneficial than hexary merkle tries (and perhaps that it is also beneficial to change the hash function used to hash the trie), we need to think about potential migration path for existing implementations. Currently proposal is described here: <a href="https://ethresear.ch/t/optimizing-sparse-merkle-trees/3751" target="_blank" rel="noopener">https://ethresear.ch/t/optimizing-sparse-merkle-trees/3751</a></p><p>Theoretically, we can do a minimally disruptive migration by nominally keeping the patricia hex tree structure, but changing the hash function from</p><pre><code>sha(rlp(x1 .... x16))
-</code></pre><p>to</p><pre><code>merkle_tree(x1 ... x16)
-</code></pre><p>So then we would get most of the witness size reduction benefits. But at DB level nothing would change. Even for incremental update, we could make the root deterministic if we put information about whether or not an account was updated into the leaf.</p><h2 id="Flat-data-layout-for-storing-the-state"><a class="anchor hidden-xs" href="#Flat-data-layout-for-storing-the-state" title="Flat-data-layout-for-storing-the-state"><span class="octicon octicon-link"></span></a>Flat data layout for storing the state</h2><p>For decoupling merkle tree from the data storage. The result of this research is benchmarks and documentation on how to deal with various issues when changing from trie-based storage model to flat storage model. Examples of such issues:</p><ul>
-<li>Reconstruction of trie on the fly</li>
-<li>Handling of reorgs</li>
-<li>Fetching the parts of the state from disk and adding them to the trie in memory</li>
-<li>Snapshot sync</li>
-</ul><p>This documentation should serve as a guide for any implemention team who wishes to migrate their implementations to the flat storage model.<br>
-The beginning of this documentation is here: <a href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/db_walkthrough.MD" target="_blank" rel="noopener">https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/db_walkthrough.MD</a></p><p>Research phases:<br>
-<strong>THIN HISTORY</strong>. Indexing of historical data - we are researching and implementing the approach in which most of the data about historical changes of accounts and contract storage are kept in the form of “change sets” (1 change set is written per block), and the “history” is simply the index mapping account address hashes or storage slot hashes to the “timeseries” of block number where these accounts and storage slots have been modified. This is mostly implemented, and the next phase is comparative testing with the previous model, where “history” contained most of the data. We currently expect further reduction in disk space requirement for storing the history, and insignificant slowdown of large historical queries (due to the fact that data will be queried using the index, adding an extra round trip to the database). Results of this phase are comparative benchmarks of THIN HISTORY vs THICK HISTORY.</p><p><strong>BOUNDARY HASHES</strong>. This aims to solve the biggest drawbacks of the current implementation of  the flat data layout - slow startup of the node (because it has to read all the accounts and build the top of the Patricia Merkle tree in memory), and difficulty to become light server, as well as “Red Queen”/”Firehose” seeder (Red Queens and Firehose are snapshot sync protocols, superior to “fast sync” and “warp sync” that we are planning to implement). The main idea is to add an extra bucket to the database, recording the subset of intermediate hashes (as mapping prefix =&gt; node hash, which is still compatible with the flat layout). Instead of maintaining such intermediate hashes for all the intermediate nodes, the plan is to maintain them only for  the nodes that are not current in the memory. This should reduce unnecessary database churn while still delivering the benefits. We currently expect a slight increase in the database size, as well as some extra database write I/O per block. We expect this to be a trade off for much quicker start up time, as well as unblocking further development of Red Queen/Firehose snapshot sync protocols. Results of this phase are comparative benchmarks of startup times at various block heights; performance of “get_Proof” RPC method for recent block heights, compared with go-ethereum; comparison of extra database size and write I/O with and without the intermediate hashes.</p><p><strong>RED QUEEN</strong>. This aims to develop a snapshot sync method that is more efficient than fast sync (supported by most implementation), and more secure than warp sync. Flat data layout makes it impossible to efficiently support fast sync, because fast sync’s primitive, called GetNodeData queries trie nodes based solely on their hashes, which implies the existence of the index from hashes to the node data. This index is missing in the flat data model. Warp sync is more efficient, but it has two main downsides. Firstly, the warp snapshots need to be pre-generated before being served. Secondly, the recipient of a wrap can only verify the warp’s correctness after it has been downloaded in its entirety. Red Queen sync has first been designed to be a combination of a protocol and an algorithm. Protocol is a set of primitives that request data to be transmitted from one peer (seeder) to another (leecher). Algorithm is the strategy that uses primitives of the protocol to synchronise the current or recent state. The main idea of Red Queen sync algorithm is to not assume that the seeder are able to serve any historical views of the state, they always server what they deem to be the current state. It is the job of the leecher (and the Red Queen algorithm) to combine the data from potentially different block heights and eventually arrive at a consistent and complete view of the state.</p><h2 id="The-State-Analytics"><a class="anchor hidden-xs" href="#The-State-Analytics" title="The-State-Analytics"><span class="octicon octicon-link"></span></a>The State Analytics</h2><p>This project aims at making charts and tables that has appeared in various blog posts, such as:<br>
-<a href="https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179" target="_blank" rel="noopener">https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179</a></p><p><a href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc" target="_blank" rel="noopener">https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc</a></p><p><a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309" target="_blank" rel="noopener">https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309</a></p><p><a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10" target="_blank" rel="noopener">https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10</a></p><p>more accessible on regular basis (aim 1), and then reproducible by anyone in the possesion of a turbo-geth archive node (aim 2).<br>
-For aim 1, there would be a remote access to the turbo-geth database, whicn will allow extracting data without stopping the turbo-geth node. That way, stats can be gathered, and charts and tables produced and published automatically at regular intervals.<br>
-For aim 2, the tools used for extracting data from a working turbo-geth node would be extracted into a separate command line interface, with some user documentation on how to use and extend it.</p><h3 id="Rough-plan"><a class="anchor hidden-xs" href="#Rough-plan" title="Rough-plan"><span class="octicon octicon-link"></span></a>Rough plan</h3><ol>
-<li>Server side of the remote read-only interface to BoltDB while running turbo-geth node. Almost done.</li>
-<li>Client side of the remote interface to BoltDB. Partically done.</li>
-<li>Implement “state growth vs block gas limit” charts from <a href="https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179" target="_blank" rel="noopener">https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179</a></li>
-<li>Compare performance of remote extraction (with on-line node) with local extraction (with off-line node).</li>
-<li>Create a static web-site and regularly publish fresh charts for “state growth vs block gas limit”.</li>
-<li>Implement the generation of “state trie depth” table from <a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10" target="_blank" rel="noopener">https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10</a></li>
-<li>Add “state trie depth” table to the Web-site.</li>
-<li>Create a better abstraction of server side to accomodate both BoltDB and BadgerDB on the server side.</li>
-<li>Extract and document the tool for gathering data and extending the analytics (so that people can come up with their own charts and tables).</li>
-</ol><h2 id="Stateless-Ethereum"><a class="anchor hidden-xs" href="#Stateless-Ethereum" title="Stateless-Ethereum"><span class="octicon octicon-link"></span></a>Stateless Ethereum</h2><p>For letting most nodes in the network to use less resources to process blocks. The results of this research are prototypes, benchmarks, documentation and specification describing how to implement stateless processing. Implementation would include three main parts:</p><ol>
-<li>Block witness producer</li>
-<li>Block witness relayer</li>
-<li>Block witness consumer</li>
-</ol><p>Stateless clients is one approach to improve performance of Ethereum client implementations while processing blocks of transactions. Specifically, it seeks to ease the increasing burden that is the state size. It does so by removing the need to download, or implicitely construct and maintain the state, for most of the participants in the Ethereum network. The requirement to access to the state is removed by introducing another type of data packets (existing data packet types are, for example, blocks and transactions) to be gossipped around the p2p network. We call this data packets “block witnesses”. For each block we have one corresponding block witness. The two main properties that block witnesses have:</p><ol>
-<li>It is possible to verify efficiently that the block witness is indeed constructed from the correct version of the Ethereum state.</li>
-<li>Block witness has all the required information to make it possible to execute the corresponding block.</li>
-</ol><p>More details can be found here: <a href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc" target="_blank" rel="noopener">https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc</a></p><h3 id="Research-roadmap"><a class="anchor hidden-xs" href="#Research-roadmap" title="Research-roadmap"><span class="octicon octicon-link"></span></a>Research roadmap</h3><p>To make stateless clients a reality and get it implemented in all Ethereum 1 clients, these large steps seem to be necessary, up to the research test-net launch:</p><ol>
-<li><strong>Revisiting of the prototype</strong> (currently based on Turbo-Geth). Previous version of the prototype, that was used to produced data in the medium article showed above, had a different encoding for the structure than what is currently proposed (based on the “multiproofs” section here: <a href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/guide.md#multiproofs" target="_blank" rel="noopener">https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/guide.md#multiproofs</a>).</li>
-<li><strong>Refresh the data</strong>. Using updated prototype, produce new data, and add non-smoothed charts (previously published charts were moving average over 1024 block to make them smoother, but they potentially concealed some extremes)</li>
-<li><strong>Estimate savings in the block witness size from switching to binary tries</strong> It is a conjecture that switching to binary tries would reduce the size of the block witnesses by the factor of 3-4. Also, will merkle-hashing of contract byte codes reduce the size of the block witnesses.</li>
-<li><strong>Witnesses for genesis sync</strong>. Estimate the potential benefit of using partial witnesses for speeding up sync from Genesis block (where sync is proceeding with minimal disk I/O).</li>
-<li><strong>Visualisation in the prototype</strong>. Some initial steps have been taken (e.g. visualisations for the presentation at the STARKWare sessions). This needs to be extended to provide interactive visualisations of state and block witnesses, to help extend the circle of researches and developers dealing with the stateless clients.</li>
-<li><strong>Prototype to support semi-stateless</strong>. Semi-stateless approach described here: <a href="https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04" target="_blank" rel="noopener">https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04</a>, but the data gathering was still hard computationally. With the code and data from item (4) on this roadmap (persisting partial witnesses), it should be much more efficient to collect and compare the data. The threshold would not be expressed in number of blocks for which the “aggregated” witness is kept by a semi-stateless client. Instead, the threshold would be expressed in number of state trie nodes kept in memory.</li>
-<li><strong>Analysis of potential adversarial behavior</strong>. Using the prototype developed, make an assessment of how much gas would an adversary need to pay to inflate the size of the block witness. This analysis will be the input to the gas cost adjustment that introducing stateless client would require.</li>
-<li><strong>Incentivisation of block witness production and relay</strong>. Using information gathered in the previous steps, reason about what incentives exist for any nodes to produce and to relay block witnesses, and, for example, not relay blocks without witnesses.<br>
-it is a bit circular but this is my current thinking. Block witnesses can actually benefit full nodes (keeping the entire state) as well as partial nodes. Because they can reduce their memory expenditure on keeping the cache for its database, and instead they can simply consume the witnesses. If they do want to use their memory, they can “dial up their statefullness and dial down the witness sizes”, and still benefit by not having any read I/O from the database, only write I/O (which is much easier to do concurrently). So, in order to reinforce the incentive for miners to generate witnesses and prefer smaller witnesses to bigger witnesses, we would mostly likely need to change the “default” propagation rules for blocks. Currently, blocks are propagated once their PoW is found to be correct. In the future, we might need to change it to “blocks are propagated once there is a valid witness for it, which can be propagated alongside the block. If there is no witness, do not propagate the block”. For the nodes that benefit from the existence of the witnesses, it should be easy to convince the operators to switch to the new propagation rules. Once this propagation rule becomes the norm, miners are having clear incentive to produce witnesses for their blocks, because otherwise their blocks simply won’t propagate or propagate slowly. Note that even miners themselves can benefit from witnesses - because they can process blocks and start mining on top of them without any database I/O on the critical path.</li>
-<li><strong>Block witness specification</strong>. Formal (implementation-independent) description of how block witness can be produced, how to encode/decode them into/from the wire packets, how to execute transactions on a block witness. This also covers the case or partial witnesses, which would simply be a concatenation of smaller witnesses rooted at different points in the state tree.</li>
-<li><strong>New sub-protocol specification</strong>. Specify a new, optional sub-protocol for gossiping block witnesses (full, partial, and for range of blocks) around the network.</li>
-<li><strong>Gas cost specification</strong>. Based on the analysis of the adversarial behaviour, specify how the transaction senders will be charged for the production of block witnesses. If we take 16 gas per byte as a baseline established in Istanbul (in EIP-2028), and we manage to somehow remove or minimise all intermediate hashes from the block witness (or just ignore them), then cost of SLOAD should be (32+32+32) * 16=1536 gas. First 32 is address hash of contract, second 32 is key hash of the storage item, and the third 32 is the value. If we apply the same crude logic to contract codes, we should charge 24 * 1024 * 16 = 393216 gas for CALL. 24 * 1024 is the current limit on contract code. If we, however, figure out from the data that it would be beneficial to split contract code in pieces, and merklize them (item 2 in this roadmap), then obviously we would only need to charge gas whenever the instructions from a piece are actually “loaded” into EVM. But if the CALL instruction charge proportional to the contract code’s size, it would be better. This, however, still requires something like UNGAS, otherwise there will be quite a lot of broken contracts and other concerns about backwards incompatibility. This would encourage people to split their large contracts into smaller pieces, working via DELEGATECALL proxy</li>
-<li><strong>Research test-net</strong>. Construct a test-net supporting the block witnesses. Specification from previous steps would allow any client implementation to catch up and join.</li>
-</ol><h3 id="Implementation-roadmap"><a class="anchor hidden-xs" href="#Implementation-roadmap" title="Implementation-roadmap"><span class="octicon octicon-link"></span></a>Implementation roadmap</h3><p>Since the research is in the early stages, this is not very fleshed out yet (therefore no expected dates), but this is the current thinking.</p><ol>
-<li>Formal semantics for EVM, with reference implementation.</li>
-<li>Introduction of “Versionless EVM” via Account versioning, together with unobservable gas change (UNGAS), most probably dependent on Project “Gas repricing vs backwards compatibility”.</li>
-<li>Potentially changing state tree from hexary to binary.</li>
-<li>Potentially introducing merkle tree hashing of the contract byte codes.</li>
-<li>Repricing of operations influencing the size of the block witness.</li>
-</ol><h2 id="Gas-repricing-vs-backwards-compatibility"><a class="anchor hidden-xs" href="#Gas-repricing-vs-backwards-compatibility" title="Gas-repricing-vs-backwards-compatibility"><span class="octicon octicon-link"></span></a>Gas repricing vs backwards compatibility</h2><p>The aim of this project is to achieve less painful (or ideally painless) repricing of opcodes. We expect these repricings to be necessary to keep the gas costs balanced, as well as for the implementation of the State Ethereum project. This project only has a research roadmap at the moment, and the dates are very uncertain. It also has a few branches (alternative proposals), covering either the main mechanism with which backwards-compatible repricing is achieved, or some secondary issues. Currently, there are 2 alternative proposals for the main mechanism:</p><h3 id="Legacy-repricing"><a class="anchor hidden-xs" href="#Legacy-repricing" title="Legacy-repricing"><span class="octicon octicon-link"></span></a>Legacy repricing</h3><p><a href="https://ep.corepaper.org/compatibility/legacy-repricing/" target="_blank" rel="noopener">https://ep.corepaper.org/compatibility/legacy-repricing/</a>. The main idea is to introduce account versioning, but with the goal of only ever having two versions, “legacy” and “forward compatible”. Legacy version experiences no repricing, but its usage gets disentivised economically, but making it progressively more expensive than the forward compatible version. In the forwards compatible version, the main innovation is making the gas unobservable from the smart contracts (codename UNGAS). It is currently believed that this can be achieved by making 3 changes to the semantics of opcodes. Since the gas is now unobservable, any repricing does not affect the logic of the contracts’ execution, only the total required gas (which can be easily changed when creating a transaction). In order to economically disentivise the usage of the legacy version, repricings are performed not by increasing the gas expenditure of select operations, but rather by proportionally decreasing the gas expenditure for all the rest of the operations. It is believed that it will be difficult for miners to distinguish between transactions only containing legacy code, forward compatible code, or the mixture, so they won’t be able to apply different gas prices accordingly, and the legacy code will become largely more expensive to execute. When decreasing the gas expenditure of some operations, we will face the fact that some of them are already quite small (3 gas, for example). There are currently two proposed ways of dealing with this:</p><ol>
-<li>Changing the semantics of entering a call frame, CALL, CREATE (and similar) instructions to scale the remaining gas up and down by a certain factor</li>
-<li>Particle gas cost, introducing the units of “milligas”, or even perhaps “microgas”: <a href="https://eips.ethereum.org/EIPS/eip-2045" target="_blank" rel="noopener">https://eips.ethereum.org/EIPS/eip-2045</a></li>
-</ol><h3 id="Decoupling-the-two-functions-of-gas"><a class="anchor hidden-xs" href="#Decoupling-the-two-functions-of-gas" title="Decoupling-the-two-functions-of-gas"><span class="octicon octicon-link"></span></a>Decoupling the two functions of gas</h3><p>Gas is split into two components - one for metering, another for restricting recursion and callbacks.</p><h2 id="Formal-system-to-specify-semantics-of-Ethereum-state-transition"><a class="anchor hidden-xs" href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal-system-to-specify-semantics-of-Ethereum-state-transition"><span class="octicon octicon-link"></span></a>Formal system to specify semantics of Ethereum state transition</h2><p>The aim of this project is to agree on the most suitable way to specify semantics and use it to propose changes in Ethereum more formally. It can also mean that such suitable semantics has to be created. Some of the very ambitious projects (like Project “Gas repricing vs backwards compatibility”) that involve very significant changes to the EVM, would be hard to deliver successfully without the ability to specify the changes in an unambiguous way. From our previous experience, the real scrutiny of such proposals usually starts relatively late in the process, once the code is written. This is because the specification given in prose within the EIPs is not rigorous and formal enough for the proper analysis to start (and, more importantly, for using automated analysis tools like model checkers, symbolic execution engines, etc.). There exist at least one known formal semantics for EVM already, called KEVM. It is also part of the jello paper: <a href="https://jellopaper.org/" target="_blank" rel="noopener">https://jellopaper.org/</a>. This semantics is complete and executable. However, its major drawback that the language it uses (K) is quite complex and inaccessible even for most core developers. Also, the process of installation of all required software to execute semantics makes the barrier to entry higher still. So far, KEVM has not been used to formalise EVM change proposals ahead of the implementation. Our assumption is that this is a usability issue. If there were an alternative semantics that uses simpler languages (like the one used in Web Assembly), there are much better chances for it to be adopted as a de-facto specification language for EVM changes.<br>
-In this project, we will attempt to construct a new formal semantics for EVM, based on a single type of substitution rules. Every rule will have 3 elements:</p><ul>
-<li>Pattern</li>
-<li>Result of the substitution</li>
-<li>Guard expression</li>
-</ul><p>The matching that the pattern performs is done against the sequence of objects that represents the current state of EVM (also known as “configuration”). Like in Web Assembly specification, we treat items on the EVM stack and EVM instructions as the same type of objects, so that for most operations, opcode and operands can be matched by a simple mattern without the use of extraction functions.<br>
-This project has both research and implementation roadmaps, but they are closely intertwined and are likely to proceed in a lock-step fashion. That is why we combine them in one list for the time being. At any point of the roadmap we may encounter unsolvable problems, and the project may need to be abandoned or rescoped. That is why the roadmap attempts to probe more difficult areas of EVM functionality first, because they are more likely to be unsolvable.</p><h3 id="Researchimplementation-roadmap"><a class="anchor hidden-xs" href="#Researchimplementation-roadmap" title="Researchimplementation-roadmap"><span class="octicon octicon-link"></span></a>Research/implementation roadmap:</h3><ol>
-<li>Skeleton of reference implementation for pattern matching (and variable bindings). Will start with the C programming language, which gives a good balance of being understandable for a lot of developers, as well as having a lot of code analysis tools developed for it.</li>
-<li>Skeleton of reference implementation for evaluation of the guards. Guards will also be written in C, with some conventions about what is permissible and what not.</li>
-<li>Skeleton of reference implementation for generating the substitutions.</li>
-<li>Rules for jump instructions, unconditional and conditional.</li>
-<li>Rules for call, revert, and return instructions (dealing with spawning and destroying execution frames).</li>
-<li>Rules for contract storage access (SLOAD, STORE). Potential introduction of non-determinism into the semantics, and therefore the need to also create the contract storage oracle.</li>
-<li>Rules for memory operations.</li>
-<li>Rules for all other opcodes.</li>
-</ol><h3 id="Previous-write-up-of-ideas"><a class="anchor hidden-xs" href="#Previous-write-up-of-ideas" title="Previous-write-up-of-ideas"><span class="octicon octicon-link"></span></a>Previous write up of ideas</h3><p>Current idea is to use the notation similar to what<br>
-is used in Web Assembly, which is very clever system, and is as follows:</p><ol>
-<li>State of the system, of configuration, is described as a tuple of functions (for accounts, storage etc.), and an instruction sequence.</li>
-<li>Interestingly, the stack does not have a separate representation and is instead represented as a part of the instruction sequence. To achieve that, a special <code>const</code> instruction carrying a value is used.</li>
-<li>Most operations will be represented as a reduction rule that involve pattern that has to be matched inside the sequence of instruction, and an optional guard, which is formulated as a logical formula. Guards let us choose between multiple rules applicable to the same configuration, and allows us computing the effect of the operation on parts of the state.</li>
-<li>For our purposes, we can try to represent a gas counter (or two) a part of the instruction sequence too (with special instruction <code>gas_counter</code>, so we can have different reduction rules that apply depending on whether there is sufficient gas, as well as properly decrease the counter on usage.</li>
-<li>Things like execution frames are trickier. We need an ability to scrap them completely when the frame is aborted or we perform <code>RETURN</code>. For that reason we might need to introduce frame boundary “instructions”, <code>frame_begin</code>, <code>frame_id_1</code> … , <code>frame_begin</code>, <code>frame_id_2</code> …, <code>frame_end</code>, <code>frame_id_2</code>, …, <code>frame_end</code>, <code>frame_id_1</code>. In this way, pattern matching can recognise where frames begin and end so they can be eliminated. Frame ids are required to ensure that any reduction rule that removes the entire frame can specify in the guard that frame id at the start of the frame matches the frame id at the end of the frame. And, the frame needs to have its own frame id present locally.</li>
-</ol><p>One of the challenges is how to model the sub-states. Complexity with the substates is that the state modifications made in an execution frame (substate) could be reverted or “committed” at the end of the frame. However, the opcodes are allowed to reach beyond the substate and that can potentially trigger cascading reads.<br>
-To solve this, we can employ certain level of non-determinism. When the instructions like <code>CALL</code> executes, and spawns a new frame between instruction sequence and the stack, it is also allowed to copy an arbitrary part of the enclosing frame’s state into its local <code>readset</code>. When the execution proceeds, reading from beyond the <code>readset</code> results in the failure of evaluation. However, with sufficiently correct <code>readset</code> the evaluation will proceed as required. This is where non-determinism is. Symbolic execution engines will be able to deal with it pretty easily by actually implementing cascading reads, but modelling cascading reads as a reduction rule would require some advanced higher-level functions.<br>
-Developing this idea, we would also have local <code>writeset</code>, which is getting populated during the frame’s execution, and then either gets merged into the encompassing frame’s <code>writeset</code>, or discarded.</p><p>When jumping instructions are executed, this leads to the replacement of the entire code in the current frame with the slice starting from the jump location.</p><p>In preamble, the following types would need to be defined:</p><ol>
-<li>Boolean</li>
-<li>Integer (up to 2^256)</li>
-<li>Lists</li>
-<li>Mapping</li>
-</ol><p>List will need a “drop” operation defined, like<br>
-<code>l[index:]</code>, which is part of <code>l</code> with <code>index</code> number of items in the front dropped, or <code>invalid_list</code> if there aren’t enough items. It will be used for modelling jump instructions.</p><p>Mapping type will need a boolean function “submap” that tells if one mapping is a sub-mapping of another <code>m1&lt;=m2</code>. It will be used to check that the <code>readset</code> (non-deterministic) of the newly spawned frame is correct. Also, mappings should allow “holes”, i.e. values that are intented to be deleted. Using them, we can define “merge”, which applies <code>writeset</code> generated by an execution frame to the <code>writeset</code> of the enclosing frame.</p><p>The general composition of the string that is getting reduced during the execution is this:</p><pre><code>(1 stack1 [configuration1] instructions1 )1
-</code></pre><p>When instruction <code>CALL</code> (or similar) is encountered,<br>
-it spawns another exection frame within the first one:</p><pre><code>(1 stack1 c1 c2 c3 c4 c5 c6 [configuration1] CALL instructions1 )1
+  <body>
+    <div
+      id="doc"
+      class="markdown-body container-fluid comment-enabled"
+      data-hard-breaks="true"
+      style="position: relative;"
+    >
+      <h1 id="Ethereum-1-Research-topics">
+        <a
+          class="anchor hidden-xs"
+          href="#Ethereum-1-Research-topics"
+          title="Ethereum-1-Research-topics"
+          ><span class="octicon octicon-link"></span></a
+        >Ethereum 1 Research topics
+      </h1>
+      <h2 id="Migration-from-hexary-to-binary-tries">
+        <a
+          class="anchor hidden-xs"
+          href="#Migration-from-hexary-to-binary-tries"
+          title="Migration-from-hexary-to-binary-tries"
+          ><span class="octicon octicon-link"></span></a
+        >Migration from hexary to binary tries
+      </h2>
+      <p>
+        If it is found that binary merkle tries are more beneficial than hexary
+        merkle tries (and perhaps that it is also beneficial to change the hash
+        function used to hash the trie), we need to think about potential
+        migration path for existing implementations. Currently proposal is
+        described here:
+        <a
+          href="https://ethresear.ch/t/optimizing-sparse-merkle-trees/3751"
+          target="_blank"
+          rel="noopener"
+          >https://ethresear.ch/t/optimizing-sparse-merkle-trees/3751</a
+        >
+      </p>
+      <p>
+        Theoretically, we can do a minimally disruptive migration by nominally
+        keeping the patricia hex tree structure, but changing the hash function
+        from
+      </p>
+      <pre><code>sha(rlp(x1 .... x16))
+</code></pre>
+      <p>to</p>
+      <pre><code>merkle_tree(x1 ... x16)
+</code></pre>
+      <p>
+        So then we would get most of the witness size reduction benefits. But at
+        DB level nothing would change. Even for incremental update, we could
+        make the root deterministic if we put information about whether or not
+        an account was updated into the leaf.
+      </p>
+      <h2 id="Flat-data-layout-for-storing-the-state">
+        <a
+          class="anchor hidden-xs"
+          href="#Flat-data-layout-for-storing-the-state"
+          title="Flat-data-layout-for-storing-the-state"
+          ><span class="octicon octicon-link"></span></a
+        >Flat data layout for storing the state
+      </h2>
+      <p>
+        For decoupling merkle tree from the data storage. The result of this
+        research is benchmarks and documentation on how to deal with various
+        issues when changing from trie-based storage model to flat storage
+        model. Examples of such issues:
+      </p>
+      <ul>
+        <li>Reconstruction of trie on the fly</li>
+        <li>Handling of reorgs</li>
+        <li>
+          Fetching the parts of the state from disk and adding them to the trie
+          in memory
+        </li>
+        <li>Snapshot sync</li>
+      </ul>
+      <p>
+        This documentation should serve as a guide for any implemention team who
+        wishes to migrate their implementations to the flat storage model.<br />
+        The beginning of this documentation is here:
+        <a
+          href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/db_walkthrough.MD"
+          target="_blank"
+          rel="noopener"
+          >https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/db_walkthrough.MD</a
+        >
+      </p>
+      <p>
+        Research phases:<br />
+        <strong>THIN HISTORY</strong>. Indexing of historical data - we are
+        researching and implementing the approach in which most of the data
+        about historical changes of accounts and contract storage are kept in
+        the form of “change sets” (1 change set is written per block), and the
+        “history” is simply the index mapping account address hashes or storage
+        slot hashes to the “timeseries” of block number where these accounts and
+        storage slots have been modified. This is mostly implemented, and the
+        next phase is comparative testing with the previous model, where
+        “history” contained most of the data. We currently expect further
+        reduction in disk space requirement for storing the history, and
+        insignificant slowdown of large historical queries (due to the fact that
+        data will be queried using the index, adding an extra round trip to the
+        database). Results of this phase are comparative benchmarks of THIN
+        HISTORY vs THICK HISTORY.
+      </p>
+      <p>
+        <strong>BOUNDARY HASHES</strong>. This aims to solve the biggest
+        drawbacks of the current implementation of the flat data layout - slow
+        startup of the node (because it has to read all the accounts and build
+        the top of the Patricia Merkle tree in memory), and difficulty to become
+        light server, as well as “Red Queen”/”Firehose” seeder (Red Queens and
+        Firehose are snapshot sync protocols, superior to “fast sync” and “warp
+        sync” that we are planning to implement). The main idea is to add an
+        extra bucket to the database, recording the subset of intermediate
+        hashes (as mapping prefix =&gt; node hash, which is still compatible
+        with the flat layout). Instead of maintaining such intermediate hashes
+        for all the intermediate nodes, the plan is to maintain them only for
+        the nodes that are not current in the memory. This should reduce
+        unnecessary database churn while still delivering the benefits. We
+        currently expect a slight increase in the database size, as well as some
+        extra database write I/O per block. We expect this to be a trade off for
+        much quicker start up time, as well as unblocking further development of
+        Red Queen/Firehose snapshot sync protocols. Results of this phase are
+        comparative benchmarks of startup times at various block heights;
+        performance of “get_Proof” RPC method for recent block heights, compared
+        with go-ethereum; comparison of extra database size and write I/O with
+        and without the intermediate hashes.
+      </p>
+      <p>
+        <strong>RED QUEEN</strong>. This aims to develop a snapshot sync method
+        that is more efficient than fast sync (supported by most
+        implementation), and more secure than warp sync. Flat data layout makes
+        it impossible to efficiently support fast sync, because fast sync’s
+        primitive, called GetNodeData queries trie nodes based solely on their
+        hashes, which implies the existence of the index from hashes to the node
+        data. This index is missing in the flat data model. Warp sync is more
+        efficient, but it has two main downsides. Firstly, the warp snapshots
+        need to be pre-generated before being served. Secondly, the recipient of
+        a wrap can only verify the warp’s correctness after it has been
+        downloaded in its entirety. Red Queen sync has first been designed to be
+        a combination of a protocol and an algorithm. Protocol is a set of
+        primitives that request data to be transmitted from one peer (seeder) to
+        another (leecher). Algorithm is the strategy that uses primitives of the
+        protocol to synchronise the current or recent state. The main idea of
+        Red Queen sync algorithm is to not assume that the seeder are able to
+        serve any historical views of the state, they always server what they
+        deem to be the current state. It is the job of the leecher (and the Red
+        Queen algorithm) to combine the data from potentially different block
+        heights and eventually arrive at a consistent and complete view of the
+        state.
+      </p>
+      <h2 id="The-State-Analytics">
+        <a
+          class="anchor hidden-xs"
+          href="#The-State-Analytics"
+          title="The-State-Analytics"
+          ><span class="octicon octicon-link"></span></a
+        >The State Analytics
+      </h2>
+      <p>
+        This project aims at making charts and tables that has appeared in
+        various blog posts, such as:<br />
+        <a
+          href="https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179"
+          target="_blank"
+          rel="noopener"
+          >https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179</a
+        >
+      </p>
+      <p>
+        <a
+          href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc"
+          target="_blank"
+          rel="noopener"
+          >https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc</a
+        >
+      </p>
+      <p>
+        <a
+          href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309"
+          target="_blank"
+          rel="noopener"
+          >https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309</a
+        >
+      </p>
+      <p>
+        <a
+          href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10"
+          target="_blank"
+          rel="noopener"
+          >https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10</a
+        >
+      </p>
+      <p>
+        more accessible on regular basis (aim 1), and then reproducible by
+        anyone in the possesion of a turbo-geth archive node (aim 2).<br />
+        For aim 1, there would be a remote access to the turbo-geth database,
+        whicn will allow extracting data without stopping the turbo-geth node.
+        That way, stats can be gathered, and charts and tables produced and
+        published automatically at regular intervals.<br />
+        For aim 2, the tools used for extracting data from a working turbo-geth
+        node would be extracted into a separate command line interface, with
+        some user documentation on how to use and extend it.
+      </p>
+      <h3 id="Rough-plan">
+        <a class="anchor hidden-xs" href="#Rough-plan" title="Rough-plan"
+          ><span class="octicon octicon-link"></span></a
+        >Rough plan
+      </h3>
+      <ol>
+        <li>
+          Server side of the remote read-only interface to BoltDB while running
+          turbo-geth node. Almost done.
+        </li>
+        <li>Client side of the remote interface to BoltDB. Partically done.</li>
+        <li>
+          Implement “state growth vs block gas limit” charts from
+          <a
+            href="https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179"
+            target="_blank"
+            rel="noopener"
+            >https://medium.com/@akhounov/ethereum-block-gas-limit-increase-and-state-growth-b95353153179</a
+          >
+        </li>
+        <li>
+          Compare performance of remote extraction (with on-line node) with
+          local extraction (with off-line node).
+        </li>
+        <li>
+          Create a static web-site and regularly publish fresh charts for “state
+          growth vs block gas limit”.
+        </li>
+        <li>
+          Implement the generation of “state trie depth” table from
+          <a
+            href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10"
+            target="_blank"
+            rel="noopener"
+            >https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10</a
+          >
+        </li>
+        <li>Add “state trie depth” table to the Web-site.</li>
+        <li>
+          Create a better abstraction of server side to accomodate both BoltDB
+          and BadgerDB on the server side.
+        </li>
+        <li>
+          Extract and document the tool for gathering data and extending the
+          analytics (so that people can come up with their own charts and
+          tables).
+        </li>
+      </ol>
+      <h2 id="Stateless-Ethereum">
+        <a
+          class="anchor hidden-xs"
+          href="#Stateless-Ethereum"
+          title="Stateless-Ethereum"
+          ><span class="octicon octicon-link"></span></a
+        >Stateless Ethereum
+      </h2>
+      <p>
+        For letting most nodes in the network to use less resources to process
+        blocks. The results of this research are prototypes, benchmarks,
+        documentation and specification describing how to implement stateless
+        processing. Implementation would include three main parts:
+      </p>
+      <ol>
+        <li>Block witness producer</li>
+        <li>Block witness relayer</li>
+        <li>Block witness consumer</li>
+      </ol>
+      <p>
+        Stateless clients is one approach to improve performance of Ethereum
+        client implementations while processing blocks of transactions.
+        Specifically, it seeks to ease the increasing burden that is the state
+        size. It does so by removing the need to download, or implicitely
+        construct and maintain the state, for most of the participants in the
+        Ethereum network. The requirement to access to the state is removed by
+        introducing another type of data packets (existing data packet types
+        are, for example, blocks and transactions) to be gossipped around the
+        p2p network. We call this data packets “block witnesses”. For each block
+        we have one corresponding block witness. The two main properties that
+        block witnesses have:
+      </p>
+      <ol>
+        <li>
+          It is possible to verify efficiently that the block witness is indeed
+          constructed from the correct version of the Ethereum state.
+        </li>
+        <li>
+          Block witness has all the required information to make it possible to
+          execute the corresponding block.
+        </li>
+      </ol>
+      <p>
+        More details can be found here:
+        <a
+          href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc"
+          target="_blank"
+          rel="noopener"
+          >https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc</a
+        >
+      </p>
+      <h3 id="Research-roadmap">
+        <a
+          class="anchor hidden-xs"
+          href="#Research-roadmap"
+          title="Research-roadmap"
+          ><span class="octicon octicon-link"></span></a
+        >Research roadmap
+      </h3>
+      <p>
+        To make stateless clients a reality and get it implemented in all
+        Ethereum 1 clients, these large steps seem to be necessary, up to the
+        research test-net launch:
+      </p>
+      <ol>
+        <li>
+          <strong>Revisiting of the prototype</strong> (currently based on
+          Turbo-Geth). Previous version of the prototype, that was used to
+          produced data in the medium article showed above, had a different
+          encoding for the structure than what is currently proposed (based on
+          the “multiproofs” section here:
+          <a
+            href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/guide.md#multiproofs"
+            target="_blank"
+            rel="noopener"
+            >https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/guide.md#multiproofs</a
+          >).
+        </li>
+        <li>
+          <strong>Refresh the data</strong>. Using updated prototype, produce
+          new data, and add non-smoothed charts (previously published charts
+          were moving average over 1024 block to make them smoother, but they
+          potentially concealed some extremes)
+        </li>
+        <li>
+          <strong
+            >Estimate savings in the block witness size from switching to binary
+            tries</strong
+          >
+          It is a conjecture that switching to binary tries would reduce the
+          size of the block witnesses by the factor of 3-4. Also, will
+          merkle-hashing of contract byte codes reduce the size of the block
+          witnesses.
+        </li>
+        <li>
+          <strong>Witnesses for genesis sync</strong>. Estimate the potential
+          benefit of using partial witnesses for speeding up sync from Genesis
+          block (where sync is proceeding with minimal disk I/O).
+        </li>
+        <li>
+          <strong>Visualisation in the prototype</strong>. Some initial steps
+          have been taken (e.g. visualisations for the presentation at the
+          STARKWare sessions). This needs to be extended to provide interactive
+          visualisations of state and block witnesses, to help extend the circle
+          of researches and developers dealing with the stateless clients.
+        </li>
+        <li>
+          <strong>Prototype to support semi-stateless</strong>. Semi-stateless
+          approach described here:
+          <a
+            href="https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04"
+            target="_blank"
+            rel="noopener"
+            >https://medium.com/@akhounov/the-shades-of-statefulness-in-ethereum-nodes-697b0f88cd04</a
+          >, but the data gathering was still hard computationally. With the
+          code and data from item (4) on this roadmap (persisting partial
+          witnesses), it should be much more efficient to collect and compare
+          the data. The threshold would not be expressed in number of blocks for
+          which the “aggregated” witness is kept by a semi-stateless client.
+          Instead, the threshold would be expressed in number of state trie
+          nodes kept in memory.
+        </li>
+        <li>
+          <strong>Analysis of potential adversarial behavior</strong>. Using the
+          prototype developed, make an assessment of how much gas would an
+          adversary need to pay to inflate the size of the block witness. This
+          analysis will be the input to the gas cost adjustment that introducing
+          stateless client would require.
+        </li>
+        <li>
+          <strong>Incentivisation of block witness production and relay</strong
+          >. Using information gathered in the previous steps, reason about what
+          incentives exist for any nodes to produce and to relay block
+          witnesses, and, for example, not relay blocks without witnesses.<br />
+          it is a bit circular but this is my current thinking. Block witnesses
+          can actually benefit full nodes (keeping the entire state) as well as
+          partial nodes. Because they can reduce their memory expenditure on
+          keeping the cache for its database, and instead they can simply
+          consume the witnesses. If they do want to use their memory, they can
+          “dial up their statefullness and dial down the witness sizes”, and
+          still benefit by not having any read I/O from the database, only write
+          I/O (which is much easier to do concurrently). So, in order to
+          reinforce the incentive for miners to generate witnesses and prefer
+          smaller witnesses to bigger witnesses, we would mostly likely need to
+          change the “default” propagation rules for blocks. Currently, blocks
+          are propagated once their PoW is found to be correct. In the future,
+          we might need to change it to “blocks are propagated once there is a
+          valid witness for it, which can be propagated alongside the block. If
+          there is no witness, do not propagate the block”. For the nodes that
+          benefit from the existence of the witnesses, it should be easy to
+          convince the operators to switch to the new propagation rules. Once
+          this propagation rule becomes the norm, miners are having clear
+          incentive to produce witnesses for their blocks, because otherwise
+          their blocks simply won’t propagate or propagate slowly. Note that
+          even miners themselves can benefit from witnesses - because they can
+          process blocks and start mining on top of them without any database
+          I/O on the critical path.
+        </li>
+        <li>
+          <strong>Block witness specification</strong>. Formal
+          (implementation-independent) description of how block witness can be
+          produced, how to encode/decode them into/from the wire packets, how to
+          execute transactions on a block witness. This also covers the case or
+          partial witnesses, which would simply be a concatenation of smaller
+          witnesses rooted at different points in the state tree.
+        </li>
+        <li>
+          <strong>New sub-protocol specification</strong>. Specify a new,
+          optional sub-protocol for gossiping block witnesses (full, partial,
+          and for range of blocks) around the network.
+        </li>
+        <li>
+          <strong>Gas cost specification</strong>. Based on the analysis of the
+          adversarial behaviour, specify how the transaction senders will be
+          charged for the production of block witnesses. If we take 16 gas per
+          byte as a baseline established in Istanbul (in EIP-2028), and we
+          manage to somehow remove or minimise all intermediate hashes from the
+          block witness (or just ignore them), then cost of SLOAD should be
+          (32+32+32) * 16=1536 gas. First 32 is address hash of contract, second
+          32 is key hash of the storage item, and the third 32 is the value. If
+          we apply the same crude logic to contract codes, we should charge 24 *
+          1024 * 16 = 393216 gas for CALL. 24 * 1024 is the current limit on
+          contract code. If we, however, figure out from the data that it would
+          be beneficial to split contract code in pieces, and merklize them
+          (item 2 in this roadmap), then obviously we would only need to charge
+          gas whenever the instructions from a piece are actually “loaded” into
+          EVM. But if the CALL instruction charge proportional to the contract
+          code’s size, it would be better. This, however, still requires
+          something like UNGAS, otherwise there will be quite a lot of broken
+          contracts and other concerns about backwards incompatibility. This
+          would encourage people to split their large contracts into smaller
+          pieces, working via DELEGATECALL proxy
+        </li>
+        <li>
+          <strong>Research test-net</strong>. Construct a test-net supporting
+          the block witnesses. Specification from previous steps would allow any
+          client implementation to catch up and join.
+        </li>
+      </ol>
+      <h3 id="Implementation-roadmap">
+        <a
+          class="anchor hidden-xs"
+          href="#Implementation-roadmap"
+          title="Implementation-roadmap"
+          ><span class="octicon octicon-link"></span></a
+        >Implementation roadmap
+      </h3>
+      <p>
+        Since the research is in the early stages, this is not very fleshed out
+        yet (therefore no expected dates), but this is the current thinking.
+      </p>
+      <ol>
+        <li>Formal semantics for EVM, with reference implementation.</li>
+        <li>
+          Introduction of “Versionless EVM” via Account versioning, together
+          with unobservable gas change (UNGAS), most probably dependent on
+          Project “Gas repricing vs backwards compatibility”.
+        </li>
+        <li>Potentially changing state tree from hexary to binary.</li>
+        <li>
+          Potentially introducing merkle tree hashing of the contract byte
+          codes.
+        </li>
+        <li>
+          Repricing of operations influencing the size of the block witness.
+        </li>
+      </ol>
+      <h2 id="Gas-repricing-vs-backwards-compatibility">
+        <a
+          class="anchor hidden-xs"
+          href="#Gas-repricing-vs-backwards-compatibility"
+          title="Gas-repricing-vs-backwards-compatibility"
+          ><span class="octicon octicon-link"></span></a
+        >Gas repricing vs backwards compatibility
+      </h2>
+      <p>
+        The aim of this project is to achieve less painful (or ideally painless)
+        repricing of opcodes. We expect these repricings to be necessary to keep
+        the gas costs balanced, as well as for the implementation of the State
+        Ethereum project. This project only has a research roadmap at the
+        moment, and the dates are very uncertain. It also has a few branches
+        (alternative proposals), covering either the main mechanism with which
+        backwards-compatible repricing is achieved, or some secondary issues.
+        Currently, there are 2 alternative proposals for the main mechanism:
+      </p>
+      <h3 id="Legacy-repricing">
+        <a
+          class="anchor hidden-xs"
+          href="#Legacy-repricing"
+          title="Legacy-repricing"
+          ><span class="octicon octicon-link"></span></a
+        >Legacy repricing
+      </h3>
+      <p>
+        <a
+          href="https://ep.corepaper.org/compatibility/legacy-repricing/"
+          target="_blank"
+          rel="noopener"
+          >https://ep.corepaper.org/compatibility/legacy-repricing/</a
+        >. The main idea is to introduce account versioning, but with the goal
+        of only ever having two versions, “legacy” and “forward compatible”.
+        Legacy version experiences no repricing, but its usage gets disentivised
+        economically, but making it progressively more expensive than the
+        forward compatible version. In the forwards compatible version, the main
+        innovation is making the gas unobservable from the smart contracts
+        (codename UNGAS). It is currently believed that this can be achieved by
+        making 3 changes to the semantics of opcodes. Since the gas is now
+        unobservable, any repricing does not affect the logic of the contracts’
+        execution, only the total required gas (which can be easily changed when
+        creating a transaction). In order to economically disentivise the usage
+        of the legacy version, repricings are performed not by increasing the
+        gas expenditure of select operations, but rather by proportionally
+        decreasing the gas expenditure for all the rest of the operations. It is
+        believed that it will be difficult for miners to distinguish between
+        transactions only containing legacy code, forward compatible code, or
+        the mixture, so they won’t be able to apply different gas prices
+        accordingly, and the legacy code will become largely more expensive to
+        execute. When decreasing the gas expenditure of some operations, we will
+        face the fact that some of them are already quite small (3 gas, for
+        example). There are currently two proposed ways of dealing with this:
+      </p>
+      <ol>
+        <li>
+          Changing the semantics of entering a call frame, CALL, CREATE (and
+          similar) instructions to scale the remaining gas up and down by a
+          certain factor
+        </li>
+        <li>
+          Particle gas cost, introducing the units of “milligas”, or even
+          perhaps “microgas”:
+          <a
+            href="https://eips.ethereum.org/EIPS/eip-2045"
+            target="_blank"
+            rel="noopener"
+            >https://eips.ethereum.org/EIPS/eip-2045</a
+          >
+        </li>
+      </ol>
+      <h3 id="Decoupling-the-two-functions-of-gas">
+        <a
+          class="anchor hidden-xs"
+          href="#Decoupling-the-two-functions-of-gas"
+          title="Decoupling-the-two-functions-of-gas"
+          ><span class="octicon octicon-link"></span></a
+        >Decoupling the two functions of gas
+      </h3>
+      <p>
+        Gas is split into two components - one for metering, another for
+        restricting recursion and callbacks.
+      </p>
+      <h2 id="Formal-system-to-specify-semantics-of-Ethereum-state-transition">
+        <a
+          class="anchor hidden-xs"
+          href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition"
+          title="Formal-system-to-specify-semantics-of-Ethereum-state-transition"
+          ><span class="octicon octicon-link"></span></a
+        >Formal system to specify semantics of Ethereum state transition
+      </h2>
+      <p>
+        The aim of this project is to agree on the most suitable way to specify
+        semantics and use it to propose changes in Ethereum more formally. It
+        can also mean that such suitable semantics has to be created. Some of
+        the very ambitious projects (like Project “Gas repricing vs backwards
+        compatibility”) that involve very significant changes to the EVM, would
+        be hard to deliver successfully without the ability to specify the
+        changes in an unambiguous way. From our previous experience, the real
+        scrutiny of such proposals usually starts relatively late in the
+        process, once the code is written. This is because the specification
+        given in prose within the EIPs is not rigorous and formal enough for the
+        proper analysis to start (and, more importantly, for using automated
+        analysis tools like model checkers, symbolic execution engines, etc.).
+        There exist at least one known formal semantics for EVM already, called
+        KEVM. It is also part of the jello paper:
+        <a href="https://jellopaper.org/" target="_blank" rel="noopener"
+          >https://jellopaper.org/</a
+        >. This semantics is complete and executable. However, its major
+        drawback that the language it uses (K) is quite complex and inaccessible
+        even for most core developers. Also, the process of installation of all
+        required software to execute semantics makes the barrier to entry higher
+        still. So far, KEVM has not been used to formalise EVM change proposals
+        ahead of the implementation. Our assumption is that this is a usability
+        issue. If there were an alternative semantics that uses simpler
+        languages (like the one used in Web Assembly), there are much better
+        chances for it to be adopted as a de-facto specification language for
+        EVM changes.<br />
+        In this project, we will attempt to construct a new formal semantics for
+        EVM, based on a single type of substitution rules. Every rule will have
+        3 elements:
+      </p>
+      <ul>
+        <li>Pattern</li>
+        <li>Result of the substitution</li>
+        <li>Guard expression</li>
+      </ul>
+      <p>
+        The matching that the pattern performs is done against the sequence of
+        objects that represents the current state of EVM (also known as
+        “configuration”). Like in Web Assembly specification, we treat items on
+        the EVM stack and EVM instructions as the same type of objects, so that
+        for most operations, opcode and operands can be matched by a simple
+        mattern without the use of extraction functions.<br />
+        This project has both research and implementation roadmaps, but they are
+        closely intertwined and are likely to proceed in a lock-step fashion.
+        That is why we combine them in one list for the time being. At any point
+        of the roadmap we may encounter unsolvable problems, and the project may
+        need to be abandoned or rescoped. That is why the roadmap attempts to
+        probe more difficult areas of EVM functionality first, because they are
+        more likely to be unsolvable.
+      </p>
+      <h3 id="Researchimplementation-roadmap">
+        <a
+          class="anchor hidden-xs"
+          href="#Researchimplementation-roadmap"
+          title="Researchimplementation-roadmap"
+          ><span class="octicon octicon-link"></span></a
+        >Research/implementation roadmap:
+      </h3>
+      <ol>
+        <li>
+          Skeleton of reference implementation for pattern matching (and
+          variable bindings). Will start with the C programming language, which
+          gives a good balance of being understandable for a lot of developers,
+          as well as having a lot of code analysis tools developed for it.
+        </li>
+        <li>
+          Skeleton of reference implementation for evaluation of the guards.
+          Guards will also be written in C, with some conventions about what is
+          permissible and what not.
+        </li>
+        <li>
+          Skeleton of reference implementation for generating the substitutions.
+        </li>
+        <li>Rules for jump instructions, unconditional and conditional.</li>
+        <li>
+          Rules for call, revert, and return instructions (dealing with spawning
+          and destroying execution frames).
+        </li>
+        <li>
+          Rules for contract storage access (SLOAD, STORE). Potential
+          introduction of non-determinism into the semantics, and therefore the
+          need to also create the contract storage oracle.
+        </li>
+        <li>Rules for memory operations.</li>
+        <li>Rules for all other opcodes.</li>
+      </ol>
+      <h3 id="Previous-write-up-of-ideas">
+        <a
+          class="anchor hidden-xs"
+          href="#Previous-write-up-of-ideas"
+          title="Previous-write-up-of-ideas"
+          ><span class="octicon octicon-link"></span></a
+        >Previous write up of ideas
+      </h3>
+      <p>
+        Current idea is to use the notation similar to what<br />
+        is used in Web Assembly, which is very clever system, and is as follows:
+      </p>
+      <ol>
+        <li>
+          State of the system, of configuration, is described as a tuple of
+          functions (for accounts, storage etc.), and an instruction sequence.
+        </li>
+        <li>
+          Interestingly, the stack does not have a separate representation and
+          is instead represented as a part of the instruction sequence. To
+          achieve that, a special <code>const</code> instruction carrying a
+          value is used.
+        </li>
+        <li>
+          Most operations will be represented as a reduction rule that involve
+          pattern that has to be matched inside the sequence of instruction, and
+          an optional guard, which is formulated as a logical formula. Guards
+          let us choose between multiple rules applicable to the same
+          configuration, and allows us computing the effect of the operation on
+          parts of the state.
+        </li>
+        <li>
+          For our purposes, we can try to represent a gas counter (or two) a
+          part of the instruction sequence too (with special instruction
+          <code>gas_counter</code>, so we can have different reduction rules
+          that apply depending on whether there is sufficient gas, as well as
+          properly decrease the counter on usage.
+        </li>
+        <li>
+          Things like execution frames are trickier. We need an ability to scrap
+          them completely when the frame is aborted or we perform
+          <code>RETURN</code>. For that reason we might need to introduce frame
+          boundary “instructions”, <code>frame_begin</code>,
+          <code>frame_id_1</code> … , <code>frame_begin</code>,
+          <code>frame_id_2</code> …, <code>frame_end</code>,
+          <code>frame_id_2</code>, …, <code>frame_end</code>,
+          <code>frame_id_1</code>. In this way, pattern matching can recognise
+          where frames begin and end so they can be eliminated. Frame ids are
+          required to ensure that any reduction rule that removes the entire
+          frame can specify in the guard that frame id at the start of the frame
+          matches the frame id at the end of the frame. And, the frame needs to
+          have its own frame id present locally.
+        </li>
+      </ol>
+      <p>
+        One of the challenges is how to model the sub-states. Complexity with
+        the substates is that the state modifications made in an execution frame
+        (substate) could be reverted or “committed” at the end of the frame.
+        However, the opcodes are allowed to reach beyond the substate and that
+        can potentially trigger cascading reads.<br />
+        To solve this, we can employ certain level of non-determinism. When the
+        instructions like <code>CALL</code> executes, and spawns a new frame
+        between instruction sequence and the stack, it is also allowed to copy
+        an arbitrary part of the enclosing frame’s state into its local
+        <code>readset</code>. When the execution proceeds, reading from beyond
+        the <code>readset</code> results in the failure of evaluation. However,
+        with sufficiently correct <code>readset</code> the evaluation will
+        proceed as required. This is where non-determinism is. Symbolic
+        execution engines will be able to deal with it pretty easily by actually
+        implementing cascading reads, but modelling cascading reads as a
+        reduction rule would require some advanced higher-level functions.<br />
+        Developing this idea, we would also have local <code>writeset</code>,
+        which is getting populated during the frame’s execution, and then either
+        gets merged into the encompassing frame’s <code>writeset</code>, or
+        discarded.
+      </p>
+      <p>
+        When jumping instructions are executed, this leads to the replacement of
+        the entire code in the current frame with the slice starting from the
+        jump location.
+      </p>
+      <p>In preamble, the following types would need to be defined:</p>
+      <ol>
+        <li>Boolean</li>
+        <li>Integer (up to 2^256)</li>
+        <li>Lists</li>
+        <li>Mapping</li>
+      </ol>
+      <p>
+        List will need a “drop” operation defined, like<br />
+        <code>l[index:]</code>, which is part of <code>l</code> with
+        <code>index</code> number of items in the front dropped, or
+        <code>invalid_list</code> if there aren’t enough items. It will be used
+        for modelling jump instructions.
+      </p>
+      <p>
+        Mapping type will need a boolean function “submap” that tells if one
+        mapping is a sub-mapping of another <code>m1&lt;=m2</code>. It will be
+        used to check that the <code>readset</code> (non-deterministic) of the
+        newly spawned frame is correct. Also, mappings should allow “holes”,
+        i.e. values that are intented to be deleted. Using them, we can define
+        “merge”, which applies <code>writeset</code> generated by an execution
+        frame to the <code>writeset</code> of the enclosing frame.
+      </p>
+      <p>
+        The general composition of the string that is getting reduced during the
+        execution is this:
+      </p>
+      <pre><code>(1 stack1 [configuration1] instructions1 )1
+</code></pre>
+      <p>
+        When instruction <code>CALL</code> (or similar) is encountered,<br />
+        it spawns another exection frame within the first one:
+      </p>
+      <pre><code>(1 stack1 c1 c2 c3 c4 c5 c6 [configuration1] CALL instructions1 )1
 =&gt;
 (1 stack1 [configuration1 - gas]
    (2 stack2-empty [configuration2 + readset]
    instructions of the called contract
    )2
 instructions1 )1
-</code></pre><p>Until this new execution frame completes, it will prevent any reduction rules in the first frame to proceed, because most reduction rules will have this kind of left hand side:</p><pre><code>operand1 operand2 .. operand_n [configuration] OPCODE
-</code></pre><p>Some reduction rules will include frame boundaries like <code>(1</code> and <code>)1</code> and some wildcards (* - matching any number of objects). Note that <code>(1</code> will need to be two separate objects, so that we can have a guard to make sure that the frame id that we are matching corresponds to the inner-most frame. For example, revert will be something like this:</p><pre><code>[configuration]( frame_id * mem_start mem_end [frame_id, mem] REVERT * frame_id )
+</code></pre>
+      <p>
+        Until this new execution frame completes, it will prevent any reduction
+        rules in the first frame to proceed, because most reduction rules will
+        have this kind of left hand side:
+      </p>
+      <pre><code>operand1 operand2 .. operand_n [configuration] OPCODE
+</code></pre>
+      <p>
+        Some reduction rules will include frame boundaries like
+        <code>(1</code> and <code>)1</code> and some wildcards (* - matching any
+        number of objects). Note that <code>(1</code> will need to be two
+        separate objects, so that we can have a guard to make sure that the
+        frame id that we are matching corresponds to the inner-most frame. For
+        example, revert will be something like this:
+      </p>
+      <pre><code>[configuration]( frame_id * mem_start mem_end [frame_id, mem] REVERT * frame_id )
 ==&gt;
 [configuration'],
 if
 configuration' = configuration + mem[mem_start:mem_end]
-</code></pre><p>It is not very formal yet, but just to give an idea.</p><p>The next two challenges are:</p><ul>
-<li>Gas charge for memory expansion</li>
-<li>Limitation of the stack depth</li>
-</ul><p>Memory of an execution frame is modelled as a list of bytes + an integer specifying the starting address of the memory. Ending address can be always computed as starting address + length of the list. When memory is expanded, we need might need multiple guards for the cases where it is expanded upwards or downwards, with overlapping and non-overlapping “allocation”. When the memory is read onto the stack and writting from the stack, we need to have functions defined that turn certain number of bytes into the 0…2^256-1 integer.<br>
-In order to support the limitation of the stack depth (1024), there needs to be a short notation for matching large number of objects, so we do something like this:</p><pre><code>( frame_id *{1024} [frame_id] PUSH1 x * ) frame_id ==&gt;
+</code></pre>
+      <p>It is not very formal yet, but just to give an idea.</p>
+      <p>The next two challenges are:</p>
+      <ul>
+        <li>Gas charge for memory expansion</li>
+        <li>Limitation of the stack depth</li>
+      </ul>
+      <p>
+        Memory of an execution frame is modelled as a list of bytes + an integer
+        specifying the starting address of the memory. Ending address can be
+        always computed as starting address + length of the list. When memory is
+        expanded, we need might need multiple guards for the cases where it is
+        expanded upwards or downwards, with overlapping and non-overlapping
+        “allocation”. When the memory is read onto the stack and writting from
+        the stack, we need to have functions defined that turn certain number of
+        bytes into the 0…2^256-1 integer.<br />
+        In order to support the limitation of the stack depth (1024), there
+        needs to be a short notation for matching large number of objects, so we
+        do something like this:
+      </p>
+      <pre><code>( frame_id *{1024} [frame_id] PUSH1 x * ) frame_id ==&gt;
 OutOfStackDepthException
-</code></pre><p>In the above, the entire execution frame gets remove by the reduction rule. Unfortunately, there is nowhere to put the exception, but it can still be part of the configuration for the purposes of semantics and symbolic execution tools.</p><h2 id="State-syncronisation-snapshot-moving-snapshot"><a class="anchor hidden-xs" href="#State-syncronisation-snapshot-moving-snapshot" title="State-syncronisation-snapshot-moving-snapshot"><span class="octicon octicon-link"></span></a>State syncronisation (snapshot, moving snapshot)</h2><p>Model for what state syncronisation is, describe existing and proposed methods using this model. Ideally, such model would allow describing fast sync, beam sync, firehose etc., illuminate their differences and perhaps derive the optimal sync algorithm. Such model would also use specification for the state handling that abstracts away EVM and transactions, but requires a notion of blocks as a form of temporality.</p><h2 id="Storing-state-outside-of-Ethereum-network"><a class="anchor hidden-xs" href="#Storing-state-outside-of-Ethereum-network" title="Storing-state-outside-of-Ethereum-network"><span class="octicon octicon-link"></span></a>Storing state outside of Ethereum network</h2><p>This project aims at exploring various ways of storing relatively “immobile” parts of the Ethereum state in external systems, like Swarm, or Cloudflare. There are preliminary results indicating that it is possible to partition the Ethereum state in fragments in such a way that there is not too much churn (i.e. number of fragments updating per block is not very high). What are these partitioning techniques? Which external systems to use?<br>
-This project does not have roadmaps yet, because there are no dedicated people working on it.</p><h2 id="WASM-for-implementing-Generalised-Elliptic-Curve-precompiles"><a class="anchor hidden-xs" href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles" title="WASM-for-implementing-Generalised-Elliptic-Curve-precompiles"><span class="octicon octicon-link"></span></a>WASM for implementing Generalised Elliptic Curve precompiles</h2><p>This project is related to <a href="https://eips.ethereum.org/EIPS/eip-1962" target="_blank" rel="noopener">https://eips.ethereum.org/EIPS/eip-1962</a> which was proposed to make it easier for the users of Ethereum to utilise Elliptic Curve cryptography without relying on a specific curve, as it was done previously with bn128 curve precompiles introduced in Byzantium upgrade in October 2017.<br>
-Despite being related to EIP-1962, it does not lose relevance even if and when EIP-1962 is rolled on the Ethereum mainnet.<br>
-The main conjecture that this project is attempting to verify is that, given a suitable set of primitives for performing arithmetic on large integers (for example, 2^1024), the interpreted version of Web Assembly is sufficient for most practical use cases of elliptic curves.<br>
-The roadmaps are currently unknown, but may be provided at a later date.</p><h2 id="STARK-proofs-for-Stateless-Ethereum"><a class="anchor hidden-xs" href="#STARK-proofs-for-Stateless-Ethereum" title="STARK-proofs-for-Stateless-Ethereum"><span class="octicon octicon-link"></span></a>STARK proofs for Stateless Ethereum</h2><p>Is it viable to use STARK proofs to reduce bandwidth requirement of Stateless Ethereum? Intermediate hashes and structure would be removed from the block witnesses, and replaced by 2 STARK proofs per block - one for pre-witness, another - for post-witness.</p><p>Useful link for implementing Keccak: <a href="https://pdfs.semanticscholar.org/f55d/5e7826b6e59aa2e8bffedec115519fbf071d.pdf" target="_blank" rel="noopener">https://pdfs.semanticscholar.org/f55d/5e7826b6e59aa2e8bffedec115519fbf071d.pdf</a> (ARCHITECTURES FOR ARITHMETIC OPERATIONS IN GF(2M)<br>
-USING POLYNOMIAL AND NORMAL BASIS FOR ELLIPTIC<br>
-CURVE CRYPTOSYSTEMS). Looks like we would need normal basis representation, because cyclic shift is simply squaring.<br>
-But there is still non-linear operations in Keccak256, which is <code>X and (not Y)</code> for some <code>X</code> and <code>Y</code>. This would still need bit-extraction techniques used in STARK paper of 2018 for SHA2 arithmetisation.<br>
-Further research is to be done on how combatible is the usage of the normal basis with other elements of STARKs, like FFT and FRI.</p><h2 id="Transaction-pool-improvements-to-accomodate-larger-transactions"><a class="anchor hidden-xs" href="#Transaction-pool-improvements-to-accomodate-larger-transactions" title="Transaction-pool-improvements-to-accomodate-larger-transactions"><span class="octicon octicon-link"></span></a>Transaction pool improvements to accomodate larger transactions</h2><p>This project aims at developing techniques to address two main challenges arising when the sizes of the transactions travelling over the network, increase:</p><ol>
-<li>When Ethereum nodes restart, they need to reconcile their transaction pool with their peers. Currently reconciliation is done by simply downloading all the transactions from a peer. When transactions gets larger, this method will require more bandwidth and time.</li>
-<li>Most of the transaction pool implementations attempt to limit the amount of memory the utilise. For mining nodes, it is also important to be able to efficiently execute strategies for inclusion of transaction into a newly mined block. Larger transactions mean that more sophisticated data structures need to be employed to find a good tradeoff between memory consumption and strategic efficiency for miners.</li>
-</ol><p>A more straightforward solution that is currently pursued by a couple of implementation (go-ethereum and Trinity) is to use transaction hashes (32 bytes) as transaction IDs. Then, the transaction bodies would be persisted by the nodes. They would reconcile their transaction sets using transaction IDs, rather than the entire bodies.<br>
-Another, more opportunistic solution, could be the use of the minisketch library: <a href="https://github.com/sipa/minisketch" target="_blank" rel="noopener">https://github.com/sipa/minisketch</a><br>
-The capacity of the sketch, C is the maximum number of differences that the sketch can reconcile. And the size of the sketch is B * C bits, where B - size of each element (in our case B would be 256 for Tx hash). so, if you only expect up to 1024 differences, and you use 256 bits of the Tx hash for reconciliation, your sketch sizes would be 256Kb.<br>
-The roadmaps for this project are currently unknown, but may be provided at a later date.</p><h2 id="Chain-pruning"><a class="anchor hidden-xs" href="#Chain-pruning" title="Chain-pruning"><span class="octicon octicon-link"></span></a>Chain pruning</h2><p>This project aims at looking at techniques that would be required to deal with every growing size of the blockchain, in terms of block headers, block bodies, and transaction receipts. Unlike the State, these data are almost append-only (the only time they get rewritten are reorganisations of the chain, they are relatively rare).<br>
-The chain of block headers grows the slowest (in terms of its size), but it is necessary to download even for the light clients. There are two potential solutions to that:</p><ol>
-<li>Regular checkpointing. Once in a while, let’s say once a year, a new checkpoint hash is publicly agreed and hard-coded into the Ethereum implementation code. That way, light clients and others do no need to download all the headers.</li>
-<li>There could be a potential to generate the compact proof of header chain ancestry. It would allow to not download the entire chain of headers and verify PoW on every single header, but instead use proof systems like SNARK or STARK to have a compact proof that a certain header is correct in the sense that it has ancestry all the way to the genesis block (or some other “checkpoint” block), with all PoW correct along the way.</li>
-</ol><p>The sequence of block bodies grows fast, and it is expected to grow even faster after the “Instanbul” upgrade, lowering the cost of inclusion data into a block from 68 gas per byte to 16 gas per byte.<br>
-The sequence of receipts grows the fastest, but most users don’t require the entire sequence. Also, any receipt can be regenerated by re-executing the corresponding transaction in the context of the historical state. The history of state tends to be more compact to store than receipts, though re-generation of a receipt tends to be 10 times slower than simply fetching it from the database (data from tests on turbo-geth from September 2018).<br>
-This project does not have roadmaps yet, because there are no dedicated people working on it</p><h2 id="Lowering-Ethereum-client-implementations-requirements-for-black-box-testing"><a class="anchor hidden-xs" href="#Lowering-Ethereum-client-implementations-requirements-for-black-box-testing" title="Lowering-Ethereum-client-implementations-requirements-for-black-box-testing"><span class="octicon octicon-link"></span></a>Lowering Ethereum client implementations requirements for black-box testing</h2><p>This project aims at improving the state of conformance testing for Ethereum implementations, so that less effort is required on the side of the client implementation to execute or generate conformance tests. Currently, the conformance tests (<a href="https://github.com/ethereum/tests" target="_blank" rel="noopener">https://github.com/ethereum/tests</a>) can be executed either an implementation-specific driver (code that parses the tests and translates them into EVM/state actions). The process of creation of new tests can be done either via testeth (part of Aleth C++ implementation), or via retesteth (part of Aleth C++ and go-ethereum implementations).<br>
-There are currently two main proposals on how to move ahead:</p><ol>
-<li>Drive black-box testing by p2p network interface instead of RPC methods. This eliminates the need of having RPC module in an Ethereum client implementation.</li>
-<li>Something in functionality similar to RPC but without inter-process communication i.e. API / FFI allowing to use an Ethereum client as a shared library</li>
-</ol><p>This project does not yet have a roadmap, because there are no dedicated people working on it.</p><h2 id="ReadSet-and-WriteSet-pre-declarations-in-transactions"><a class="anchor hidden-xs" href="#ReadSet-and-WriteSet-pre-declarations-in-transactions" title="ReadSet-and-WriteSet-pre-declarations-in-transactions"><span class="octicon octicon-link"></span></a>ReadSet and WriteSet pre-declarations in transactions</h2><p>This may allow for transactions to bear their own witnesses. However, it needs to be researched whether such pre-declaration makes it easy enough to censor transactions accessing specific accounts or contracts.</p></div>
-    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
-        <div class="pull-right dropdown">
-            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
-                <i class="fa fa-bars"></i>
-            </a>
-            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
-                <div class="toc"><ul class="nav">
-<li class=""><a href="#Ethereum-1-Research-topics" title="Ethereum 1 Research topics">Ethereum 1 Research topics</a><ul class="nav">
-<li class=""><a href="#Migration-from-hexary-to-binary-tries" title="Migration from hexary to binary tries">Migration from hexary to binary tries</a></li>
-<li><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
-<li><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
-<li><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
-</ul>
-</li>
-<li><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
-<li><a href="#Research-roadmap" title="Research roadmap">Research roadmap</a></li>
-<li><a href="#Implementation-roadmap" title="Implementation roadmap">Implementation roadmap</a></li>
-</ul>
-</li>
-<li><a href="#Gas-repricing-vs-backwards-compatibility" title="Gas repricing vs backwards compatibility">Gas repricing vs backwards compatibility</a><ul class="nav">
-<li><a href="#Legacy-repricing" title="Legacy repricing">Legacy repricing</a></li>
-<li><a href="#Decoupling-the-two-functions-of-gas" title="Decoupling the two functions of gas">Decoupling the two functions of gas</a></li>
-</ul>
-</li>
-<li><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a><ul class="nav">
-<li><a href="#Researchimplementation-roadmap" title="Research/implementation roadmap:">Research/implementation roadmap:</a></li>
-<li><a href="#Previous-write-up-of-ideas" title="Previous write up of ideas">Previous write up of ideas</a></li>
-</ul>
-</li>
-<li><a href="#State-syncronisation-snapshot-moving-snapshot" title="State syncronisation (snapshot, moving snapshot)">State syncronisation (snapshot, moving snapshot)</a></li>
-<li><a href="#Storing-state-outside-of-Ethereum-network" title="Storing state outside of Ethereum network">Storing state outside of Ethereum network</a></li>
-<li><a href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles" title="WASM for implementing Generalised Elliptic Curve precompiles">WASM for implementing Generalised Elliptic Curve precompiles</a></li>
-<li><a href="#STARK-proofs-for-Stateless-Ethereum" title="STARK proofs for Stateless Ethereum">STARK proofs for Stateless Ethereum</a></li>
-<li><a href="#Transaction-pool-improvements-to-accomodate-larger-transactions" title="Transaction pool improvements to accomodate larger transactions">Transaction pool improvements to accomodate larger transactions</a></li>
-<li><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
-<li><a href="#Lowering-Ethereum-client-implementations-requirements-for-black-box-testing" title="Lowering Ethereum client implementations requirements for black-box testing">Lowering Ethereum client implementations requirements for black-box testing</a></li>
-<li><a href="#ReadSet-and-WriteSet-pre-declarations-in-transactions" title="ReadSet and WriteSet pre-declarations in transactions">ReadSet and WriteSet pre-declarations in transactions</a></li>
-</ul>
-</li>
-</ul>
-</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+</code></pre>
+      <p>
+        In the above, the entire execution frame gets remove by the reduction
+        rule. Unfortunately, there is nowhere to put the exception, but it can
+        still be part of the configuration for the purposes of semantics and
+        symbolic execution tools.
+      </p>
+      <h2 id="State-syncronisation-snapshot-moving-snapshot">
+        <a
+          class="anchor hidden-xs"
+          href="#State-syncronisation-snapshot-moving-snapshot"
+          title="State-syncronisation-snapshot-moving-snapshot"
+          ><span class="octicon octicon-link"></span></a
+        >State syncronisation (snapshot, moving snapshot)
+      </h2>
+      <p>
+        Model for what state syncronisation is, describe existing and proposed
+        methods using this model. Ideally, such model would allow describing
+        fast sync, beam sync, firehose etc., illuminate their differences and
+        perhaps derive the optimal sync algorithm. Such model would also use
+        specification for the state handling that abstracts away EVM and
+        transactions, but requires a notion of blocks as a form of temporality.
+      </p>
+      <h2 id="Storing-state-outside-of-Ethereum-network">
+        <a
+          class="anchor hidden-xs"
+          href="#Storing-state-outside-of-Ethereum-network"
+          title="Storing-state-outside-of-Ethereum-network"
+          ><span class="octicon octicon-link"></span></a
+        >Storing state outside of Ethereum network
+      </h2>
+      <p>
+        This project aims at exploring various ways of storing relatively
+        “immobile” parts of the Ethereum state in external systems, like Swarm,
+        or Cloudflare. There are preliminary results indicating that it is
+        possible to partition the Ethereum state in fragments in such a way that
+        there is not too much churn (i.e. number of fragments updating per block
+        is not very high). What are these partitioning techniques? Which
+        external systems to use?<br />
+        This project does not have roadmaps yet, because there are no dedicated
+        people working on it.
+      </p>
+      <h2 id="WASM-for-implementing-Generalised-Elliptic-Curve-precompiles">
+        <a
+          class="anchor hidden-xs"
+          href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles"
+          title="WASM-for-implementing-Generalised-Elliptic-Curve-precompiles"
+          ><span class="octicon octicon-link"></span></a
+        >WASM for implementing Generalised Elliptic Curve precompiles
+      </h2>
+      <p>
+        This project is related to
+        <a
+          href="https://eips.ethereum.org/EIPS/eip-1962"
+          target="_blank"
+          rel="noopener"
+          >https://eips.ethereum.org/EIPS/eip-1962</a
+        >
+        which was proposed to make it easier for the users of Ethereum to
+        utilise Elliptic Curve cryptography without relying on a specific curve,
+        as it was done previously with bn128 curve precompiles introduced in
+        Byzantium upgrade in October 2017.<br />
+        Despite being related to EIP-1962, it does not lose relevance even if
+        and when EIP-1962 is rolled on the Ethereum mainnet.<br />
+        The main conjecture that this project is attempting to verify is that,
+        given a suitable set of primitives for performing arithmetic on large
+        integers (for example, 2^1024), the interpreted version of Web Assembly
+        is sufficient for most practical use cases of elliptic curves.<br />
+        The roadmaps are currently unknown, but may be provided at a later date.
+      </p>
+      <h2 id="STARK-proofs-for-Stateless-Ethereum">
+        <a
+          class="anchor hidden-xs"
+          href="#STARK-proofs-for-Stateless-Ethereum"
+          title="STARK-proofs-for-Stateless-Ethereum"
+          ><span class="octicon octicon-link"></span></a
+        >STARK proofs for Stateless Ethereum
+      </h2>
+      <p>
+        Is it viable to use STARK proofs to reduce bandwidth requirement of
+        Stateless Ethereum? Intermediate hashes and structure would be removed
+        from the block witnesses, and replaced by 2 STARK proofs per block - one
+        for pre-witness, another - for post-witness.
+      </p>
+      <p>
+        Useful link for implementing Keccak:
+        <a
+          href="https://pdfs.semanticscholar.org/f55d/5e7826b6e59aa2e8bffedec115519fbf071d.pdf"
+          target="_blank"
+          rel="noopener"
+          >https://pdfs.semanticscholar.org/f55d/5e7826b6e59aa2e8bffedec115519fbf071d.pdf</a
+        >
+        (ARCHITECTURES FOR ARITHMETIC OPERATIONS IN GF(2M)<br />
+        USING POLYNOMIAL AND NORMAL BASIS FOR ELLIPTIC<br />
+        CURVE CRYPTOSYSTEMS). Looks like we would need normal basis
+        representation, because cyclic shift is simply squaring.<br />
+        But there is still non-linear operations in Keccak256, which is
+        <code>X and (not Y)</code> for some <code>X</code> and <code>Y</code>.
+        This would still need bit-extraction techniques used in STARK paper of
+        2018 for SHA2 arithmetisation.<br />
+        Further research is to be done on how combatible is the usage of the
+        normal basis with other elements of STARKs, like FFT and FRI.
+      </p>
+      <h2 id="Transaction-pool-improvements-to-accomodate-larger-transactions">
+        <a
+          class="anchor hidden-xs"
+          href="#Transaction-pool-improvements-to-accomodate-larger-transactions"
+          title="Transaction-pool-improvements-to-accomodate-larger-transactions"
+          ><span class="octicon octicon-link"></span></a
+        >Transaction pool improvements to accomodate larger transactions
+      </h2>
+      <p>
+        This project aims at developing techniques to address two main
+        challenges arising when the sizes of the transactions travelling over
+        the network, increase:
+      </p>
+      <ol>
+        <li>
+          When Ethereum nodes restart, they need to reconcile their transaction
+          pool with their peers. Currently reconciliation is done by simply
+          downloading all the transactions from a peer. When transactions gets
+          larger, this method will require more bandwidth and time.
+        </li>
+        <li>
+          Most of the transaction pool implementations attempt to limit the
+          amount of memory the utilise. For mining nodes, it is also important
+          to be able to efficiently execute strategies for inclusion of
+          transaction into a newly mined block. Larger transactions mean that
+          more sophisticated data structures need to be employed to find a good
+          tradeoff between memory consumption and strategic efficiency for
+          miners.
+        </li>
+      </ol>
+      <p>
+        A more straightforward solution that is currently pursued by a couple of
+        implementation (go-ethereum and Trinity) is to use transaction hashes
+        (32 bytes) as transaction IDs. Then, the transaction bodies would be
+        persisted by the nodes. They would reconcile their transaction sets
+        using transaction IDs, rather than the entire bodies.<br />
+        Another, more opportunistic solution, could be the use of the minisketch
+        library:
+        <a
+          href="https://github.com/sipa/minisketch"
+          target="_blank"
+          rel="noopener"
+          >https://github.com/sipa/minisketch</a
+        ><br />
+        The capacity of the sketch, C is the maximum number of differences that
+        the sketch can reconcile. And the size of the sketch is B * C bits,
+        where B - size of each element (in our case B would be 256 for Tx hash).
+        so, if you only expect up to 1024 differences, and you use 256 bits of
+        the Tx hash for reconciliation, your sketch sizes would be 256Kb.<br />
+        The roadmaps for this project are currently unknown, but may be provided
+        at a later date.
+      </p>
+      <h2 id="Chain-pruning">
+        <a class="anchor hidden-xs" href="#Chain-pruning" title="Chain-pruning"
+          ><span class="octicon octicon-link"></span></a
+        >Chain pruning
+      </h2>
+      <p>
+        This project aims at looking at techniques that would be required to
+        deal with every growing size of the blockchain, in terms of block
+        headers, block bodies, and transaction receipts. Unlike the State, these
+        data are almost append-only (the only time they get rewritten are
+        reorganisations of the chain, they are relatively rare).<br />
+        The chain of block headers grows the slowest (in terms of its size), but
+        it is necessary to download even for the light clients. There are two
+        potential solutions to that:
+      </p>
+      <ol>
+        <li>
+          Regular checkpointing. Once in a while, let’s say once a year, a new
+          checkpoint hash is publicly agreed and hard-coded into the Ethereum
+          implementation code. That way, light clients and others do no need to
+          download all the headers.
+        </li>
+        <li>
+          There could be a potential to generate the compact proof of header
+          chain ancestry. It would allow to not download the entire chain of
+          headers and verify PoW on every single header, but instead use proof
+          systems like SNARK or STARK to have a compact proof that a certain
+          header is correct in the sense that it has ancestry all the way to the
+          genesis block (or some other “checkpoint” block), with all PoW correct
+          along the way.
+        </li>
+      </ol>
+      <p>
+        The sequence of block bodies grows fast, and it is expected to grow even
+        faster after the “Instanbul” upgrade, lowering the cost of inclusion
+        data into a block from 68 gas per byte to 16 gas per byte.<br />
+        The sequence of receipts grows the fastest, but most users don’t require
+        the entire sequence. Also, any receipt can be regenerated by
+        re-executing the corresponding transaction in the context of the
+        historical state. The history of state tends to be more compact to store
+        than receipts, though re-generation of a receipt tends to be 10 times
+        slower than simply fetching it from the database (data from tests on
+        turbo-geth from September 2018).<br />
+        This project does not have roadmaps yet, because there are no dedicated
+        people working on it
+      </p>
+      <h2
+        id="Lowering-Ethereum-client-implementations-requirements-for-black-box-testing"
+      >
+        <a
+          class="anchor hidden-xs"
+          href="#Lowering-Ethereum-client-implementations-requirements-for-black-box-testing"
+          title="Lowering-Ethereum-client-implementations-requirements-for-black-box-testing"
+          ><span class="octicon octicon-link"></span></a
+        >Lowering Ethereum client implementations requirements for black-box
+        testing
+      </h2>
+      <p>
+        This project aims at improving the state of conformance testing for
+        Ethereum implementations, so that less effort is required on the side of
+        the client implementation to execute or generate conformance tests.
+        Currently, the conformance tests (<a
+          href="https://github.com/ethereum/tests"
+          target="_blank"
+          rel="noopener"
+          >https://github.com/ethereum/tests</a
+        >) can be executed either an implementation-specific driver (code that
+        parses the tests and translates them into EVM/state actions). The
+        process of creation of new tests can be done either via testeth (part of
+        Aleth C++ implementation), or via retesteth (part of Aleth C++ and
+        go-ethereum implementations).<br />
+        There are currently two main proposals on how to move ahead:
+      </p>
+      <ol>
+        <li>
+          Drive black-box testing by p2p network interface instead of RPC
+          methods. This eliminates the need of having RPC module in an Ethereum
+          client implementation.
+        </li>
+        <li>
+          Something in functionality similar to RPC but without inter-process
+          communication i.e. API / FFI allowing to use an Ethereum client as a
+          shared library
+        </li>
+      </ol>
+      <p>
+        This project does not yet have a roadmap, because there are no dedicated
+        people working on it.
+      </p>
+      <h2 id="ReadSet-and-WriteSet-pre-declarations-in-transactions">
+        <a
+          class="anchor hidden-xs"
+          href="#ReadSet-and-WriteSet-pre-declarations-in-transactions"
+          title="ReadSet-and-WriteSet-pre-declarations-in-transactions"
+          ><span class="octicon octicon-link"></span></a
+        >ReadSet and WriteSet pre-declarations in transactions
+      </h2>
+      <p>
+        This may allow for transactions to bear their own witnesses. However, it
+        needs to be researched whether such pre-declaration makes it easy enough
+        to censor transactions accessing specific accounts or contracts.
+      </p>
+    </div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display: none;">
+      <div class="pull-right dropdown">
+        <a
+          id="tocLabel"
+          class="ui-toc-label btn btn-default"
+          data-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          title="Table of content"
+        >
+          <i class="fa fa-bars"></i>
+        </a>
+        <ul
+          id="ui-toc"
+          class="ui-toc-dropdown dropdown-menu"
+          aria-labelledby="tocLabel"
+        >
+          <div class="toc">
+            <ul class="nav">
+              <li class="">
+                <a
+                  href="#Ethereum-1-Research-topics"
+                  title="Ethereum 1 Research topics"
+                  >Ethereum 1 Research topics</a
+                >
+                <ul class="nav">
+                  <li class="">
+                    <a
+                      href="#Migration-from-hexary-to-binary-tries"
+                      title="Migration from hexary to binary tries"
+                      >Migration from hexary to binary tries</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#Flat-data-layout-for-storing-the-state"
+                      title="Flat data layout for storing the state"
+                      >Flat data layout for storing the state</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#The-State-Analytics" title="The State Analytics"
+                      >The State Analytics</a
+                    >
+                    <ul class="nav">
+                      <li>
+                        <a href="#Rough-plan" title="Rough plan">Rough plan</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#Stateless-Ethereum" title="Stateless Ethereum"
+                      >Stateless Ethereum</a
+                    >
+                    <ul class="nav">
+                      <li>
+                        <a href="#Research-roadmap" title="Research roadmap"
+                          >Research roadmap</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href="#Implementation-roadmap"
+                          title="Implementation roadmap"
+                          >Implementation roadmap</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      href="#Gas-repricing-vs-backwards-compatibility"
+                      title="Gas repricing vs backwards compatibility"
+                      >Gas repricing vs backwards compatibility</a
+                    >
+                    <ul class="nav">
+                      <li>
+                        <a href="#Legacy-repricing" title="Legacy repricing"
+                          >Legacy repricing</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href="#Decoupling-the-two-functions-of-gas"
+                          title="Decoupling the two functions of gas"
+                          >Decoupling the two functions of gas</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition"
+                      title="Formal system to specify semantics of Ethereum state transition"
+                      >Formal system to specify semantics of Ethereum state
+                      transition</a
+                    >
+                    <ul class="nav">
+                      <li>
+                        <a
+                          href="#Researchimplementation-roadmap"
+                          title="Research/implementation roadmap:"
+                          >Research/implementation roadmap:</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href="#Previous-write-up-of-ideas"
+                          title="Previous write up of ideas"
+                          >Previous write up of ideas</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      href="#State-syncronisation-snapshot-moving-snapshot"
+                      title="State syncronisation (snapshot, moving snapshot)"
+                      >State syncronisation (snapshot, moving snapshot)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#Storing-state-outside-of-Ethereum-network"
+                      title="Storing state outside of Ethereum network"
+                      >Storing state outside of Ethereum network</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles"
+                      title="WASM for implementing Generalised Elliptic Curve precompiles"
+                      >WASM for implementing Generalised Elliptic Curve
+                      precompiles</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#STARK-proofs-for-Stateless-Ethereum"
+                      title="STARK proofs for Stateless Ethereum"
+                      >STARK proofs for Stateless Ethereum</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#Transaction-pool-improvements-to-accomodate-larger-transactions"
+                      title="Transaction pool improvements to accomodate larger transactions"
+                      >Transaction pool improvements to accomodate larger
+                      transactions</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#Chain-pruning" title="Chain pruning"
+                      >Chain pruning</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#Lowering-Ethereum-client-implementations-requirements-for-black-box-testing"
+                      title="Lowering Ethereum client implementations requirements for black-box testing"
+                      >Lowering Ethereum client implementations requirements for
+                      black-box testing</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#ReadSet-and-WriteSet-pre-declarations-in-transactions"
+                      title="ReadSet and WriteSet pre-declarations in transactions"
+                      >ReadSet and WriteSet pre-declarations in transactions</a
+                    >
+                  </li>
+                </ul>
+              </li>
             </ul>
-        </div>
+          </div>
+          <div class="toc-menu">
+            <a class="expand-toggle" href="#">Expand all</a
+            ><a class="back-to-top" href="#">Back to top</a
+            ><a class="go-to-bottom" href="#">Go to bottom</a>
+          </div>
+        </ul>
+      </div>
     </div>
-    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
-        <div class="toc"><ul class="nav">
-<li class=""><a href="#Ethereum-1-Research-topics" title="Ethereum 1 Research topics">Ethereum 1 Research topics</a><ul class="nav">
-<li class=""><a href="#Migration-from-hexary-to-binary-tries" title="Migration from hexary to binary tries">Migration from hexary to binary tries</a></li>
-<li><a href="#Flat-data-layout-for-storing-the-state" title="Flat data layout for storing the state">Flat data layout for storing the state</a></li>
-<li><a href="#The-State-Analytics" title="The State Analytics">The State Analytics</a><ul class="nav">
-<li><a href="#Rough-plan" title="Rough plan">Rough plan</a></li>
-</ul>
-</li>
-<li><a href="#Stateless-Ethereum" title="Stateless Ethereum">Stateless Ethereum</a><ul class="nav">
-<li><a href="#Research-roadmap" title="Research roadmap">Research roadmap</a></li>
-<li><a href="#Implementation-roadmap" title="Implementation roadmap">Implementation roadmap</a></li>
-</ul>
-</li>
-<li><a href="#Gas-repricing-vs-backwards-compatibility" title="Gas repricing vs backwards compatibility">Gas repricing vs backwards compatibility</a><ul class="nav">
-<li><a href="#Legacy-repricing" title="Legacy repricing">Legacy repricing</a></li>
-<li><a href="#Decoupling-the-two-functions-of-gas" title="Decoupling the two functions of gas">Decoupling the two functions of gas</a></li>
-</ul>
-</li>
-<li><a href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition" title="Formal system to specify semantics of Ethereum state transition">Formal system to specify semantics of Ethereum state transition</a><ul class="nav">
-<li><a href="#Researchimplementation-roadmap" title="Research/implementation roadmap:">Research/implementation roadmap:</a></li>
-<li><a href="#Previous-write-up-of-ideas" title="Previous write up of ideas">Previous write up of ideas</a></li>
-</ul>
-</li>
-<li><a href="#State-syncronisation-snapshot-moving-snapshot" title="State syncronisation (snapshot, moving snapshot)">State syncronisation (snapshot, moving snapshot)</a></li>
-<li><a href="#Storing-state-outside-of-Ethereum-network" title="Storing state outside of Ethereum network">Storing state outside of Ethereum network</a></li>
-<li><a href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles" title="WASM for implementing Generalised Elliptic Curve precompiles">WASM for implementing Generalised Elliptic Curve precompiles</a></li>
-<li><a href="#STARK-proofs-for-Stateless-Ethereum" title="STARK proofs for Stateless Ethereum">STARK proofs for Stateless Ethereum</a></li>
-<li><a href="#Transaction-pool-improvements-to-accomodate-larger-transactions" title="Transaction pool improvements to accomodate larger transactions">Transaction pool improvements to accomodate larger transactions</a></li>
-<li><a href="#Chain-pruning" title="Chain pruning">Chain pruning</a></li>
-<li><a href="#Lowering-Ethereum-client-implementations-requirements-for-black-box-testing" title="Lowering Ethereum client implementations requirements for black-box testing">Lowering Ethereum client implementations requirements for black-box testing</a></li>
-<li><a href="#ReadSet-and-WriteSet-pre-declarations-in-transactions" title="ReadSet and WriteSet pre-declarations in transactions">ReadSet and WriteSet pre-declarations in transactions</a></li>
-</ul>
-</li>
-</ul>
-</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    <div
+      id="ui-toc-affix"
+      class="ui-affix-toc ui-toc-dropdown unselectable hidden-print"
+      data-spy="affix"
+      style="top: 17px; display: none;"
+      null
+      null
+    >
+      <div class="toc">
+        <ul class="nav">
+          <li class="">
+            <a
+              href="#Ethereum-1-Research-topics"
+              title="Ethereum 1 Research topics"
+              >Ethereum 1 Research topics</a
+            >
+            <ul class="nav">
+              <li class="">
+                <a
+                  href="#Migration-from-hexary-to-binary-tries"
+                  title="Migration from hexary to binary tries"
+                  >Migration from hexary to binary tries</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#Flat-data-layout-for-storing-the-state"
+                  title="Flat data layout for storing the state"
+                  >Flat data layout for storing the state</a
+                >
+              </li>
+              <li>
+                <a href="#The-State-Analytics" title="The State Analytics"
+                  >The State Analytics</a
+                >
+                <ul class="nav">
+                  <li>
+                    <a href="#Rough-plan" title="Rough plan">Rough plan</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="#Stateless-Ethereum" title="Stateless Ethereum"
+                  >Stateless Ethereum</a
+                >
+                <ul class="nav">
+                  <li>
+                    <a href="#Research-roadmap" title="Research roadmap"
+                      >Research roadmap</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#Implementation-roadmap"
+                      title="Implementation roadmap"
+                      >Implementation roadmap</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a
+                  href="#Gas-repricing-vs-backwards-compatibility"
+                  title="Gas repricing vs backwards compatibility"
+                  >Gas repricing vs backwards compatibility</a
+                >
+                <ul class="nav">
+                  <li>
+                    <a href="#Legacy-repricing" title="Legacy repricing"
+                      >Legacy repricing</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#Decoupling-the-two-functions-of-gas"
+                      title="Decoupling the two functions of gas"
+                      >Decoupling the two functions of gas</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a
+                  href="#Formal-system-to-specify-semantics-of-Ethereum-state-transition"
+                  title="Formal system to specify semantics of Ethereum state transition"
+                  >Formal system to specify semantics of Ethereum state
+                  transition</a
+                >
+                <ul class="nav">
+                  <li>
+                    <a
+                      href="#Researchimplementation-roadmap"
+                      title="Research/implementation roadmap:"
+                      >Research/implementation roadmap:</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#Previous-write-up-of-ideas"
+                      title="Previous write up of ideas"
+                      >Previous write up of ideas</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a
+                  href="#State-syncronisation-snapshot-moving-snapshot"
+                  title="State syncronisation (snapshot, moving snapshot)"
+                  >State syncronisation (snapshot, moving snapshot)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#Storing-state-outside-of-Ethereum-network"
+                  title="Storing state outside of Ethereum network"
+                  >Storing state outside of Ethereum network</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#WASM-for-implementing-Generalised-Elliptic-Curve-precompiles"
+                  title="WASM for implementing Generalised Elliptic Curve precompiles"
+                  >WASM for implementing Generalised Elliptic Curve
+                  precompiles</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#STARK-proofs-for-Stateless-Ethereum"
+                  title="STARK proofs for Stateless Ethereum"
+                  >STARK proofs for Stateless Ethereum</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#Transaction-pool-improvements-to-accomodate-larger-transactions"
+                  title="Transaction pool improvements to accomodate larger transactions"
+                  >Transaction pool improvements to accomodate larger
+                  transactions</a
+                >
+              </li>
+              <li>
+                <a href="#Chain-pruning" title="Chain pruning">Chain pruning</a>
+              </li>
+              <li>
+                <a
+                  href="#Lowering-Ethereum-client-implementations-requirements-for-black-box-testing"
+                  title="Lowering Ethereum client implementations requirements for black-box testing"
+                  >Lowering Ethereum client implementations requirements for
+                  black-box testing</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#ReadSet-and-WriteSet-pre-declarations-in-transactions"
+                  title="ReadSet and WriteSet pre-declarations in transactions"
+                  >ReadSet and WriteSet pre-declarations in transactions</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="toc-menu">
+        <a class="expand-toggle" href="#">Expand all</a
+        ><a class="back-to-top" href="#">Back to top</a
+        ><a class="go-to-bottom" href="#">Go to bottom</a>
+      </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8="
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js"
+      integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g="
+      crossorigin="anonymous"
+      defer
+    ></script>
     <script>
-        var markdown = $(".markdown-body");
-        //smooth all hash trigger scrolling
-        function smoothHashScroll() {
-            var hashElements = $("a[href^='#']").toArray();
-            for (var i = 0; i < hashElements.length; i++) {
-                var element = hashElements[i];
-                var $element = $(element);
-                var hash = element.hash;
-                if (hash) {
-                    $element.on('click', function (e) {
-                        // store hash
-                        var hash = this.hash;
-                        if ($(hash).length <= 0) return;
-                        // prevent default anchor click behavior
-                        e.preventDefault();
-                        // animate
-                        $('body, html').stop(true, true).animate({
-                            scrollTop: $(hash).offset().top
-                        }, 100, "linear", function () {
-                            // when done, add hash to url
-                            // (default click behaviour)
-                            window.location.hash = hash;
-                        });
-                    });
-                }
-            }
-        }
-
-        smoothHashScroll();
-        var toc = $('.ui-toc');
-        var tocAffix = $('.ui-affix-toc');
-        var tocDropdown = $('.ui-toc-dropdown');
-        //toc
-        tocDropdown.click(function (e) {
-            e.stopPropagation();
-        });
-
-        var enoughForAffixToc = true;
-
-        function generateScrollspy() {
-            $(document.body).scrollspy({
-                target: ''
+      var markdown = $(".markdown-body");
+      //smooth all hash trigger scrolling
+      function smoothHashScroll() {
+        var hashElements = $("a[href^='#']").toArray();
+        for (var i = 0; i < hashElements.length; i++) {
+          var element = hashElements[i];
+          var $element = $(element);
+          var hash = element.hash;
+          if (hash) {
+            $element.on("click", function (e) {
+              // store hash
+              var hash = this.hash;
+              if ($(hash).length <= 0) return;
+              // prevent default anchor click behavior
+              e.preventDefault();
+              // animate
+              $("body, html")
+                .stop(true, true)
+                .animate(
+                  {
+                    scrollTop: $(hash).offset().top,
+                  },
+                  100,
+                  "linear",
+                  function () {
+                    // when done, add hash to url
+                    // (default click behaviour)
+                    window.location.hash = hash;
+                  }
+                );
             });
-            $(document.body).scrollspy('refresh');
-            if (enoughForAffixToc) {
-                toc.hide();
-                tocAffix.show();
-            } else {
-                tocAffix.hide();
-                toc.show();
-            }
-            $(document.body).scroll();
+          }
         }
+      }
 
-        function windowResize() {
-            //toc right
-            var paddingRight = parseFloat(markdown.css('padding-right'));
-            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
-            toc.css('right', right + 'px');
-            //affix toc left
-            var newbool;
-            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
-            //for ipad or wider device
-            if (rightMargin >= 133) {
-                newbool = true;
-                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
-                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
-                tocAffix.css('left', left + 'px');
-            } else {
-                newbool = false;
-            }
-            if (newbool != enoughForAffixToc) {
-                enoughForAffixToc = newbool;
-                generateScrollspy();
-            }
+      smoothHashScroll();
+      var toc = $(".ui-toc");
+      var tocAffix = $(".ui-affix-toc");
+      var tocDropdown = $(".ui-toc-dropdown");
+      //toc
+      tocDropdown.click(function (e) {
+        e.stopPropagation();
+      });
+
+      var enoughForAffixToc = true;
+
+      function generateScrollspy() {
+        $(document.body).scrollspy({
+          target: "",
+        });
+        $(document.body).scrollspy("refresh");
+        if (enoughForAffixToc) {
+          toc.hide();
+          tocAffix.show();
+        } else {
+          tocAffix.hide();
+          toc.show();
         }
-        $(window).resize(function () {
-            windowResize();
-        });
-        $(document).ready(function () {
-            windowResize();
-            generateScrollspy();
-        });
+        $(document.body).scroll();
+      }
 
-        //remove hash
-        function removeHash() {
-            window.location.hash = '';
+      function windowResize() {
+        //toc right
+        var paddingRight = parseFloat(markdown.css("padding-right"));
+        var right =
+          $(window).width() -
+          (markdown.offset().left + markdown.outerWidth() - paddingRight);
+        toc.css("right", right + "px");
+        //affix toc left
+        var newbool;
+        var rightMargin =
+          (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+        //for ipad or wider device
+        if (rightMargin >= 133) {
+          newbool = true;
+          var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+          var left =
+            markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+          tocAffix.css("left", left + "px");
+        } else {
+          newbool = false;
         }
+        if (newbool != enoughForAffixToc) {
+          enoughForAffixToc = newbool;
+          generateScrollspy();
+        }
+      }
+      $(window).resize(function () {
+        windowResize();
+      });
+      $(document).ready(function () {
+        windowResize();
+        generateScrollspy();
+      });
 
-        var backtotop = $('.back-to-top');
-        var gotobottom = $('.go-to-bottom');
+      //remove hash
+      function removeHash() {
+        window.location.hash = "";
+      }
 
-        backtotop.click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (scrollToTop)
-                scrollToTop();
-            removeHash();
-        });
-        gotobottom.click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (scrollToBottom)
-                scrollToBottom();
-            removeHash();
-        });
+      var backtotop = $(".back-to-top");
+      var gotobottom = $(".go-to-bottom");
 
-        var toggle = $('.expand-toggle');
-        var tocExpand = false;
+      backtotop.click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (scrollToTop) scrollToTop();
+        removeHash();
+      });
+      gotobottom.click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (scrollToBottom) scrollToBottom();
+        removeHash();
+      });
 
+      var toggle = $(".expand-toggle");
+      var tocExpand = false;
+
+      checkExpandToggle();
+      toggle.click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        tocExpand = !tocExpand;
         checkExpandToggle();
-        toggle.click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            tocExpand = !tocExpand;
-            checkExpandToggle();
-        })
+      });
 
-        function checkExpandToggle () {
-            var toc = $('.ui-toc-dropdown .toc');
-            var toggle = $('.expand-toggle');
-            if (!tocExpand) {
-                toc.removeClass('expand');
-                toggle.text('Expand all');
-            } else {
-                toc.addClass('expand');
-                toggle.text('Collapse all');
-            }
+      function checkExpandToggle() {
+        var toc = $(".ui-toc-dropdown .toc");
+        var toggle = $(".expand-toggle");
+        if (!tocExpand) {
+          toc.removeClass("expand");
+          toggle.text("Expand all");
+        } else {
+          toc.addClass("expand");
+          toggle.text("Collapse all");
         }
+      }
 
-        function scrollToTop() {
-            $('body, html').stop(true, true).animate({
-                scrollTop: 0
-            }, 100, "linear");
-        }
+      function scrollToTop() {
+        $("body, html").stop(true, true).animate(
+          {
+            scrollTop: 0,
+          },
+          100,
+          "linear"
+        );
+      }
 
-        function scrollToBottom() {
-            $('body, html').stop(true, true).animate({
-                scrollTop: $(document.body)[0].scrollHeight
-            }, 100, "linear");
-        }
+      function scrollToBottom() {
+        $("body, html")
+          .stop(true, true)
+          .animate(
+            {
+              scrollTop: $(document.body)[0].scrollHeight,
+            },
+            100,
+            "linear"
+          );
+      }
     </script>
-</body>
-
+  </body>
 </html>

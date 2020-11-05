@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Is Ethereum hashrate tracking the price?</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Is Ethereum hashrate tracking the price?</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,151 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Is Ethereum hashrate tracking the price?</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-I have seen some debates about this lately. Lets take some quick and dirty look at the data. Etherscan.io lets us download CSV files with…
-</section>
-<section data-field="body" class="e-content">
-<section name="22d1" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="a57d" id="a57d" class="graf graf--h3 graf--leading graf--title">Is Ethereum hashrate tracking the price?</h3><p name="2166" id="2166" class="graf graf--p graf-after--h3">I have seen some debates about this lately. Lets take some quick and dirty look at the data. Etherscan.io lets us download CSV files with daily data for ETH price and hash rate (in reality these are semicolon-separated values). We download them in a directory, and they look like this:</p><pre name="7d1e" id="7d1e" class="graf graf--pre graf-after--p">etherprice<br>...<br>1493078400;50.11<br>1493164800;53.28<br>1493251200;63.10<br>1493337600;72.42<br>1493424000;69.85<br>1493510400;79.83<br>1493596800;77.60<br>1493683200;77.24</pre><pre name="16d1" id="16d1" class="graf graf--pre graf-after--pre">hashrate<br>...<br>1493078400;20759.4397<br>1493164800;20518.0576<br>1493251200;20819.5764<br>1493337600;22094.2863<br>1493424000;22674.7072<br>1493510400;22071.8930<br>1493596800;22307.6652<br>1493683200;22218.5493</pre><p name="27da" id="27da" class="graf graf--p graf-after--pre">The numbers in the first column are seconds since Epoch (January 1, 1970). The latest number, 1493683200, translates to May 2, 2017.</p><p name="cd98" id="cd98" class="graf graf--p graf-after--p">Now lets do some crappy python :)</p><pre name="18bc" id="18bc" class="graf graf--pre graf-after--p"><strong class="markup--strong markup--pre-strong">from </strong>scipy.stats.stats <strong class="markup--strong markup--pre-strong">import </strong>linregress<br><strong class="markup--strong markup--pre-strong">import </strong>csv<br><strong class="markup--strong markup--pre-strong">import </strong>numpy <strong class="markup--strong markup--pre-strong">as </strong>np<br><strong class="markup--strong markup--pre-strong">import </strong>matplotlib.pyplot <strong class="markup--strong markup--pre-strong">as </strong>plt<br><strong class="markup--strong markup--pre-strong">import </strong>datetime<br><br><strong class="markup--strong markup--pre-strong">with </strong>open(<strong class="markup--strong markup--pre-strong">&#39;etherprice&#39;</strong>) <strong class="markup--strong markup--pre-strong">as </strong>f:<br>    prices = np.array([float(row[1]) <strong class="markup--strong markup--pre-strong">for </strong>row <strong class="markup--strong markup--pre-strong">in </strong>csv.reader(f, delimiter=<strong class="markup--strong markup--pre-strong">&#39;;&#39;</strong>)])<br><strong class="markup--strong markup--pre-strong">with </strong>open(<strong class="markup--strong markup--pre-strong">&#39;etherprice&#39;</strong>) <strong class="markup--strong markup--pre-strong">as </strong>f:<br>    times = np.array([datetime.datetime.fromtimestamp(int(row[0])) <strong class="markup--strong markup--pre-strong">for </strong>row <strong class="markup--strong markup--pre-strong">in </strong>csv.reader(f, delimiter=<strong class="markup--strong markup--pre-strong">&#39;;&#39;</strong>)])<br><strong class="markup--strong markup--pre-strong">with </strong>open(<strong class="markup--strong markup--pre-strong">&#39;hashrate&#39;</strong>) <strong class="markup--strong markup--pre-strong">as </strong>f:<br>    hashrates = np.array([float(row[1]) <strong class="markup--strong markup--pre-strong">for </strong>row <strong class="markup--strong markup--pre-strong">in </strong>csv.reader(f, delimiter=<strong class="markup--strong markup--pre-strong">&#39;;&#39;</strong>)])<br><br>slope, intercept, r_value, p_value, std_err = linregress(prices, hashrates)<br><strong class="markup--strong markup--pre-strong">print &#39;slope=&#39;</strong>, slope, <strong class="markup--strong markup--pre-strong">&#39;intercept=&#39;</strong>,intercept, <strong class="markup--strong markup--pre-strong">&#39;r_value=&#39;</strong>, r_value, <strong class="markup--strong markup--pre-strong">&#39;p_value=&#39;</strong>, p_value, <strong class="markup--strong markup--pre-strong">&#39;std_err=&#39;</strong>, std_err<br><br>plt.plot(times,prices)<br>plt.plot(times,(hashrates-intercept)/slope)<br>plt.show()</pre><p name="86d3" id="86d3" class="graf graf--p graf-after--pre">This code reads both files, assuming that the timestamps are the same in both (and they are there are 643 points in both files if you download today). Then it runs linear regression, prints the results:</p><pre name="dfc2" id="dfc2" class="graf graf--pre graf-after--p">slope= 346.494231032 intercept= 600.14396646 r_value= 0.910826320068 p_value= 1.66351082006e-248 std_err= 6.20240860419</pre><p name="cece" id="cece" class="graf graf--p graf-after--pre">And finally, it plots the price against the timestamps (blue curve), and also the price calculated from the hash rate, as if the regression equality always holds (green curve).</p><pre name="760f" id="760f" class="graf graf--pre graf-after--p">hashrate = price * slot + intercept</pre><p name="8f12" id="8f12" class="graf graf--p graf-after--pre">I know it is a weird way of showing it, because I should have plotted actual hashrate against the hashrate calculated linearly from the price. But it would have just swapped the colors of the lines. I plotted the prices instead because people relate to price numbers much better than to hash rate numbers. Here are the graphs:</p><figure name="ec62" id="ec62" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 289px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 41.3%;"></div><img class="graf-image" data-image-id="1*cThp-Ibf598BQGI2JwdqKg.png" data-width="1299" data-height="537" src="https://cdn-images-1.medium.com/max/800/1*cThp-Ibf598BQGI2JwdqKg.png"></div></figure><p name="e4e8" id="e4e8" class="graf graf--p graf-after--figure graf--trailing">I am not going to make any conclusions at this point, because the analysis was quick and dirty and unscientific. But hopefully it helps discussions and generates more ideas.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/31f770aa5120"><time class="dt-published" datetime="2017-05-03T23:25:11.909Z">May 3, 2017</time></a>.</p><p><a href="https://medium.com/@akhounov/is-ethereum-hashrate-tracking-the-price-31f770aa5120" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">Is Ethereum hashrate tracking the price?</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        I have seen some debates about this lately. Lets take some quick and
+        dirty look at the data. Etherscan.io lets us download CSV files with…
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="22d1"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="a57d"
+                id="a57d"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Is Ethereum hashrate tracking the price?
+              </h3>
+              <p name="2166" id="2166" class="graf graf--p graf-after--h3">
+                I have seen some debates about this lately. Lets take some quick
+                and dirty look at the data. Etherscan.io lets us download CSV
+                files with daily data for ETH price and hash rate (in reality
+                these are semicolon-separated values). We download them in a
+                directory, and they look like this:
+              </p>
+              <pre
+                name="7d1e"
+                id="7d1e"
+                class="graf graf--pre graf-after--p"
+              >etherprice<br>...<br>1493078400;50.11<br>1493164800;53.28<br>1493251200;63.10<br>1493337600;72.42<br>1493424000;69.85<br>1493510400;79.83<br>1493596800;77.60<br>1493683200;77.24</pre>
+              <pre
+                name="16d1"
+                id="16d1"
+                class="graf graf--pre graf-after--pre"
+              >hashrate<br>...<br>1493078400;20759.4397<br>1493164800;20518.0576<br>1493251200;20819.5764<br>1493337600;22094.2863<br>1493424000;22674.7072<br>1493510400;22071.8930<br>1493596800;22307.6652<br>1493683200;22218.5493</pre>
+              <p name="27da" id="27da" class="graf graf--p graf-after--pre">
+                The numbers in the first column are seconds since Epoch (January
+                1, 1970). The latest number, 1493683200, translates to May 2,
+                2017.
+              </p>
+              <p name="cd98" id="cd98" class="graf graf--p graf-after--p">
+                Now lets do some crappy python :)
+              </p>
+              <pre
+                name="18bc"
+                id="18bc"
+                class="graf graf--pre graf-after--p"
+              ><strong class="markup--strong markup--pre-strong">from </strong>scipy.stats.stats <strong class="markup--strong markup--pre-strong">import </strong>linregress<br><strong class="markup--strong markup--pre-strong">import </strong>csv<br><strong class="markup--strong markup--pre-strong">import </strong>numpy <strong class="markup--strong markup--pre-strong">as </strong>np<br><strong class="markup--strong markup--pre-strong">import </strong>matplotlib.pyplot <strong class="markup--strong markup--pre-strong">as </strong>plt<br><strong class="markup--strong markup--pre-strong">import </strong>datetime<br><br><strong class="markup--strong markup--pre-strong">with </strong>open(<strong class="markup--strong markup--pre-strong">&#39;etherprice&#39;</strong>) <strong class="markup--strong markup--pre-strong">as </strong>f:<br>    prices = np.array([float(row[1]) <strong class="markup--strong markup--pre-strong">for </strong>row <strong class="markup--strong markup--pre-strong">in </strong>csv.reader(f, delimiter=<strong class="markup--strong markup--pre-strong">&#39;;&#39;</strong>)])<br><strong class="markup--strong markup--pre-strong">with </strong>open(<strong class="markup--strong markup--pre-strong">&#39;etherprice&#39;</strong>) <strong class="markup--strong markup--pre-strong">as </strong>f:<br>    times = np.array([datetime.datetime.fromtimestamp(int(row[0])) <strong class="markup--strong markup--pre-strong">for </strong>row <strong class="markup--strong markup--pre-strong">in </strong>csv.reader(f, delimiter=<strong class="markup--strong markup--pre-strong">&#39;;&#39;</strong>)])<br><strong class="markup--strong markup--pre-strong">with </strong>open(<strong class="markup--strong markup--pre-strong">&#39;hashrate&#39;</strong>) <strong class="markup--strong markup--pre-strong">as </strong>f:<br>    hashrates = np.array([float(row[1]) <strong class="markup--strong markup--pre-strong">for </strong>row <strong class="markup--strong markup--pre-strong">in </strong>csv.reader(f, delimiter=<strong class="markup--strong markup--pre-strong">&#39;;&#39;</strong>)])<br><br>slope, intercept, r_value, p_value, std_err = linregress(prices, hashrates)<br><strong class="markup--strong markup--pre-strong">print &#39;slope=&#39;</strong>, slope, <strong class="markup--strong markup--pre-strong">&#39;intercept=&#39;</strong>,intercept, <strong class="markup--strong markup--pre-strong">&#39;r_value=&#39;</strong>, r_value, <strong class="markup--strong markup--pre-strong">&#39;p_value=&#39;</strong>, p_value, <strong class="markup--strong markup--pre-strong">&#39;std_err=&#39;</strong>, std_err<br><br>plt.plot(times,prices)<br>plt.plot(times,(hashrates-intercept)/slope)<br>plt.show()</pre>
+              <p name="86d3" id="86d3" class="graf graf--p graf-after--pre">
+                This code reads both files, assuming that the timestamps are the
+                same in both (and they are there are 643 points in both files if
+                you download today). Then it runs linear regression, prints the
+                results:
+              </p>
+              <pre name="dfc2" id="dfc2" class="graf graf--pre graf-after--p">
+slope= 346.494231032 intercept= 600.14396646 r_value= 0.910826320068 p_value= 1.66351082006e-248 std_err= 6.20240860419</pre
+              >
+              <p name="cece" id="cece" class="graf graf--p graf-after--pre">
+                And finally, it plots the price against the timestamps (blue
+                curve), and also the price calculated from the hash rate, as if
+                the regression equality always holds (green curve).
+              </p>
+              <pre name="760f" id="760f" class="graf graf--pre graf-after--p">
+hashrate = price * slot + intercept</pre
+              >
+              <p name="8f12" id="8f12" class="graf graf--p graf-after--pre">
+                I know it is a weird way of showing it, because I should have
+                plotted actual hashrate against the hashrate calculated linearly
+                from the price. But it would have just swapped the colors of the
+                lines. I plotted the prices instead because people relate to
+                price numbers much better than to hash rate numbers. Here are
+                the graphs:
+              </p>
+              <figure
+                name="ec62"
+                id="ec62"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 289px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 41.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*cThp-Ibf598BQGI2JwdqKg.png"
+                    data-width="1299"
+                    data-height="537"
+                    src="https://cdn-images-1.medium.com/max/800/1*cThp-Ibf598BQGI2JwdqKg.png"
+                  />
+                </div>
+              </figure>
+              <p
+                name="e4e8"
+                id="e4e8"
+                class="graf graf--p graf-after--figure graf--trailing"
+              >
+                I am not going to make any conclusions at this point, because
+                the analysis was quick and dirty and unscientific. But hopefully
+                it helps discussions and generates more ideas.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/31f770aa5120"
+            ><time class="dt-published" datetime="2017-05-03T23:25:11.909Z"
+              >May 3, 2017</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/is-ethereum-hashrate-tracking-the-price-31f770aa5120"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

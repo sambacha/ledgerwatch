@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>More data for EIP-168 “Kill dust accounts”</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>More data for EIP-168 “Kill dust accounts”</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,224 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">More data for EIP-168 “Kill dust accounts”</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-The purpose of this post is to host the charts that I have prepared for EIP-168 assessment that I have suggested to perform on the latest…
-</section>
-<section data-field="body" class="e-content">
-<section name="1373" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="cdd1" id="cdd1" class="graf graf--h3 graf--leading graf--title">More data for EIP-168 “Kill dust accounts”</h3><p name="b3a4" id="b3a4" class="graf graf--p graf-after--h3">The purpose of this post is to host the charts that I have prepared for <a href="https://github.com/ethereum/EIPs/issues/168" data-href="https://github.com/ethereum/EIPs/issues/168" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">EIP-168</a> assessment that I have suggested to perform on the latest Ethereum Dev meeting. Andrei from Ethereum C++ team has already posted a chart (can be found in EIP comments) showing how threshold of what is considered to be dust influences the number of accounts that can be cleared. One of the main observation there, from my point of view, is that threshold 0 already allows clearing around 10 million (out of 26–26 million in total) accounts. These are accounts with balances exactly 0, but with non-zero nonces, so they are not cleared by <a href="https://github.com/ethereum/eips/issues/158" data-href="https://github.com/ethereum/eips/issues/158" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">EIP-158</a>, introduced in late 2016 to clear up the state after transactional spam.</p><p name="b720" id="b720" class="graf graf--p graf-after--p">Just to corroborate Andrei’s finding, I have used my still under-development Turbo-Geth code to investigate how many state trie nodes (rather than accounts) would be cleared. I did analysis at the block 5032091 and my charts look very similar (reminder — 1 szabo equals to 10¹² wei, so initial threshold of 420 szabo is not even on my charts)</p><figure name="246b" id="246b" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*YwOqbreWMWCregjiQ_7NfQ.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*YwOqbreWMWCregjiQ_7NfQ.png"></div><figcaption class="imageCaption">Number of short nodes remaining depending on dust threshold</figcaption></figure><p name="671a" id="671a" class="graf graf--p graf-after--figure">Number of short nodes (nodes with 1 child) in the trie is very similar to the number of accounts, so this chart is showing the same picture as Andrei’s chart for accounts.</p><figure name="1dd9" id="1dd9" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*cUEVLeBaTZPl8LmDQ2_hbg.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*cUEVLeBaTZPl8LmDQ2_hbg.png"></div><figcaption class="imageCaption">Number of nodes with 2 and 3 children remaining, depending on dust threshold</figcaption></figure><figure name="14df" id="14df" class="graf graf--figure graf-after--figure"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*nYo_j1mTXahg0-o0Jnda6w.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*nYo_j1mTXahg0-o0Jnda6w.png"></div><figcaption class="imageCaption">Number of nodes with various number of children remaining, depending on dust threshold</figcaption></figure><p name="5f5d" id="5f5d" class="graf graf--p graf-after--figure">These charts actually provide data for the point (8) from the Turbo-Geth original <a href="https://medium.com/@akhounov/roadmap-for-turbo-geth-31cbfb1e72b7" data-href="https://medium.com/@akhounov/roadmap-for-turbo-geth-31cbfb1e72b7" class="markup--anchor markup--p-anchor" target="_blank">Roadmap</a>. Number of nodes with 2 children dominates all others, but not the short nodes.</p><h4 name="48f5" id="48f5" class="graf graf--h4 graf-after--p">Conclusion</h4><p name="a2b0" id="a2b0" class="graf graf--p graf-after--h4">If EIP-168 is to be implemented, the best threshold is 0 wei. It does not create problems with destroying someone’s money, but does introduce the possiblity of replay attacks, which can be mitigated by also implementing <a href="https://github.com/ethereum/EIPs/issues/169" data-href="https://github.com/ethereum/EIPs/issues/169" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">EIP-169</a>.</p><p name="9737" id="9737" class="graf graf--p graf-after--p graf--trailing">However, I also believe (after my experiments with Turbo Geth) that we have not yet exhausted optimisations outside of the protocol (in the client software) and the time of EIP-168 has not come yet. Hopefully, I will demonstrate it to you very soon.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/83e8dd0938d3"><time class="dt-published" datetime="2018-02-19T20:51:05.768Z">February 19, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/more-data-for-eip-168-kill-dust-accounts-83e8dd0938d3" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">More data for EIP-168 “Kill dust accounts”</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        The purpose of this post is to host the charts that I have prepared for
+        EIP-168 assessment that I have suggested to perform on the latest…
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="1373"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="cdd1"
+                id="cdd1"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                More data for EIP-168 “Kill dust accounts”
+              </h3>
+              <p name="b3a4" id="b3a4" class="graf graf--p graf-after--h3">
+                The purpose of this post is to host the charts that I have
+                prepared for
+                <a
+                  href="https://github.com/ethereum/EIPs/issues/168"
+                  data-href="https://github.com/ethereum/EIPs/issues/168"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >EIP-168</a
+                >
+                assessment that I have suggested to perform on the latest
+                Ethereum Dev meeting. Andrei from Ethereum C++ team has already
+                posted a chart (can be found in EIP comments) showing how
+                threshold of what is considered to be dust influences the number
+                of accounts that can be cleared. One of the main observation
+                there, from my point of view, is that threshold 0 already allows
+                clearing around 10 million (out of 26–26 million in total)
+                accounts. These are accounts with balances exactly 0, but with
+                non-zero nonces, so they are not cleared by
+                <a
+                  href="https://github.com/ethereum/eips/issues/158"
+                  data-href="https://github.com/ethereum/eips/issues/158"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >EIP-158</a
+                >, introduced in late 2016 to clear up the state after
+                transactional spam.
+              </p>
+              <p name="b720" id="b720" class="graf graf--p graf-after--p">
+                Just to corroborate Andrei’s finding, I have used my still
+                under-development Turbo-Geth code to investigate how many state
+                trie nodes (rather than accounts) would be cleared. I did
+                analysis at the block 5032091 and my charts look very similar
+                (reminder — 1 szabo equals to 10¹² wei, so initial threshold of
+                420 szabo is not even on my charts)
+              </p>
+              <figure
+                name="246b"
+                id="246b"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*YwOqbreWMWCregjiQ_7NfQ.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*YwOqbreWMWCregjiQ_7NfQ.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Number of short nodes remaining depending on dust threshold
+                </figcaption>
+              </figure>
+              <p name="671a" id="671a" class="graf graf--p graf-after--figure">
+                Number of short nodes (nodes with 1 child) in the trie is very
+                similar to the number of accounts, so this chart is showing the
+                same picture as Andrei’s chart for accounts.
+              </p>
+              <figure
+                name="1dd9"
+                id="1dd9"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*cUEVLeBaTZPl8LmDQ2_hbg.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*cUEVLeBaTZPl8LmDQ2_hbg.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Number of nodes with 2 and 3 children remaining, depending on
+                  dust threshold
+                </figcaption>
+              </figure>
+              <figure
+                name="14df"
+                id="14df"
+                class="graf graf--figure graf-after--figure"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*nYo_j1mTXahg0-o0Jnda6w.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*nYo_j1mTXahg0-o0Jnda6w.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Number of nodes with various number of children remaining,
+                  depending on dust threshold
+                </figcaption>
+              </figure>
+              <p name="5f5d" id="5f5d" class="graf graf--p graf-after--figure">
+                These charts actually provide data for the point (8) from the
+                Turbo-Geth original
+                <a
+                  href="https://medium.com/@akhounov/roadmap-for-turbo-geth-31cbfb1e72b7"
+                  data-href="https://medium.com/@akhounov/roadmap-for-turbo-geth-31cbfb1e72b7"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >Roadmap</a
+                >. Number of nodes with 2 children dominates all others, but not
+                the short nodes.
+              </p>
+              <h4 name="48f5" id="48f5" class="graf graf--h4 graf-after--p">
+                Conclusion
+              </h4>
+              <p name="a2b0" id="a2b0" class="graf graf--p graf-after--h4">
+                If EIP-168 is to be implemented, the best threshold is 0 wei. It
+                does not create problems with destroying someone’s money, but
+                does introduce the possiblity of replay attacks, which can be
+                mitigated by also implementing
+                <a
+                  href="https://github.com/ethereum/EIPs/issues/169"
+                  data-href="https://github.com/ethereum/EIPs/issues/169"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >EIP-169</a
+                >.
+              </p>
+              <p
+                name="9737"
+                id="9737"
+                class="graf graf--p graf-after--p graf--trailing"
+              >
+                However, I also believe (after my experiments with Turbo Geth)
+                that we have not yet exhausted optimisations outside of the
+                protocol (in the client software) and the time of EIP-168 has
+                not come yet. Hopefully, I will demonstrate it to you very soon.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/83e8dd0938d3"
+            ><time class="dt-published" datetime="2018-02-19T20:51:05.768Z"
+              >February 19, 2018</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/more-data-for-eip-168-kill-dust-accounts-83e8dd0938d3"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

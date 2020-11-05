@@ -1,8 +1,16 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 5)</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+      Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 5)
+    </title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +63,404 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 5)</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-This is continuation of the part 1 and part2 and part3 and part4
-</section>
-<section data-field="body" class="e-content">
-<section name="2d78" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="fb77" id="fb77" class="graf graf--h3 graf--leading graf--title">Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 5)</h3><p name="6df9" id="6df9" class="graf graf--p graf-after--h3">This is continuation of the <a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-1-70c1ebd93266" data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-1-70c1ebd93266" class="markup--anchor markup--p-anchor" target="_blank">part 1</a> and <a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10" data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10" class="markup--anchor markup--p-anchor" target="_blank">part2</a> and <a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-3-cc162ca04e9f" data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-3-cc162ca04e9f" class="markup--anchor markup--p-anchor" target="_blank">part3</a> and <a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309" data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309" class="markup--anchor markup--p-anchor" target="_blank">part4</a></p><h3 name="449e" id="449e" class="graf graf--h3 graf-after--p">Problems with large (and growing) state</h3><h4 name="8a93" id="8a93" class="graf graf--h4 graf-after--h3">Failing snapshot sync</h4><p name="fe30" id="fe30" class="graf graf--p graf-after--h4">Described in part 1</p><h4 name="abe7" id="abe7" class="graf graf--h4 graf-after--p">Duration of snapshot sync</h4><p name="8c6c" id="8c6c" class="graf graf--p graf-after--h4">Described in part 1</p><h4 name="144e" id="144e" class="graf graf--h4 graf-after--p">Slower block sealing</h4><p name="0eb4" id="0eb4" class="graf graf--p graf-after--h4">Described in part 2</p><h4 name="56b4" id="56b4" class="graf graf--h4 graf-after--p">Slower processing of transactions reading from the state</h4><p name="2c4f" id="2c4f" class="graf graf--p graf-after--h4">Described in part 3</p><h3 name="5f50" id="5f50" class="graf graf--h3 graf-after--p">Block gas limit increase and the State fees (formerly known as State rent) share initial steps</h3><p name="6f08" id="6f08" class="graf graf--p graf-after--h3">Described in part 4</p><h3 name="32b5" id="32b5" class="graf graf--h3 graf-after--p">Stateless contract pattern is discouraged by the current gas schedule</h3><p name="5e8d" id="5e8d" class="graf graf--p graf-after--h3">The idea of stateless contracts was described in various places, including the first version of the State Rent proposal. I am extracting some pictures from there:</p><figure name="577f" id="577f" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 250px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 35.699999999999996%;"></div><img class="graf-image" data-image-id="1*9qJnBH2E5rPrBhFfkMxiYw.png" data-width="1963" data-height="700" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*9qJnBH2E5rPrBhFfkMxiYw.png"></div><figcaption class="imageCaption">General idea of stateless contracts — storage off-chain, merkle roots on-chain</figcaption></figure><p name="1684" id="1684" class="graf graf--p graf-after--figure">The main idea of a stateless contract is to have some fixed number of storage slots inside the contract (on-chain), and potentially unbounded number of off-chain storage slots. On-chain storage slots would store commitments (usually roots of Merkle trees) to the off-chain slots.</p><figure name="b1c9" id="b1c9" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 248px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 35.5%;"></div><img class="graf-image" data-image-id="1*tEIAOYlr1kJrgjq0Jc5cCQ.png" data-width="1782" data-height="632" src="https://cdn-images-1.medium.com/max/800/1*tEIAOYlr1kJrgjq0Jc5cCQ.png"></div><figcaption class="imageCaption">Transactions now need to have 2 extra types of elements — input proofs and output proofs</figcaption></figure><p name="05f7" id="05f7" class="graf graf--p graf-after--figure">Whenever a transaction wishes to reference an off-chain storage slot, it would need to provide an “input proof”, which is usually the value referenced (blue rectangle in the picture above), with so-called “sibling” hashes leading up to the root of the Merkle tree. Stateless contract would verify the proof before it is to work with the referenced value. If a transaction wishes to modify the value of an off-chain storage slot (changing value from blue to orange in the picture above), it would need to provide an “output proof”, which is similar to the “input proof”, but constructed for the Merkle tree that appears after the modification.</p><figure name="5eac" id="5eac" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 214px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 30.599999999999998%;"></div><img class="graf-image" data-image-id="1*8tE19LP1SJdURqZxQAz-CA.png" data-width="2019" data-height="618" src="https://cdn-images-1.medium.com/max/800/1*8tE19LP1SJdURqZxQAz-CA.png"></div><figcaption class="imageCaption">Proof contention</figcaption></figure><p name="a70f" id="a70f" class="graf graf--p graf-after--figure">If most transactions only ever reference the values of the off-chain storage slots, the stateless contracts work reasonably well. However, if there is a fair amount of modifications happening, the stateless contracts can experience what I call “proof contention”. If multiple users are trying to construct transactions modifying some storage slots (not necessarily the same slots, but those who share a Merkle tree), some of them might need to recalculate and resubmit their transactions (and perhaps many times). This is because whenever the Merkle root changes, it invalidates the proofs that were produced for the old root.</p><p name="609a" id="609a" class="graf graf--p graf-after--p">The problem of proof contention would not arise in the use cases where there is only one entity modifying the off-chain storage (perhaps on other users’s behalf). One example would be Plasma when the modifying entity is the Plasma operator.</p><figure name="5cf9" id="5cf9" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 237px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 33.800000000000004%;"></div><img class="graf-image" data-image-id="1*4jmIBIA0Pd2qLy7vQPmsDA.png" data-width="2104" data-height="711" src="https://cdn-images-1.medium.com/max/800/1*4jmIBIA0Pd2qLy7vQPmsDA.png"></div><figcaption class="imageCaption">The need for a sub-protocol for delivery of the off-chain data belonging to a stateless contract</figcaption></figure><p name="9045" id="9045" class="graf graf--p graf-after--figure">Another interesting challenge for the stateless contracts is the need for a sub-protocol that is to deliver the off-chain data to the new users. Imagine you would like to start interacting with a stateless contract that has existed for some time and has a large state. You, as a user would either rely on an intermediary (like Plasma operator) to have that state and produce necessary proofs for you, or you would need to use some sub-protocol (which is currently not part of Ethereum protocol) to download the off-chain state first. This might be your only option if you think you might need this data to correctly execute your Plasma exit (something you do when you do not trust Plasma operator anymore and want to withdraw your assets).</p><p name="ee51" id="ee51" class="graf graf--p graf-after--p">Let’s pretend for a minute that these two challenges (proof contention and the need for a sub-protocol) are resolved to your satisfaction in some stateless contract, which is interesting to you. What are the gas costs of the interaction with such a stateless contract?</p><p name="b61b" id="b61b" class="graf graf--p graf-after--p">Whenever a transaction passes input data into the EVM, the sender is charged 68 gas per byte, or 2176 gas per 32-byte word. As Remco from the team 0x has shown to us during the workshop, if we assume an off-chain state which is has 2³² storage slots, and Merkle proofs being 32 words long, transmitting one proof would cost around 70k gas. Verification of the proof would take about 2k gas. If you transaction references an off-chain value and also modifies the same slot, you can reuse the same proof (because the siblings do not change). Contrast it with the modifying a word in a contract storage, which normally costs 5k. If the off-chain state is not that large, you would pay less. For example, if we put the entire Ethereum state (around 200 million items) into an off-chain slots, it would around 2²⁸, the cost of transaction data would still be 61k gas. For 1 million items, it would be 43k gas.</p><p name="4914" id="4914" class="graf graf--p graf-after--p">During the workshop, Remco proposed to:</p><ol class="postList"><li name="ccac" id="ccac" class="graf graf--li graf-after--p">Cut the cost of transaction data from 2176 gas to 200 gas per 32-byte word. That would be around 7 or 8 gas per byte.</li><li name="004b" id="004b" class="graf graf--li graf-after--li">Introduce a block size limit of 256 kB.</li><li name="8793" id="8793" class="graf graf--li graf-after--li">More “aggressively” prune the transaction data</li></ol><p name="ce82" id="ce82" class="graf graf--p graf-after--li">If we assume that most nodes joining the network are utilising the snapshot synchronisation mechanisms rather than downloading the block bodies and executing all transactions in them, the proposal (1) looks potentially reasonable. Obviously, we need to look into the potential DoS attacks this could enable.</p><p name="70a3" id="70a3" class="graf graf--p graf-after--p">Block size limit is probably based on the assumption that cheaper transaction data would cause the block bodies to become larger, which will in turn utilise more bandwidth of the nodes, and slow down the block propagation. These effects need to be studied by means of emulation and simulation. Perhaps there might be a way to tweak the current fork choice rule (inspired by <a href="https://eprint.iacr.org/2018/104.pdf" data-href="https://eprint.iacr.org/2018/104.pdf" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">Phantom</a>, for example) to cope with extra bandwidth requirements yet without introducing a block size limit.</p><p name="2de5" id="2de5" class="graf graf--p graf-after--p">More aggressive pruning of the transaction data (in other words, downloaded block bodies) would be required again because the block bodies might get larger. This would be expanded on in the next part of the blog post series.</p><h3 name="e094" id="e094" class="graf graf--h3 graf-after--p">eWASM interpreters could be a sensible first change even though gas cost might not be practical in the beginning</h3><p name="508c" id="508c" class="graf graf--p graf-after--h3">Here I would like to simply reference the <a href="https://medium.com/@gballet/ewasm-1-x-precompiles-part-1-66ee7e7345d1" data-href="https://medium.com/@gballet/ewasm-1-x-precompiles-part-1-66ee7e7345d1" class="markup--anchor markup--p-anchor" target="_blank">recent blog post by Guillame Balet</a>, which goes into some detail of what was presented at the workshop. It will be followed by more posts and benchmarks that would inform us about the progress of eWASM within Ethereum 1x, and possible first steps that will be made towards the roll out of eWASM onto the existing Ethereum main net.</p><h3 name="4404" id="4404" class="graf graf--h3 graf-after--p">Chain pruning will become more relevant as we start constraining the state growth</h3><p name="3cc6" id="3cc6" class="graf graf--p graf-after--h3">To appear in the part 6 or later</p><h3 name="da8a" id="da8a" class="graf graf--h3 graf-after--p">Ethereum protocol changes do not need to take a year to be prepared</h3><p name="f15d" id="f15d" class="graf graf--p graf-after--h3 graf--trailing">To appear in the part 6 or later</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/24ee8a9cbc40"><time class="dt-published" datetime="2019-02-19T18:49:11.804Z">February 19, 2019</time></a>.</p><p><a href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-5-24ee8a9cbc40" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">
+          Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 5)
+        </h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        This is continuation of the part 1 and part2 and part3 and part4
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="2d78"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="fb77"
+                id="fb77"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Looking back at the Ethereum 1x workshop 26–28.01.2019 (part 5)
+              </h3>
+              <p name="6df9" id="6df9" class="graf graf--p graf-after--h3">
+                This is continuation of the
+                <a
+                  href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-1-70c1ebd93266"
+                  data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-1-70c1ebd93266"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >part 1</a
+                >
+                and
+                <a
+                  href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10"
+                  data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-2-d3d8fdcede10"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >part2</a
+                >
+                and
+                <a
+                  href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-3-cc162ca04e9f"
+                  data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-3-cc162ca04e9f"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >part3</a
+                >
+                and
+                <a
+                  href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309"
+                  data-href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-4-a69b48e14309"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >part4</a
+                >
+              </p>
+              <h3 name="449e" id="449e" class="graf graf--h3 graf-after--p">
+                Problems with large (and growing) state
+              </h3>
+              <h4 name="8a93" id="8a93" class="graf graf--h4 graf-after--h3">
+                Failing snapshot sync
+              </h4>
+              <p name="fe30" id="fe30" class="graf graf--p graf-after--h4">
+                Described in part 1
+              </p>
+              <h4 name="abe7" id="abe7" class="graf graf--h4 graf-after--p">
+                Duration of snapshot sync
+              </h4>
+              <p name="8c6c" id="8c6c" class="graf graf--p graf-after--h4">
+                Described in part 1
+              </p>
+              <h4 name="144e" id="144e" class="graf graf--h4 graf-after--p">
+                Slower block sealing
+              </h4>
+              <p name="0eb4" id="0eb4" class="graf graf--p graf-after--h4">
+                Described in part 2
+              </p>
+              <h4 name="56b4" id="56b4" class="graf graf--h4 graf-after--p">
+                Slower processing of transactions reading from the state
+              </h4>
+              <p name="2c4f" id="2c4f" class="graf graf--p graf-after--h4">
+                Described in part 3
+              </p>
+              <h3 name="5f50" id="5f50" class="graf graf--h3 graf-after--p">
+                Block gas limit increase and the State fees (formerly known as
+                State rent) share initial steps
+              </h3>
+              <p name="6f08" id="6f08" class="graf graf--p graf-after--h3">
+                Described in part 4
+              </p>
+              <h3 name="32b5" id="32b5" class="graf graf--h3 graf-after--p">
+                Stateless contract pattern is discouraged by the current
+                gas schedule
+              </h3>
+              <p name="5e8d" id="5e8d" class="graf graf--p graf-after--h3">
+                The idea of stateless contracts was described in various places,
+                including the first version of the State Rent proposal. I am
+                extracting some pictures from there:
+              </p>
+              <figure
+                name="577f"
+                id="577f"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 250px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 35.699999999999996%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*9qJnBH2E5rPrBhFfkMxiYw.png"
+                    data-width="1963"
+                    data-height="700"
+                    data-is-featured="true"
+                    src="https://cdn-images-1.medium.com/max/800/1*9qJnBH2E5rPrBhFfkMxiYw.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  General idea of stateless contracts — storage off-chain,
+                  merkle roots on-chain
+                </figcaption>
+              </figure>
+              <p name="1684" id="1684" class="graf graf--p graf-after--figure">
+                The main idea of a stateless contract is to have some fixed
+                number of storage slots inside the contract (on-chain), and
+                potentially unbounded number of off-chain storage slots.
+                On-chain storage slots would store commitments (usually roots of
+                Merkle trees) to the off-chain slots.
+              </p>
+              <figure
+                name="b1c9"
+                id="b1c9"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 248px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 35.5%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*tEIAOYlr1kJrgjq0Jc5cCQ.png"
+                    data-width="1782"
+                    data-height="632"
+                    src="https://cdn-images-1.medium.com/max/800/1*tEIAOYlr1kJrgjq0Jc5cCQ.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Transactions now need to have 2 extra types of
+                  elements — input proofs and output proofs
+                </figcaption>
+              </figure>
+              <p name="05f7" id="05f7" class="graf graf--p graf-after--figure">
+                Whenever a transaction wishes to reference an off-chain storage
+                slot, it would need to provide an “input proof”, which is
+                usually the value referenced (blue rectangle in the picture
+                above), with so-called “sibling” hashes leading up to the root
+                of the Merkle tree. Stateless contract would verify the proof
+                before it is to work with the referenced value. If a transaction
+                wishes to modify the value of an off-chain storage slot
+                (changing value from blue to orange in the picture above), it
+                would need to provide an “output proof”, which is similar to the
+                “input proof”, but constructed for the Merkle tree that appears
+                after the modification.
+              </p>
+              <figure
+                name="5eac"
+                id="5eac"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 214px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 30.599999999999998%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*8tE19LP1SJdURqZxQAz-CA.png"
+                    data-width="2019"
+                    data-height="618"
+                    src="https://cdn-images-1.medium.com/max/800/1*8tE19LP1SJdURqZxQAz-CA.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">Proof contention</figcaption>
+              </figure>
+              <p name="a70f" id="a70f" class="graf graf--p graf-after--figure">
+                If most transactions only ever reference the values of the
+                off-chain storage slots, the stateless contracts work reasonably
+                well. However, if there is a fair amount of modifications
+                happening, the stateless contracts can experience what I call
+                “proof contention”. If multiple users are trying to construct
+                transactions modifying some storage slots (not necessarily the
+                same slots, but those who share a Merkle tree), some of them
+                might need to recalculate and resubmit their transactions (and
+                perhaps many times). This is because whenever the Merkle root
+                changes, it invalidates the proofs that were produced for the
+                old root.
+              </p>
+              <p name="609a" id="609a" class="graf graf--p graf-after--p">
+                The problem of proof contention would not arise in the use cases
+                where there is only one entity modifying the off-chain storage
+                (perhaps on other users’s behalf). One example would be Plasma
+                when the modifying entity is the Plasma operator.
+              </p>
+              <figure
+                name="5cf9"
+                id="5cf9"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 237px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 33.800000000000004%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*4jmIBIA0Pd2qLy7vQPmsDA.png"
+                    data-width="2104"
+                    data-height="711"
+                    src="https://cdn-images-1.medium.com/max/800/1*4jmIBIA0Pd2qLy7vQPmsDA.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  The need for a sub-protocol for delivery of the off-chain data
+                  belonging to a stateless contract
+                </figcaption>
+              </figure>
+              <p name="9045" id="9045" class="graf graf--p graf-after--figure">
+                Another interesting challenge for the stateless contracts is the
+                need for a sub-protocol that is to deliver the off-chain data to
+                the new users. Imagine you would like to start interacting with
+                a stateless contract that has existed for some time and has a
+                large state. You, as a user would either rely on an intermediary
+                (like Plasma operator) to have that state and produce necessary
+                proofs for you, or you would need to use some sub-protocol
+                (which is currently not part of Ethereum protocol) to download
+                the off-chain state first. This might be your only option if you
+                think you might need this data to correctly execute your Plasma
+                exit (something you do when you do not trust Plasma operator
+                anymore and want to withdraw your assets).
+              </p>
+              <p name="ee51" id="ee51" class="graf graf--p graf-after--p">
+                Let’s pretend for a minute that these two challenges (proof
+                contention and the need for a sub-protocol) are resolved to your
+                satisfaction in some stateless contract, which is interesting to
+                you. What are the gas costs of the interaction with such a
+                stateless contract?
+              </p>
+              <p name="b61b" id="b61b" class="graf graf--p graf-after--p">
+                Whenever a transaction passes input data into the EVM, the
+                sender is charged 68 gas per byte, or 2176 gas per 32-byte word.
+                As Remco from the team 0x has shown to us during the workshop,
+                if we assume an off-chain state which is has 2³² storage slots,
+                and Merkle proofs being 32 words long, transmitting one proof
+                would cost around 70k gas. Verification of the proof would take
+                about 2k gas. If you transaction references an off-chain value
+                and also modifies the same slot, you can reuse the same proof
+                (because the siblings do not change). Contrast it with the
+                modifying a word in a contract storage, which normally costs 5k.
+                If the off-chain state is not that large, you would pay less.
+                For example, if we put the entire Ethereum state (around 200
+                million items) into an off-chain slots, it would around 2²⁸, the
+                cost of transaction data would still be 61k gas. For 1 million
+                items, it would be 43k gas.
+              </p>
+              <p name="4914" id="4914" class="graf graf--p graf-after--p">
+                During the workshop, Remco proposed to:
+              </p>
+              <ol class="postList">
+                <li name="ccac" id="ccac" class="graf graf--li graf-after--p">
+                  Cut the cost of transaction data from 2176 gas to 200 gas per
+                  32-byte word. That would be around 7 or 8 gas per byte.
+                </li>
+                <li name="004b" id="004b" class="graf graf--li graf-after--li">
+                  Introduce a block size limit of 256 kB.
+                </li>
+                <li name="8793" id="8793" class="graf graf--li graf-after--li">
+                  More “aggressively” prune the transaction data
+                </li>
+              </ol>
+              <p name="ce82" id="ce82" class="graf graf--p graf-after--li">
+                If we assume that most nodes joining the network are utilising
+                the snapshot synchronisation mechanisms rather than downloading
+                the block bodies and executing all transactions in them, the
+                proposal (1) looks potentially reasonable. Obviously, we need to
+                look into the potential DoS attacks this could enable.
+              </p>
+              <p name="70a3" id="70a3" class="graf graf--p graf-after--p">
+                Block size limit is probably based on the assumption that
+                cheaper transaction data would cause the block bodies to become
+                larger, which will in turn utilise more bandwidth of the nodes,
+                and slow down the block propagation. These effects need to be
+                studied by means of emulation and simulation. Perhaps there
+                might be a way to tweak the current fork choice rule (inspired
+                by
+                <a
+                  href="https://eprint.iacr.org/2018/104.pdf"
+                  data-href="https://eprint.iacr.org/2018/104.pdf"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >Phantom</a
+                >, for example) to cope with extra bandwidth requirements yet
+                without introducing a block size limit.
+              </p>
+              <p name="2de5" id="2de5" class="graf graf--p graf-after--p">
+                More aggressive pruning of the transaction data (in other words,
+                downloaded block bodies) would be required again because the
+                block bodies might get larger. This would be expanded on in the
+                next part of the blog post series.
+              </p>
+              <h3 name="e094" id="e094" class="graf graf--h3 graf-after--p">
+                eWASM interpreters could be a sensible first change even though
+                gas cost might not be practical in the beginning
+              </h3>
+              <p name="508c" id="508c" class="graf graf--p graf-after--h3">
+                Here I would like to simply reference the
+                <a
+                  href="https://medium.com/@gballet/ewasm-1-x-precompiles-part-1-66ee7e7345d1"
+                  data-href="https://medium.com/@gballet/ewasm-1-x-precompiles-part-1-66ee7e7345d1"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >recent blog post by Guillame Balet</a
+                >, which goes into some detail of what was presented at the
+                workshop. It will be followed by more posts and benchmarks that
+                would inform us about the progress of eWASM within Ethereum 1x,
+                and possible first steps that will be made towards the roll out
+                of eWASM onto the existing Ethereum main net.
+              </p>
+              <h3 name="4404" id="4404" class="graf graf--h3 graf-after--p">
+                Chain pruning will become more relevant as we start constraining
+                the state growth
+              </h3>
+              <p name="3cc6" id="3cc6" class="graf graf--p graf-after--h3">
+                To appear in the part 6 or later
+              </p>
+              <h3 name="da8a" id="da8a" class="graf graf--h3 graf-after--p">
+                Ethereum protocol changes do not need to take a year to
+                be prepared
+              </h3>
+              <p
+                name="f15d"
+                id="f15d"
+                class="graf graf--p graf-after--h3 graf--trailing"
+              >
+                To appear in the part 6 or later
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/24ee8a9cbc40"
+            ><time class="dt-published" datetime="2019-02-19T18:49:11.804Z"
+              >February 19, 2019</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/looking-back-at-the-ethereum-1x-workshop-26-28-01-2019-part-5-24ee8a9cbc40"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

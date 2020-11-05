@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>On the State Rent and pivot to Stateless Ethereum</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>On the State Rent and pivot to Stateless Ethereum</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,207 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">On the State Rent and pivot to Stateless Ethereum</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-I should have written this long time ago, but it is never too late.
-</section>
-<section data-field="body" class="e-content">
-<section name="f2ad" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="5352" id="5352" class="graf graf--h3 graf--leading graf--title">On the State Rent and pivot to Stateless Ethereum</h3><p name="d7bd" id="d7bd" class="graf graf--p graf-after--h3">I should have written this long time ago, but it is never too late.</p><p name="7224" id="7224" class="graf graf--p graf-after--p">The last published version of the State Rent proposal was <a href="https://github.com/ledgerwatch/eth_state/blob/master/State_Fees_3.pdf" data-href="https://github.com/ledgerwatch/eth_state/blob/master/State_Fees_3.pdf" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">number 3</a>, and it was quite a while ago, back in February 2019.</p><p name="3bdf" id="3bdf" class="graf graf--p graf-after--p">After publishing it, I started to think about how one could realistically deliver such a project. And, very early on, it has been identified that one would definitely need something I call “ecosystem research”. What is it?</p><p name="29dc" id="29dc" class="graf graf--p graf-after--p">We knew from the very beginning of the State research (from the very first proposal, published in November 2018) that introduction of the proportional state rent on the contract storage (“proportional” meaning that contract gets charged rent proportionally to how many storage items it uses), would make most of the currently existing smart contracts vulnerable to “ griefing” attacks, whereby someone can at a small fixed cost make contract pay some amount of rent in perpetuity, eventually leading to the demise of that contract.</p><p name="46d9" id="46d9" class="graf graf--p graf-after--p">We also had a hypothesis that most or even all Dapps could be re-written in such way that makes them non-vulnerable to such attacks. Notable example is a version of ERC-20 token implementation <a href="https://github.com/ledgerwatch/eth_state/tree/master/erc20" data-href="https://github.com/ledgerwatch/eth_state/tree/master/erc20" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">here</a>. Although it was a good start (my estimates at the time showed that about half of all contract storage was taken by the balances and allowances of various ERC-20 contracts), the tail of the Dapps may be quite long.</p><p name="1e05" id="1e05" class="graf graf--p graf-after--p">It would be the task of the “ecosystem research” to meticulously analyse that tail of the Dapps, re-write them into non-vulnerable form, and engage with the maintainers and users of such Dapps to prepare for the change. It became clear that without such “ecosystem research”, the migration to the State rent regime was very unlikely to succeed.</p><p name="c5c0" id="c5c0" class="graf graf--p graf-after--p">However, it was not hard to estimate that this “ecosystem research” is a very daunting and expensive (perhaps a few million dollars) task. I certainly was not willing to embark on it myself, mostly because I did not think (and I still don’t) that this was where I would add the most value and gain satisfaction from my work. And since, de-facto, I was the only person researching State rent full time to the best of my knowledge, my conclusion that this will not be done, and we need a different plan.</p><p name="de77" id="de77" class="graf graf--p graf-after--p">Therefore, I returned to the idea that we “brushed off” (overlooked?) before embarking on the State rent project, namely “Stateless Clients”, or as I call it now, “Stateless Ethereum”. I first got interested in this back at the end of 2017 (scroll to the end of <a href="https://medium.com/@akhounov/how-to-speed-up-ethereum-in-the-face-of-crypto-kitties-7a9c901d98e9" data-href="https://medium.com/@akhounov/how-to-speed-up-ethereum-in-the-face-of-crypto-kitties-7a9c901d98e9" class="markup--anchor markup--p-anchor" target="_blank">this</a>), and then started on the Turbo-Geth project. The initial scepticism was based on the fact that the block witnesses would be quite large. But now that we are returning to this, we are asking “how large?”, and “can we make them smaller?”. And this is roughly where I started to get some <a href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc" data-href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc" class="markup--anchor markup--p-anchor" target="_blank">answers</a>.</p><p name="fb55" id="fb55" class="graf graf--p graf-after--p">We also knew that most probably (more data on this will be coming soon), hexary tree that we have in Ethereum make block witnesses larger than a binary tree would. But it appeared an impossible task to switch Ethereum 1 to binary trees. And again, if you think “why?”, the answer is that is based on the assumption that we will be keeping the current way of storing the state in the database (namely modelling data as a directed graph with edges from hashes to the trie nodes). However, if we change to the model that Turbo-Geth uses, the switching over to binary tree becomes quite straightforward. That is why one of my highest priorities at this moment is to “finish” Turbo-Geth, i.e. to solve all the edge cases and to provide enough evidence that its data model works, and it can be adopted by other implementations.</p><p name="a427" id="a427" class="graf graf--p graf-after--p graf--trailing">To recap, the State Rent project is currently “suspended”. And the active research, development and specification is happening around “flat db” state storage model and the Stateless Ethereum. There are some advancements that happened since my last blog post in March, and I hope to get some more data and publish it soon. So far you can look at <a href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/guide.md#separation-of-keys-and-the-structure" data-href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/guide.md#separation-of-keys-and-the-structure" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">the format</a> that is currently used to construct block witnesses, and watch the progress of Turbo-Geth, as it is hopefully nearing the “stable” stage (we are still changing a lot of things in the database format, so until this is settled, it is not “stable”): <a href="https://github.com/ledgerwatch/turbo-geth/issues" data-href="https://github.com/ledgerwatch/turbo-geth/issues" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">https://github.com/ledgerwatch/turbo-geth/issues</a></p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/ab4d967ff630"><time class="dt-published" datetime="2019-11-06T17:57:49.468Z">November 6, 2019</time></a>.</p><p><a href="https://medium.com/@akhounov/on-the-state-rent-and-pivot-to-stateless-ethereum-ab4d967ff630" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">
+          On the State Rent and pivot to Stateless Ethereum
+        </h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        I should have written this long time ago, but it is never too late.
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="f2ad"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="5352"
+                id="5352"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                On the State Rent and pivot to Stateless Ethereum
+              </h3>
+              <p name="d7bd" id="d7bd" class="graf graf--p graf-after--h3">
+                I should have written this long time ago, but it is never too
+                late.
+              </p>
+              <p name="7224" id="7224" class="graf graf--p graf-after--p">
+                The last published version of the State Rent proposal was
+                <a
+                  href="https://github.com/ledgerwatch/eth_state/blob/master/State_Fees_3.pdf"
+                  data-href="https://github.com/ledgerwatch/eth_state/blob/master/State_Fees_3.pdf"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >number 3</a
+                >, and it was quite a while ago, back in February 2019.
+              </p>
+              <p name="3bdf" id="3bdf" class="graf graf--p graf-after--p">
+                After publishing it, I started to think about how one could
+                realistically deliver such a project. And, very early on, it has
+                been identified that one would definitely need something I call
+                “ecosystem research”. What is it?
+              </p>
+              <p name="29dc" id="29dc" class="graf graf--p graf-after--p">
+                We knew from the very beginning of the State research (from the
+                very first proposal, published in November 2018) that
+                introduction of the proportional state rent on the contract
+                storage (“proportional” meaning that contract gets charged rent
+                proportionally to how many storage items it uses), would make
+                most of the currently existing smart contracts vulnerable to “
+                griefing” attacks, whereby someone can at a small fixed cost
+                make contract pay some amount of rent in perpetuity, eventually
+                leading to the demise of that contract.
+              </p>
+              <p name="46d9" id="46d9" class="graf graf--p graf-after--p">
+                We also had a hypothesis that most or even all Dapps could be
+                re-written in such way that makes them non-vulnerable to such
+                attacks. Notable example is a version of ERC-20 token
+                implementation
+                <a
+                  href="https://github.com/ledgerwatch/eth_state/tree/master/erc20"
+                  data-href="https://github.com/ledgerwatch/eth_state/tree/master/erc20"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >here</a
+                >. Although it was a good start (my estimates at the time showed
+                that about half of all contract storage was taken by the
+                balances and allowances of various ERC-20 contracts), the tail
+                of the Dapps may be quite long.
+              </p>
+              <p name="1e05" id="1e05" class="graf graf--p graf-after--p">
+                It would be the task of the “ecosystem research” to meticulously
+                analyse that tail of the Dapps, re-write them into
+                non-vulnerable form, and engage with the maintainers and users
+                of such Dapps to prepare for the change. It became clear that
+                without such “ecosystem research”, the migration to the State
+                rent regime was very unlikely to succeed.
+              </p>
+              <p name="c5c0" id="c5c0" class="graf graf--p graf-after--p">
+                However, it was not hard to estimate that this “ecosystem
+                research” is a very daunting and expensive (perhaps a few
+                million dollars) task. I certainly was not willing to embark on
+                it myself, mostly because I did not think (and I still don’t)
+                that this was where I would add the most value and gain
+                satisfaction from my work. And since, de-facto, I was the only
+                person researching State rent full time to the best of my
+                knowledge, my conclusion that this will not be done, and we need
+                a different plan.
+              </p>
+              <p name="de77" id="de77" class="graf graf--p graf-after--p">
+                Therefore, I returned to the idea that we “brushed off”
+                (overlooked?) before embarking on the State rent project, namely
+                “Stateless Clients”, or as I call it now, “Stateless Ethereum”.
+                I first got interested in this back at the end of 2017 (scroll
+                to the end of
+                <a
+                  href="https://medium.com/@akhounov/how-to-speed-up-ethereum-in-the-face-of-crypto-kitties-7a9c901d98e9"
+                  data-href="https://medium.com/@akhounov/how-to-speed-up-ethereum-in-the-face-of-crypto-kitties-7a9c901d98e9"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >this</a
+                >), and then started on the Turbo-Geth project. The initial
+                scepticism was based on the fact that the block witnesses would
+                be quite large. But now that we are returning to this, we are
+                asking “how large?”, and “can we make them smaller?”. And this
+                is roughly where I started to get some
+                <a
+                  href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc"
+                  data-href="https://medium.com/@akhounov/data-from-the-ethereum-stateless-prototype-8c69479c8abc"
+                  class="markup--anchor markup--p-anchor"
+                  target="_blank"
+                  >answers</a
+                >.
+              </p>
+              <p name="fb55" id="fb55" class="graf graf--p graf-after--p">
+                We also knew that most probably (more data on this will be
+                coming soon), hexary tree that we have in Ethereum make block
+                witnesses larger than a binary tree would. But it appeared an
+                impossible task to switch Ethereum 1 to binary trees. And again,
+                if you think “why?”, the answer is that is based on the
+                assumption that we will be keeping the current way of storing
+                the state in the database (namely modelling data as a directed
+                graph with edges from hashes to the trie nodes). However, if we
+                change to the model that Turbo-Geth uses, the switching over to
+                binary tree becomes quite straightforward. That is why one of my
+                highest priorities at this moment is to “finish” Turbo-Geth,
+                i.e. to solve all the edge cases and to provide enough evidence
+                that its data model works, and it can be adopted by other
+                implementations.
+              </p>
+              <p
+                name="a427"
+                id="a427"
+                class="graf graf--p graf-after--p graf--trailing"
+              >
+                To recap, the State Rent project is currently “suspended”. And
+                the active research, development and specification is happening
+                around “flat db” state storage model and the Stateless Ethereum.
+                There are some advancements that happened since my last blog
+                post in March, and I hope to get some more data and publish it
+                soon. So far you can look at
+                <a
+                  href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/guide.md#separation-of-keys-and-the-structure"
+                  data-href="https://github.com/ledgerwatch/turbo-geth/blob/master/docs/programmers_guide/guide.md#separation-of-keys-and-the-structure"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >the format</a
+                >
+                that is currently used to construct block witnesses, and watch
+                the progress of Turbo-Geth, as it is hopefully nearing the
+                “stable” stage (we are still changing a lot of things in the
+                database format, so until this is settled, it is not “stable”):
+                <a
+                  href="https://github.com/ledgerwatch/turbo-geth/issues"
+                  data-href="https://github.com/ledgerwatch/turbo-geth/issues"
+                  class="markup--anchor markup--p-anchor"
+                  rel="noopener"
+                  target="_blank"
+                  >https://github.com/ledgerwatch/turbo-geth/issues</a
+                >
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/ab4d967ff630"
+            ><time class="dt-published" datetime="2019-11-06T17:57:49.468Z"
+              >November 6, 2019</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/on-the-state-rent-and-pivot-to-stateless-ethereum-ab4d967ff630"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Tether incident — what can we tell from the blockchain?</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Tether incident — what can we tell from the blockchain?</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,195 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Tether incident — what can we tell from the blockchain?</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-I found the most interesting clues on this page: http://omnichest.info/lookupadd.aspx?address=31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv
-</section>
-<section data-field="body" class="e-content">
-<section name="bd4f" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="7db7" id="7db7" class="graf graf--h3 graf--leading graf--title">Tether incident — what can we tell from the blockchain?</h3><figure name="0e7a" id="0e7a" class="graf graf--figure graf-after--h3"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 431px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 61.5%;"></div><img class="graf-image" data-image-id="1*963z_h5vQ84z_bKl1mTISw.png" data-width="2250" data-height="1384" src="https://cdn-images-1.medium.com/max/800/1*963z_h5vQ84z_bKl1mTISw.png"></div><figcaption class="imageCaption">Trying small amounts first…</figcaption></figure><p name="3352" id="3352" class="graf graf--p graf-after--figure">I found the most interesting clues on this page: <a href="http://omnichest.info/lookupadd.aspx?address=31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv" data-href="http://omnichest.info/lookupadd.aspx?address=31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">http://omnichest.info/lookupadd.aspx?address=31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv</a></p><ol class="postList"><li name="0715" id="0715" class="graf graf--li graf-after--p">This address (31ok…) looks like a 3-out-N multisig (3 signatures required to spend)</li><li name="5fe0" id="5fe0" class="graf graf--li graf-after--li">This address has been first seen just a few hours before the incident (scroll this one to the bottom: <a href="https://blockchain.info/address/31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv" data-href="https://blockchain.info/address/31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv" class="markup--anchor markup--li-anchor" rel="nofollow noopener" target="_blank">https://blockchain.info/address/31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv</a>). It is likely that this address has somehow belonged to the attacker from the beginning, i.e. no intrusion was required to obtain the keys.</li><li name="84ca" id="84ca" class="graf graf--li graf-after--li">This address looks like the “treasury” (this is where the new Tethers are sent when they are created): <a href="http://omnichest.info/lookupadd.aspx?address=3BbDtxBSjgfTRxaBUgR2JACWRukLKtZdiQ" data-href="http://omnichest.info/lookupadd.aspx?address=3BbDtxBSjgfTRxaBUgR2JACWRukLKtZdiQ" class="markup--anchor markup--li-anchor" rel="nofollow noopener" target="_blank">http://omnichest.info/lookupadd.aspx?address=3BbDtxBSjgfTRxaBUgR2JACWRukLKtZdiQ</a></li><li name="09f0" id="09f0" class="graf graf--li graf-after--li">Looks like the treasury has 30 million Tethers sitting there for almost 2 days (which is unusual, because it would normally be sent out somewhere within minutes)</li><li name="96e5" id="96e5" class="graf graf--li graf-after--li">The attacker has probably created the account 31ok… and somehow found the way to get the treasury to send arbitrary amounts of Tether to that 31ok… You can see that because it looks like they first tried 10, and it worked. Then, 1 million (3 times), and it all worked again. Then, 10 million (2 times). And lastly, whatever was left in the treasury, i.e. 7,9 million.</li><li name="68a7" id="68a7" class="graf graf--li graf-after--li">Most of these “induced” transactions went into the same block (<a href="https://blockchain.info/block-height/495073" data-href="https://blockchain.info/block-height/495073" class="markup--anchor markup--li-anchor" rel="nofollow noopener" target="_blank">https://blockchain.info/block-height/495073</a>), which could be explained by the fact that the previous block was mined around 30 mins before that one. The first transaction was induced 20 minutes before it was mined. So it is totally plausible that the attacker was doing some manual operations, and most of them got into the single block.</li><li name="9536" id="9536" class="graf graf--li graf-after--li">All recent transactions coming from the treasury, including the “induced” ones, were paying 0.002 BTC mining fees. Treasury was 1-out-1 multisig. This leads me to believe that the process of sending Tethers from the treasury is automated and triggered by something that the attacker gained direct or indirect access to.</li><li name="4ff3" id="4ff3" class="graf graf--li graf-after--li">The account where the allegedly stolen Tethers ended up (16tg2RJuEPtZooy18Wxn2me2RhUdC94N7r), has initiated some Omni transactions today, but these did not show up on the Omni explorer. That means that Omni Explorer has installed Tether’s emergency release of Omni. It also means that Omni network has definitely split up (forked), and we shall see how this is going to work.</li><li name="3b56" id="3b56" class="graf graf--li graf-after--li graf--trailing">In the past months (but not so much in October and November), the treasury used to send various amounts of Tether to 3-out-n multisigs that look quite similar to the 31ok… account. Very recently, it seemed to only send them to couple of non-multisig addresses (which are likely to be exchange wallets). It might be that some old practice needed to be decommissioned, but some old code remained and enabled the incident.</li></ol></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/a724c530d006"><time class="dt-published" datetime="2017-11-22T01:35:26.962Z">November 22, 2017</time></a>.</p><p><a href="https://medium.com/@akhounov/tether-incident-what-can-we-tell-from-the-blockchain-a724c530d006" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">
+          Tether incident — what can we tell from the blockchain?
+        </h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        I found the most interesting clues on this page:
+        http://omnichest.info/lookupadd.aspx?address=31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="bd4f"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="7db7"
+                id="7db7"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Tether incident — what can we tell from the blockchain?
+              </h3>
+              <figure
+                name="0e7a"
+                id="0e7a"
+                class="graf graf--figure graf-after--h3"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 431px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 61.5%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*963z_h5vQ84z_bKl1mTISw.png"
+                    data-width="2250"
+                    data-height="1384"
+                    src="https://cdn-images-1.medium.com/max/800/1*963z_h5vQ84z_bKl1mTISw.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Trying small amounts first…
+                </figcaption>
+              </figure>
+              <p name="3352" id="3352" class="graf graf--p graf-after--figure">
+                I found the most interesting clues on this page:
+                <a
+                  href="http://omnichest.info/lookupadd.aspx?address=31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv"
+                  data-href="http://omnichest.info/lookupadd.aspx?address=31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv"
+                  class="markup--anchor markup--p-anchor"
+                  rel="nofollow noopener"
+                  target="_blank"
+                  >http://omnichest.info/lookupadd.aspx?address=31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv</a
+                >
+              </p>
+              <ol class="postList">
+                <li name="0715" id="0715" class="graf graf--li graf-after--p">
+                  This address (31ok…) looks like a 3-out-N multisig (3
+                  signatures required to spend)
+                </li>
+                <li name="5fe0" id="5fe0" class="graf graf--li graf-after--li">
+                  This address has been first seen just a few hours before the
+                  incident (scroll this one to the bottom:
+                  <a
+                    href="https://blockchain.info/address/31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv"
+                    data-href="https://blockchain.info/address/31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv"
+                    class="markup--anchor markup--li-anchor"
+                    rel="nofollow noopener"
+                    target="_blank"
+                    >https://blockchain.info/address/31okFF1rUu8jjPEVuajycTRBp82Nteo4Mv</a
+                  >). It is likely that this address has somehow belonged to the
+                  attacker from the beginning, i.e. no intrusion was required to
+                  obtain the keys.
+                </li>
+                <li name="84ca" id="84ca" class="graf graf--li graf-after--li">
+                  This address looks like the “treasury” (this is where the new
+                  Tethers are sent when they are created):
+                  <a
+                    href="http://omnichest.info/lookupadd.aspx?address=3BbDtxBSjgfTRxaBUgR2JACWRukLKtZdiQ"
+                    data-href="http://omnichest.info/lookupadd.aspx?address=3BbDtxBSjgfTRxaBUgR2JACWRukLKtZdiQ"
+                    class="markup--anchor markup--li-anchor"
+                    rel="nofollow noopener"
+                    target="_blank"
+                    >http://omnichest.info/lookupadd.aspx?address=3BbDtxBSjgfTRxaBUgR2JACWRukLKtZdiQ</a
+                  >
+                </li>
+                <li name="09f0" id="09f0" class="graf graf--li graf-after--li">
+                  Looks like the treasury has 30 million Tethers sitting there
+                  for almost 2 days (which is unusual, because it would normally
+                  be sent out somewhere within minutes)
+                </li>
+                <li name="96e5" id="96e5" class="graf graf--li graf-after--li">
+                  The attacker has probably created the account 31ok… and
+                  somehow found the way to get the treasury to send arbitrary
+                  amounts of Tether to that 31ok… You can see that because it
+                  looks like they first tried 10, and it worked. Then, 1 million
+                  (3 times), and it all worked again. Then, 10 million (2
+                  times). And lastly, whatever was left in the treasury, i.e.
+                  7,9 million.
+                </li>
+                <li name="68a7" id="68a7" class="graf graf--li graf-after--li">
+                  Most of these “induced” transactions went into the same block
+                  (<a
+                    href="https://blockchain.info/block-height/495073"
+                    data-href="https://blockchain.info/block-height/495073"
+                    class="markup--anchor markup--li-anchor"
+                    rel="nofollow noopener"
+                    target="_blank"
+                    >https://blockchain.info/block-height/495073</a
+                  >), which could be explained by the fact that the previous
+                  block was mined around 30 mins before that one. The first
+                  transaction was induced 20 minutes before it was mined. So it
+                  is totally plausible that the attacker was doing some manual
+                  operations, and most of them got into the single block.
+                </li>
+                <li name="9536" id="9536" class="graf graf--li graf-after--li">
+                  All recent transactions coming from the treasury, including
+                  the “induced” ones, were paying 0.002 BTC mining fees.
+                  Treasury was 1-out-1 multisig. This leads me to believe that
+                  the process of sending Tethers from the treasury is automated
+                  and triggered by something that the attacker gained direct or
+                  indirect access to.
+                </li>
+                <li name="4ff3" id="4ff3" class="graf graf--li graf-after--li">
+                  The account where the allegedly stolen Tethers ended up
+                  (16tg2RJuEPtZooy18Wxn2me2RhUdC94N7r), has initiated some Omni
+                  transactions today, but these did not show up on the Omni
+                  explorer. That means that Omni Explorer has installed Tether’s
+                  emergency release of Omni. It also means that Omni network has
+                  definitely split up (forked), and we shall see how this is
+                  going to work.
+                </li>
+                <li
+                  name="3b56"
+                  id="3b56"
+                  class="graf graf--li graf-after--li graf--trailing"
+                >
+                  In the past months (but not so much in October and November),
+                  the treasury used to send various amounts of Tether to 3-out-n
+                  multisigs that look quite similar to the 31ok… account. Very
+                  recently, it seemed to only send them to couple of
+                  non-multisig addresses (which are likely to be exchange
+                  wallets). It might be that some old practice needed to be
+                  decommissioned, but some old code remained and enabled the
+                  incident.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/a724c530d006"
+            ><time class="dt-published" datetime="2017-11-22T01:35:26.962Z"
+              >November 22, 2017</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/tether-incident-what-can-we-tell-from-the-blockchain-a724c530d006"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

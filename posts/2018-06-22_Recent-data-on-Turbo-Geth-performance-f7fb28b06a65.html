@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Recent data on Turbo-Geth performance</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Recent data on Turbo-Geth performance</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,233 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">Recent data on Turbo-Geth performance</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-Sync time
-</section>
-<section data-field="body" class="e-content">
-<section name="01ef" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="36bf" id="36bf" class="graf graf--h3 graf--leading graf--title">Recent data on Turbo-Geth performance</h3><h3 name="f12a" id="f12a" class="graf graf--h3 graf-after--h3">Sync time</h3><p name="7cce" id="7cce" class="graf graf--p graf-after--h3">One of the test nodes finally synced to the tip of the mainnet, so I took snapshot of things at the block 5&#39;828&#39;433 (mined June 21st 2018 around midday UTC). The HDD test node I am comparing with is still syncing.</p><figure name="8744" id="8744" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*wqfSq-Jr72KUzPLKD1YTHA.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*wqfSq-Jr72KUzPLKD1YTHA.png"></div><figcaption class="imageCaption">Sync times SDD vs HDD</figcaption></figure><p name="b5f1" id="b5f1" class="graf graf--p graf-after--figure">Horizontal blue lines are placed every 24 hours, so you can see it took more than 12 days to sync. Most probably, the slope changes angle every time there is a gas limit increase or spam attack in 2016.</p><h3 name="915f" id="915f" class="graf graf--h3 graf-after--p">Memory</h3><figure name="ec52" id="ec52" class="graf graf--figure graf-after--h3"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 394px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 56.3%;"></div><img class="graf-image" data-image-id="1*XyZVyuyTRUwTK3PruY9tTA.png" data-width="1280" data-height="720" src="https://cdn-images-1.medium.com/max/800/1*XyZVyuyTRUwTK3PruY9tTA.png"></div><figcaption class="imageCaption">Trie node count and allocated heap while syncing</figcaption></figure><h3 name="2f5f" id="2f5f" class="graf graf--h3 graf-after--figure">Database and disk usage</h3><p name="5afd" id="5afd" class="graf graf--p graf-after--h3">In total the database size after syncing to the block 5&#39;828&#39;433 (mined June 21st 2018 around midday UTC) was 341 Gb. And here is the breakdown:</p><figure name="137e" id="137e" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 526px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 75.1%;"></div><img class="graf-image" data-image-id="1*VHUa8xlZ-cBzbQ5_MBZXjw.png" data-width="1573" data-height="1182" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*VHUa8xlZ-cBzbQ5_MBZXjw.png"></div><figcaption class="imageCaption">Database buckets, before receipts optimisation</figcaption></figure><p name="d109" id="d109" class="graf graf--p graf-after--figure">However, this particular test was running with the code that did not yet have receipt storage optimisation. The code that does, is still at the block 5.5m, so I made a pessimistic projection (I took the database size at block 5.5m without optimisation, which was 284Gb and the database size at block 5.5m with optimisation, which was 216Gb, and applied the saving of 67Gb), and this is how it looks:</p><figure name="ac9f" id="ac9f" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 543px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 77.5%;"></div><img class="graf-image" data-image-id="1*qTa8RFylx3KDNDwosaoxlA.png" data-width="1473" data-height="1142" src="https://cdn-images-1.medium.com/max/800/1*qTa8RFylx3KDNDwosaoxlA.png"></div><figcaption class="imageCaption">Database buckets, pessimistically projected after receipts optimisation</figcaption></figure><p name="4935" id="4935" class="graf graf--p graf-after--figure">Having seen how relatively small Accounts bucket is (3.44 Gb), I have tried to rebuild the accounts Patricia tree from it, and it only took 16 mins on a cold machine. The reason it took couple of hours before was that I was rebuilding from the history bucket (current state and history was not separate back then). And this means that I will probably ditch the idea of hash file (remember that 32Mb file, and later I made 512Mb, that contained hashes of the 5th, and later the 6th level of the accounts patricia tree). It will make the code a bit simpler.</p><h3 name="10f4" id="10f4" class="graf graf--h3 graf-after--p">Eth tester</h3><p name="8868" id="8868" class="graf graf--p graf-after--h3 graf--trailing">Although I was not able to spend a lot of time on Turbo-Geth since my last update, there is a bit of progress on eth tester (and this is the highest priority at the moment). The tester progeam is now capable of connecting to a ethereum node (better run it in “no discovery” mode, so it does not try to find any peers), and “offer” it series of blocks to download. It is sort of equivalent to running “geth import”, but the main purpose is, of course, different. I will describe it as I develop it.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/f7fb28b06a65"><time class="dt-published" datetime="2018-06-22T23:26:23.888Z">June 22, 2018</time></a>.</p><p><a href="https://medium.com/@akhounov/recent-data-on-turbo-geth-performance-f7fb28b06a65" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">Recent data on Turbo-Geth performance</h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        Sync time
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="01ef"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="36bf"
+                id="36bf"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Recent data on Turbo-Geth performance
+              </h3>
+              <h3 name="f12a" id="f12a" class="graf graf--h3 graf-after--h3">
+                Sync time
+              </h3>
+              <p name="7cce" id="7cce" class="graf graf--p graf-after--h3">
+                One of the test nodes finally synced to the tip of the mainnet,
+                so I took snapshot of things at the block 5&#39;828&#39;433
+                (mined June 21st 2018 around midday UTC). The HDD test node I am
+                comparing with is still syncing.
+              </p>
+              <figure
+                name="8744"
+                id="8744"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*wqfSq-Jr72KUzPLKD1YTHA.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*wqfSq-Jr72KUzPLKD1YTHA.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Sync times SDD vs HDD
+                </figcaption>
+              </figure>
+              <p name="b5f1" id="b5f1" class="graf graf--p graf-after--figure">
+                Horizontal blue lines are placed every 24 hours, so you can see
+                it took more than 12 days to sync. Most probably, the slope
+                changes angle every time there is a gas limit increase or spam
+                attack in 2016.
+              </p>
+              <h3 name="915f" id="915f" class="graf graf--h3 graf-after--p">
+                Memory
+              </h3>
+              <figure
+                name="ec52"
+                id="ec52"
+                class="graf graf--figure graf-after--h3"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 394px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 56.3%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*XyZVyuyTRUwTK3PruY9tTA.png"
+                    data-width="1280"
+                    data-height="720"
+                    src="https://cdn-images-1.medium.com/max/800/1*XyZVyuyTRUwTK3PruY9tTA.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Trie node count and allocated heap while syncing
+                </figcaption>
+              </figure>
+              <h3
+                name="2f5f"
+                id="2f5f"
+                class="graf graf--h3 graf-after--figure"
+              >
+                Database and disk usage
+              </h3>
+              <p name="5afd" id="5afd" class="graf graf--p graf-after--h3">
+                In total the database size after syncing to the block
+                5&#39;828&#39;433 (mined June 21st 2018 around midday UTC) was
+                341 Gb. And here is the breakdown:
+              </p>
+              <figure
+                name="137e"
+                id="137e"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 526px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 75.1%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*VHUa8xlZ-cBzbQ5_MBZXjw.png"
+                    data-width="1573"
+                    data-height="1182"
+                    data-is-featured="true"
+                    src="https://cdn-images-1.medium.com/max/800/1*VHUa8xlZ-cBzbQ5_MBZXjw.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Database buckets, before receipts optimisation
+                </figcaption>
+              </figure>
+              <p name="d109" id="d109" class="graf graf--p graf-after--figure">
+                However, this particular test was running with the code that did
+                not yet have receipt storage optimisation. The code that does,
+                is still at the block 5.5m, so I made a pessimistic projection
+                (I took the database size at block 5.5m without optimisation,
+                which was 284Gb and the database size at block 5.5m with
+                optimisation, which was 216Gb, and applied the saving of 67Gb),
+                and this is how it looks:
+              </p>
+              <figure
+                name="ac9f"
+                id="ac9f"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 543px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 77.5%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*qTa8RFylx3KDNDwosaoxlA.png"
+                    data-width="1473"
+                    data-height="1142"
+                    src="https://cdn-images-1.medium.com/max/800/1*qTa8RFylx3KDNDwosaoxlA.png"
+                  />
+                </div>
+                <figcaption class="imageCaption">
+                  Database buckets, pessimistically projected after receipts
+                  optimisation
+                </figcaption>
+              </figure>
+              <p name="4935" id="4935" class="graf graf--p graf-after--figure">
+                Having seen how relatively small Accounts bucket is (3.44 Gb), I
+                have tried to rebuild the accounts Patricia tree from it, and it
+                only took 16 mins on a cold machine. The reason it took couple
+                of hours before was that I was rebuilding from the history
+                bucket (current state and history was not separate back then).
+                And this means that I will probably ditch the idea of hash file
+                (remember that 32Mb file, and later I made 512Mb, that contained
+                hashes of the 5th, and later the 6th level of the accounts
+                patricia tree). It will make the code a bit simpler.
+              </p>
+              <h3 name="10f4" id="10f4" class="graf graf--h3 graf-after--p">
+                Eth tester
+              </h3>
+              <p
+                name="8868"
+                id="8868"
+                class="graf graf--p graf-after--h3 graf--trailing"
+              >
+                Although I was not able to spend a lot of time on Turbo-Geth
+                since my last update, there is a bit of progress on eth tester
+                (and this is the highest priority at the moment). The tester
+                progeam is now capable of connecting to a ethereum node (better
+                run it in “no discovery” mode, so it does not try to find any
+                peers), and “offer” it series of blocks to download. It is sort
+                of equivalent to running “geth import”, but the main purpose is,
+                of course, different. I will describe it as I develop it.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/f7fb28b06a65"
+            ><time class="dt-published" datetime="2018-06-22T23:26:23.888Z"
+              >June 22, 2018</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/recent-data-on-turbo-geth-performance-f7fb28b06a65"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>

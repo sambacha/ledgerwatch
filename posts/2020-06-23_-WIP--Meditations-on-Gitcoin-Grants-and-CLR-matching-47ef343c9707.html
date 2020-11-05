@@ -1,8 +1,14 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>[WIP] Meditations on Gitcoin Grants and CLR matching</title><style>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>[WIP] Meditations on Gitcoin Grants and CLR matching</title>
+    <style>
       * {
         font-family: Georgia, Cambria, "Times New Roman", Times, serif;
       }
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
@@ -55,18 +61,280 @@
         padding-bottom: 0 !important;
       }
       header,
-      section[data-field=subtitle],
-      section[data-field=description] {
+      section[data-field="subtitle"],
+      section[data-field="description"] {
         display: none;
       }
-      </style></head><body><article class="h-entry">
-<header>
-<h1 class="p-name">[WIP] Meditations on Gitcoin Grants and CLR matching</h1>
-</header>
-<section data-field="subtitle" class="p-summary">
-No, I did not actually do meditations on it. I just stealing part of the title from the “Meditations on Moloch” (unfortunately, the blog…
-</section>
-<section data-field="body" class="e-content">
-<section name="e28b" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="4313" id="4313" class="graf graf--h3 graf--leading graf--title">Meditations on Gitcoin Grants and CLR matching</h3><p name="88ea" id="88ea" class="graf graf--p graf-after--h3">No, I did not actually do meditations on it. I am just stealing part of the title from the “Meditations on Moloch” (unfortunately, the blog where it was published has been taken down literally a day ago, but you may be able to find some copies if you want). And no, I do not want to compare Gitcoin Grants with Moloch either, though that would be cool.</p><h3 name="a22c" id="a22c" class="graf graf--h3 graf-after--p">Assumptions and Purpose</h3><p name="e85f" id="e85f" class="graf graf--p graf-after--h3">Firstly, I need to keep reminding myself that Gitcoin project did not start with grants. It started as a platform to assign bounties for work on open-source projects. I do not have any stats on how well this has been going. But at some point, Gitcoin Grants project appeared, and I can understand the rationale — many projects cannot or do not want to run their work flows via Gitcoin model — for example, it would not work for my project. Therefore, why not give funds directly to the projects without “micromanaging” their workflow?</p><p name="04db" id="04db" class="graf graf--p graf-after--p">Here is my reading of initial assumptions and purpose of Gitcoin Grants. It is assumed that there is a non-trival number of people or organisations possessing some amount of cryptocurrency (or other things that can be used to acquite cryptocurrency), who would like to donate (not invest) some amount to individuals, projects, and team working on Ethereum-related things (perhaps it is broader, I don’t know). Second assumption is that the total amount that can be donated is non-trivial either. Third assumption is that these people and organisations do not donate because they either do not know how, or they do not know who they should donate to.</p><p name="c1ea" id="c1ea" class="graf graf--p graf-after--p">Therefore, my reading of the purpose of Gitcoin Grants is to help donors donate by giving then a nice User Interface with a catalog of projects and by processing their donation payments. With the addition of CLR matching, the purpose has been augmented to also help select donors to distribute donations automatically, via a quadratic matching algorithm</p><h3 name="b6fa" id="b6fa" class="graf graf--h3 graf-after--p">My anecdotal observations</h3><p name="b605" id="b605" class="graf graf--p graf-after--h3">I will not present any data to back my observations (though some data may exist to back them or to prove them wrong), therefore I will call them anecdotal. I did not want to turn this into a big project, so please treat it more as an entertainment and food for thought rather than as a solid analysis.</p><p name="a2fb" id="a2fb" class="graf graf--p graf-after--p">First observation is the donation activity on Gitcoin Grants was relatively low until the first CLR matching round was introduced. Each successive round brought larger amounts in the CLR pot, and also saw larger amount of donations than previous round.</p><p name="8181" id="8181" class="graf graf--p graf-after--p">Before I joined my project to the CLR Round 4, and before I myself tried donating a bit, I did not understand mechanics of Gitcoin Grants or CLR very well. When I did join, I noticed that the donated DAI appears on the wallets immediately, which was slightly surprising at first. The reason it was surprising was the idea of re-donating and re-cycling of the same DAI, which probably happens a fair bit, because we are still a very close circle of people donating to each other. I do not know if there are some algorithms that discount such recycling when producing donation statistics and/or CLR matching amounts, but it would be interesting to see how big it is. And if such tracing algorithms did exist, then they could probably be easily fooled with privacy tools like Tornado Cash.</p><p name="c34f" id="c34f" class="graf graf--p graf-after--p">So the second observation that followed from the first is that it seemed that CLR matching rounds were introduced regularly to keep the donation activity going. In fact, a higher order observation can be made that the common knowledge that CLR matching rounds will be conducted regularly, has effectively destroyed any donation activity between the rounds. It is now quite rational to never donate between the rounds, because rounds are happening frequently enough and they bring a non-negative top-up to your donations (or even potential avenue for some easy money via sybil manipulation and donation recycling).</p><p name="1917" id="1917" class="graf graf--p graf-after--p">Another surprising thing was the actual deployment of quadratic funding. I understand that the root of this idea is in the quadratic voting, where it is assumed that somehow all the voters are identified and sybil attacks are hard to mount. I am aware that Gitcoin Grants team was hard at work to combat sybil attacks by various techniques, like SMS messaging. But I am still sceptical of the scalability of any of these approaches. I think the vulnerability to sybil attack is a blocker for deployment of quadratic funding in crypto-currency settings.</p><h3 name="feb2" id="feb2" class="graf graf--h3 graf-after--p">Collective intelligence at scale</h3><p name="b235" id="b235" class="graf graf--p graf-after--h3">So far Gitcoin Grants ecosystem has been pretty exciting and showed great growth (mostly due to regular CLR injections). But I have some doubts that in its current form it can be effective at a large scale, when number of projects to fund, number of donors, and the amounts given (which will need to be propped up by a corresponding increase in CLR funding) grows 1 or 2 orders of magnitude. At that point, the large funder putting their money into CLR matching rounds would ask the question: “Why is this better than running our own grants program?”. The answer they would be looking for is this: “Because the Gitcoin Grants system will automatically figure out, by the use of clever quadratic funding math, who are the worthy recipients of our funds, so we do not need to”. Except that the clever math won’t do it. I will present it as a “theorem without proof”, but my intuition is that a collective of 100 thousand individual donors donating to 10 thousand projects will not have a very large collective intelligence, in fact it will probably make very dumb decisions, allocating most money to people they already know. And quadratic funding will blindly amplify these decision, at the same time being slightly (or not so slightly) corrupted by the ongoing arms race between sybils and the anti-sybil mechanisms.</p><p name="7aaf" id="7aaf" class="graf graf--p graf-after--p">What we need is a system that grows its collective intelligence at scale, instead of becoming dumber and stiffer.</p><h3 name="8501" id="8501" class="graf graf--h3 graf-after--p">Idea of a solution</h3><p name="4dca" id="4dca" class="graf graf--p graf-after--h3">I have not designed this system, because I only had a few hours thinking done on this. First of all, the quadratic funding element needs to be scrapped. It gives the system rivalrous character that it did not have before. It introduces weird exclusionary mechanisms that are part of the sybil/anti-sybil arms race. And it effectively kills all non-quadratic funding activity.</p><p name="bcaa" id="bcaa" class="graf graf--p graf-after--p">The main crux is to try to replace an equation with human intelligence, via introduction of intermediaries. Yes, intermediaries. I know some of you may have an allergic reaction to the word. But hold on. Not all intermediaries are bad, only those who extract rent without adding value. There are lots of useful intermediaries. Funding intermediaries in an improved system will take on the work of researching the projects, potentially talking to the founders, and directing funds to the ones that they found really useful. Intermediaries do not need to be identified as persons and can become pseudonymous, as long as their funding activity is transparent. To prevent them from running away with the money, the “flow” dynamics can be introduced, whereby not all the funds are released in one go, but with small instalments, so that the donors can get an alarm if an intermediary made some strange moves and suspend further funding if required. Effectively, intermediaries would always have a cap of how much money they hold, and it is up to them how efficient they are at redistributing.</p><figure name="0152" id="0152" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 403px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 57.599999999999994%;"></div><img class="graf-image" data-image-id="1*KP8FPgG3TB-9G2g21_VsiA.png" data-width="1348" data-height="776" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*KP8FPgG3TB-9G2g21_VsiA.png"></div></figure><p name="d066" id="d066" class="graf graf--p graf-after--figure">Over time, as the group of established funding intermediaries emerges, we would have effectively created an “opt-in” institution consisting of specialists in finding relevant projects and allocating funding to them. Donors are not bound to a specific set of intermediaries and can always switch, therefore I call them “opt-in” institution.</p><p name="e5b4" id="e5b4" class="graf graf--p graf-after--p">My intuition is that the collective intelligence of such institution would be higher than that of quadratic formula over individual point-to-point donations. Point-to-point donations are mostly driven by some personal knowledge and advertising. Specialist donations can be driven by proper research and governance.</p><h3 name="b193" id="b193" class="graf graf--h3 graf-after--p">Conclusion and TL;DR;</h3><p name="4e82" id="4e82" class="graf graf--p graf-after--h3 graf--trailing">I think it was right for Gitcoin Grants to pivot, but I do not think that pivot for quadratic matching was the right one, and another pivot needs to be done.</p></div></div></section>
-</section>
-<footer><p>By <a href="https://medium.com/@akhounov" class="p-author h-card">Alexey Akhunov</a> on <a href="https://medium.com/p/47ef343c9707"><time class="dt-published" datetime="2020-06-23T13:19:07.985Z">June 23, 2020</time></a>.</p><p><a href="https://medium.com/@akhounov/wip-meditations-on-gitcoin-grants-and-clr-matching-47ef343c9707" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on July 28, 2020.</p></footer></article></body></html>
+    </style>
+  </head>
+  <body>
+    <article class="h-entry">
+      <header>
+        <h1 class="p-name">
+          [WIP] Meditations on Gitcoin Grants and CLR matching
+        </h1>
+      </header>
+      <section data-field="subtitle" class="p-summary">
+        No, I did not actually do meditations on it. I just stealing part of the
+        title from the “Meditations on Moloch” (unfortunately, the blog…
+      </section>
+      <section data-field="body" class="e-content">
+        <section
+          name="e28b"
+          class="section section--body section--first section--last"
+        >
+          <div class="section-divider"><hr class="section-divider" /></div>
+          <div class="section-content">
+            <div class="section-inner sectionLayout--insetColumn">
+              <h3
+                name="4313"
+                id="4313"
+                class="graf graf--h3 graf--leading graf--title"
+              >
+                Meditations on Gitcoin Grants and CLR matching
+              </h3>
+              <p name="88ea" id="88ea" class="graf graf--p graf-after--h3">
+                No, I did not actually do meditations on it. I am just stealing
+                part of the title from the “Meditations on Moloch”
+                (unfortunately, the blog where it was published has been taken
+                down literally a day ago, but you may be able to find some
+                copies if you want). And no, I do not want to compare Gitcoin
+                Grants with Moloch either, though that would be cool.
+              </p>
+              <h3 name="a22c" id="a22c" class="graf graf--h3 graf-after--p">
+                Assumptions and Purpose
+              </h3>
+              <p name="e85f" id="e85f" class="graf graf--p graf-after--h3">
+                Firstly, I need to keep reminding myself that Gitcoin project
+                did not start with grants. It started as a platform to assign
+                bounties for work on open-source projects. I do not have any
+                stats on how well this has been going. But at some point,
+                Gitcoin Grants project appeared, and I can understand the
+                rationale — many projects cannot or do not want to run their
+                work flows via Gitcoin model — for example, it would not work
+                for my project. Therefore, why not give funds directly to the
+                projects without “micromanaging” their workflow?
+              </p>
+              <p name="04db" id="04db" class="graf graf--p graf-after--p">
+                Here is my reading of initial assumptions and purpose of Gitcoin
+                Grants. It is assumed that there is a non-trival number of
+                people or organisations possessing some amount of cryptocurrency
+                (or other things that can be used to acquite cryptocurrency),
+                who would like to donate (not invest) some amount to
+                individuals, projects, and team working on Ethereum-related
+                things (perhaps it is broader, I don’t know). Second assumption
+                is that the total amount that can be donated is non-trivial
+                either. Third assumption is that these people and organisations
+                do not donate because they either do not know how, or they do
+                not know who they should donate to.
+              </p>
+              <p name="c1ea" id="c1ea" class="graf graf--p graf-after--p">
+                Therefore, my reading of the purpose of Gitcoin Grants is to
+                help donors donate by giving then a nice User Interface with a
+                catalog of projects and by processing their donation payments.
+                With the addition of CLR matching, the purpose has been
+                augmented to also help select donors to distribute donations
+                automatically, via a quadratic matching algorithm
+              </p>
+              <h3 name="b6fa" id="b6fa" class="graf graf--h3 graf-after--p">
+                My anecdotal observations
+              </h3>
+              <p name="b605" id="b605" class="graf graf--p graf-after--h3">
+                I will not present any data to back my observations (though some
+                data may exist to back them or to prove them wrong), therefore I
+                will call them anecdotal. I did not want to turn this into a big
+                project, so please treat it more as an entertainment and food
+                for thought rather than as a solid analysis.
+              </p>
+              <p name="a2fb" id="a2fb" class="graf graf--p graf-after--p">
+                First observation is the donation activity on Gitcoin Grants was
+                relatively low until the first CLR matching round was
+                introduced. Each successive round brought larger amounts in the
+                CLR pot, and also saw larger amount of donations than previous
+                round.
+              </p>
+              <p name="8181" id="8181" class="graf graf--p graf-after--p">
+                Before I joined my project to the CLR Round 4, and before I
+                myself tried donating a bit, I did not understand mechanics of
+                Gitcoin Grants or CLR very well. When I did join, I noticed that
+                the donated DAI appears on the wallets immediately, which was
+                slightly surprising at first. The reason it was surprising was
+                the idea of re-donating and re-cycling of the same DAI, which
+                probably happens a fair bit, because we are still a very close
+                circle of people donating to each other. I do not know if there
+                are some algorithms that discount such recycling when producing
+                donation statistics and/or CLR matching amounts, but it would be
+                interesting to see how big it is. And if such tracing algorithms
+                did exist, then they could probably be easily fooled with
+                privacy tools like Tornado Cash.
+              </p>
+              <p name="c34f" id="c34f" class="graf graf--p graf-after--p">
+                So the second observation that followed from the first is that
+                it seemed that CLR matching rounds were introduced regularly to
+                keep the donation activity going. In fact, a higher order
+                observation can be made that the common knowledge that CLR
+                matching rounds will be conducted regularly, has effectively
+                destroyed any donation activity between the rounds. It is now
+                quite rational to never donate between the rounds, because
+                rounds are happening frequently enough and they bring a
+                non-negative top-up to your donations (or even potential avenue
+                for some easy money via sybil manipulation and donation
+                recycling).
+              </p>
+              <p name="1917" id="1917" class="graf graf--p graf-after--p">
+                Another surprising thing was the actual deployment of quadratic
+                funding. I understand that the root of this idea is in the
+                quadratic voting, where it is assumed that somehow all the
+                voters are identified and sybil attacks are hard to mount. I am
+                aware that Gitcoin Grants team was hard at work to combat sybil
+                attacks by various techniques, like SMS messaging. But I am
+                still sceptical of the scalability of any of these approaches. I
+                think the vulnerability to sybil attack is a blocker for
+                deployment of quadratic funding in crypto-currency settings.
+              </p>
+              <h3 name="feb2" id="feb2" class="graf graf--h3 graf-after--p">
+                Collective intelligence at scale
+              </h3>
+              <p name="b235" id="b235" class="graf graf--p graf-after--h3">
+                So far Gitcoin Grants ecosystem has been pretty exciting and
+                showed great growth (mostly due to regular CLR injections). But
+                I have some doubts that in its current form it can be effective
+                at a large scale, when number of projects to fund, number of
+                donors, and the amounts given (which will need to be propped up
+                by a corresponding increase in CLR funding) grows 1 or 2 orders
+                of magnitude. At that point, the large funder putting their
+                money into CLR matching rounds would ask the question: “Why is
+                this better than running our own grants program?”. The answer
+                they would be looking for is this: “Because the Gitcoin Grants
+                system will automatically figure out, by the use of clever
+                quadratic funding math, who are the worthy recipients of our
+                funds, so we do not need to”. Except that the clever math won’t
+                do it. I will present it as a “theorem without proof”, but my
+                intuition is that a collective of 100 thousand individual donors
+                donating to 10 thousand projects will not have a very large
+                collective intelligence, in fact it will probably make very dumb
+                decisions, allocating most money to people they already know.
+                And quadratic funding will blindly amplify these decision, at
+                the same time being slightly (or not so slightly) corrupted by
+                the ongoing arms race between sybils and the anti-sybil
+                mechanisms.
+              </p>
+              <p name="7aaf" id="7aaf" class="graf graf--p graf-after--p">
+                What we need is a system that grows its collective intelligence
+                at scale, instead of becoming dumber and stiffer.
+              </p>
+              <h3 name="8501" id="8501" class="graf graf--h3 graf-after--p">
+                Idea of a solution
+              </h3>
+              <p name="4dca" id="4dca" class="graf graf--p graf-after--h3">
+                I have not designed this system, because I only had a few hours
+                thinking done on this. First of all, the quadratic funding
+                element needs to be scrapped. It gives the system rivalrous
+                character that it did not have before. It introduces weird
+                exclusionary mechanisms that are part of the sybil/anti-sybil
+                arms race. And it effectively kills all non-quadratic funding
+                activity.
+              </p>
+              <p name="bcaa" id="bcaa" class="graf graf--p graf-after--p">
+                The main crux is to try to replace an equation with human
+                intelligence, via introduction of intermediaries. Yes,
+                intermediaries. I know some of you may have an allergic reaction
+                to the word. But hold on. Not all intermediaries are bad, only
+                those who extract rent without adding value. There are lots of
+                useful intermediaries. Funding intermediaries in an improved
+                system will take on the work of researching the projects,
+                potentially talking to the founders, and directing funds to the
+                ones that they found really useful. Intermediaries do not need
+                to be identified as persons and can become pseudonymous, as long
+                as their funding activity is transparent. To prevent them from
+                running away with the money, the “flow” dynamics can be
+                introduced, whereby not all the funds are released in one go,
+                but with small instalments, so that the donors can get an alarm
+                if an intermediary made some strange moves and suspend further
+                funding if required. Effectively, intermediaries would always
+                have a cap of how much money they hold, and it is up to them how
+                efficient they are at redistributing.
+              </p>
+              <figure
+                name="0152"
+                id="0152"
+                class="graf graf--figure graf-after--p"
+              >
+                <div
+                  class="aspectRatioPlaceholder is-locked"
+                  style="max-width: 700px; max-height: 403px;"
+                >
+                  <div
+                    class="aspectRatioPlaceholder-fill"
+                    style="padding-bottom: 57.599999999999994%;"
+                  ></div>
+                  <img
+                    class="graf-image"
+                    data-image-id="1*KP8FPgG3TB-9G2g21_VsiA.png"
+                    data-width="1348"
+                    data-height="776"
+                    data-is-featured="true"
+                    src="https://cdn-images-1.medium.com/max/800/1*KP8FPgG3TB-9G2g21_VsiA.png"
+                  />
+                </div>
+              </figure>
+              <p name="d066" id="d066" class="graf graf--p graf-after--figure">
+                Over time, as the group of established funding intermediaries
+                emerges, we would have effectively created an “opt-in”
+                institution consisting of specialists in finding relevant
+                projects and allocating funding to them. Donors are not bound to
+                a specific set of intermediaries and can always switch,
+                therefore I call them “opt-in” institution.
+              </p>
+              <p name="e5b4" id="e5b4" class="graf graf--p graf-after--p">
+                My intuition is that the collective intelligence of such
+                institution would be higher than that of quadratic formula over
+                individual point-to-point donations. Point-to-point donations
+                are mostly driven by some personal knowledge and advertising.
+                Specialist donations can be driven by proper research and
+                governance.
+              </p>
+              <h3 name="b193" id="b193" class="graf graf--h3 graf-after--p">
+                Conclusion and TL;DR;
+              </h3>
+              <p
+                name="4e82"
+                id="4e82"
+                class="graf graf--p graf-after--h3 graf--trailing"
+              >
+                I think it was right for Gitcoin Grants to pivot, but I do not
+                think that pivot for quadratic matching was the right one, and
+                another pivot needs to be done.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+      <footer>
+        <p>
+          By
+          <a href="https://medium.com/@akhounov" class="p-author h-card"
+            >Alexey Akhunov</a
+          >
+          on
+          <a href="https://medium.com/p/47ef343c9707"
+            ><time class="dt-published" datetime="2020-06-23T13:19:07.985Z"
+              >June 23, 2020</time
+            ></a
+          >.
+        </p>
+        <p>
+          <a
+            href="https://medium.com/@akhounov/wip-meditations-on-gitcoin-grants-and-clr-matching-47ef343c9707"
+            class="p-canonical"
+            >Canonical link</a
+          >
+        </p>
+        <p>
+          Exported from <a href="https://medium.com">Medium</a> on July 28,
+          2020.
+        </p>
+      </footer>
+    </article>
+  </body>
+</html>
