@@ -1,14 +1,21 @@
+
+# travis-ci
 os: linux
-dist: xenial
+language: go
+dist: trusty
+sudo: false
 
-language: generic
-
-scripts: true
+install:
+  - go get github.com/peterbourgon/grender
+script:
+  - make
 
 deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  keep_history: true
-  on:
-    branch: master
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    local_dir: output
+    fqdn: "sambacha.github.io/ledgerwatch"
+    target_branch: gh-pages
+    on:
+      branch: source

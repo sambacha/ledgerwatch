@@ -1,0 +1,60 @@
+.
+├── Ethereum_1_Research_topics.html
+├── Ethereum_1x_Definition_part_1.html
+├── Ethereum_1x_Definition_part_2.html
+├── Ethereum_1x_Definition_part_3.html
+├── auto-completion.png
+├── bls_and_eth2.html
+├── etc-keccak.html
+├── freelist_1.png
+├── freelist_2.png
+├── freelist_3.png
+├── freelist_4.png
+├── future_architecture.png
+├── index.txt
+├── posts
+│   ├── 2017-04-22_Hopefully-impartial-comparison-of-Gnosis-and-Augur-f743d11d6d37.html
+│   ├── 2017-05-03_Is-Ethereum-hashrate-tracking-the-price--31f770aa5120.html
+│   ├── 2017-06-06_Token-game---a-possible-model-for-more--civilised--token-sales-d54d5552f339.html
+│   ├── 2017-06-28_Update-on-Token-Game-8be5c5613ac6.html
+│   ├── 2017-11-22_Tether-incident---what-can-we-tell-from-the-blockchain--a724c530d006.html
+│   ├── 2017-12-06_How-to-speed-up-Ethereum-in-the-face-of-Crypto-Kitties-7a9c901d98e9.html
+│   ├── 2017-12-19_Cost-per-transaction-in-Ethereum-b0ca815c1cce.html
+│   ├── 2017-12-31_Do-not-worry-about-Ripple-a62d94e6ece1.html
+│   ├── 2018-01-06_Roadmap-for-Turbo-Geth-31cbfb1e72b7.html
+│   ├── 2018-01-19_Turbo-Geth-status-534c10709206.html
+│   ├── 2018-02-02_Preliminary-Turbo-Geth-numbers-ca535f89f50e.html
+│   ├── 2018-02-05_Quick-note-on-Turbo-Geth-disk-usage-e9b1d10911b7.html
+│   ├── 2018-02-19_More-data-for-EIP-168--Kill-dust-accounts--83e8dd0938d3.html
+│   ├── 2018-02-20_More-on-Ethereum-accounts-trie-structure-8383a9fd4c93.html
+│   ├── 2018-03-08_Thank-you-and-current-status-of-Turbo-Geth-885e6e033b32.html
+│   ├── 2018-06-13_Turbo-Geth--Where-we-are-at-94598690bb02.html
+│   ├── 2018-06-22_Recent-data-on-Turbo-Geth-performance-f7fb28b06a65.html
+│   ├── 2018-06-26_Turbo-Geth-grant-and-disk-usage-update-92d0aa9ffd38.html
+│   ├── 2018-09-25_Turbo-Geth---beta--constantinopole--tests-fda38cbe87a.html
+│   ├── 2019-01-31_Looking-back-at-the-Ethereum-1x-workshop-26-28-01-2019--part-1--70c1ebd93266.html
+│   ├── 2019-02-03_My-take-on-ProgPOW---looking-for-a-reasonable-answer-to-a-reasonable-question-9f13ffd4e9d7.html
+│   ├── 2019-02-05_Looking-back-at-the-Ethereum-1x-workshop-26-28-01-2019--part-2--d3d8fdcede10.html
+│   ├── 2019-02-09_Looking-back-at-the-Ethereum-1x-workshop-26-28-01-2019--part-3--cc162ca04e9f.html
+│   ├── 2019-02-10_On-Agile-Hardware-Development-bd1b9ceb44d.html
+│   ├── 2019-02-16_Looking-back-at-the-Ethereum-1x-workshop-26-28-01-2019--part-4--a69b48e14309.html
+│   ├── 2019-02-19_Looking-back-at-the-Ethereum-1x-workshop-26-28-01-2019--part-5--24ee8a9cbc40.html
+│   ├── 2019-02-23_Looking-back-at-the-Ethereum-1x-workshop-26-28-01-2019--final-part-6--988134a36073.html
+│   ├── 2019-03-28_Data-from-the-Ethereum-stateless-prototype-8c69479c8abc.html
+│   ├── 2019-04-10_Estimation--approximate--of-the-size-of-contracst-in-Ethereum-4642fe92d6fe.html
+│   ├── 2019-04-25_The-shades-of-statefulness--in-Ethereum-nodes--697b0f88cd04.html
+│   ├── 2019-04-27_State-Rent-changes-for-the-next-Ethereum-hard-fork-f68a826558c5.html
+│   ├── 2019-05-08_Ethereum-1x-as-an-attempt-to-change-the--process--783efa23cf60.html
+│   ├── 2019-10-21_Ethereum-block-gas-limit-increase-and-state-growth-b95353153179.html
+│   ├── 2019-11-06_On-the-State-Rent-and-pivot-to-Stateless-Ethereum-ab4d967ff630.html
+│   ├── 2019-12-18_Is-Ethereum-State-growing-faster-now--And--Ethereum-State-Analytics-project-97777ab47af.html
+│   └── 2020-06-23_-WIP--Meditations-on-Gitcoin-Grants-and-CLR-matching-47ef343c9707.html
+├── regenesis_plan.html
+├── space_chart.png
+├── state_bin_5790928.dot.png
+├── state_hex_5790928.dot.png
+├── stateless_client_scope.html
+├── turbo-projects.html
+└── turbo_geth_release.html
+
+1 directory, 56 files
